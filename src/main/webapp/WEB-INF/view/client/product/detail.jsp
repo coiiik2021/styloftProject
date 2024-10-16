@@ -22,7 +22,7 @@
 <jsp:include page="../layout/header.jsp" />
 
 
-<div class="container mt-4" style="background-color: #f8acac">
+<div class="container mt-4" style="background-color: pink">
 
   <div class="row">
     <div class="col-md-6">
