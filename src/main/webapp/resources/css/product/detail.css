@@ -1,0 +1,47 @@
+body {
+    background-color: rgb(245, 245, 245); /* Set the background color */
+    font-family: Arial, sans-serif;
+}
+
+
+.navbar {
+    border-radius: 0.5rem;
+}
+
+.carousel-inner img {
+    border-radius: 0.5rem; /* Soft rounded corners for images */
+}
+
+h2 {
+    font-size: 1.5rem; /* Slightly larger font size for headings */
+}
+
+.rating .fa-star {
+    font-size: 1.25rem; /* Increase star size for better visibility */
+}
+
+.btn-outline-primary {
+    border-color: #007bff; /* Primary border color */
+    color: #007bff; /* Primary text color */
+}
+
+.btn-outline-primary:hover {
+    background-color: #007bff; /* Highlight on hover */
+    color: #fff; /* Change text color to white on hover */
+}
+
+#checkout-btn {
+    transition: background-color 0.3s; /* Smooth transition for button */
+}
+
+#checkout-btn:hover {
+    background-color: #e0e0e0; /* Slightly darker background on hover */
+}
+
+.container {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
+    border-radius: 0.5rem; /* Rounded corners for the container */
+    overflow: hidden; /* Ensure no overflow of content */
+    width: 900px;
+    height: 750px;
+}
