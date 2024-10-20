@@ -1,6 +1,8 @@
 
-<%@ taglib prefix="c" uri="jakarta.tags.core" %> <%@page contentType="text/html"
-                                                         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:include page="../layout/headerImport.jsp" />
 <body class="sb-nav-fixed">
@@ -46,6 +48,8 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+<c:if test="${totalPages > 1}">
+
 
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
@@ -69,6 +73,7 @@
                                     </li>
                                 </ul>
                             </nav>
+</c:if>
                         </div>
                     </div>
                 </div>

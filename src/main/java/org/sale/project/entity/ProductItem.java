@@ -42,4 +42,6 @@ public class ProductItem {
     @OneToMany(mappedBy = "productItem")
     List<OrderDetail> orderDetails;
 
+    String image;
+
 }

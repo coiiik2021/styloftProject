@@ -1,6 +1,8 @@
 package org.sale.project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,7 +20,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @NotNull
+    @Size(min = 1, message = "Tên của sản phẩm không được để trống")
     String name;
+
     String description;
 
     @ManyToOne
@@ -28,7 +33,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     List<ProductItem> productItem;
 
-    String image;
+//    String image;
 //    List<String> images;
 
 }

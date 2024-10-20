@@ -116,5 +116,8 @@ public class OrderService {
     }
 
 
+    public int countOrder(){
+        return orderRepository.findAll().size();
+    }
 
 }

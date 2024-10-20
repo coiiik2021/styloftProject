@@ -3,17 +3,16 @@ package org.sale.project.controller.admin;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.sale.project.entity.Product;
 import org.sale.project.entity.ProductItem;
-import org.sale.project.service.ColorService;
-import org.sale.project.service.ProductItemService;
-import org.sale.project.service.ProductService;
-import org.sale.project.service.SizeService;
+import org.sale.project.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +27,7 @@ public class ProductItemController {
     ColorService colorService;
     SizeService sizeService;
     ProductItemService productItemService;
+    UploadService uploadService;
 
     @GetMapping
     public String getPageItem(Model model, @RequestParam("page") Optional<String> pageOptional) {
@@ -59,7 +59,11 @@ public class ProductItemController {
     }
 
     @PostMapping("/create")
-    public String createProductItem(@ModelAttribute("newItem") ProductItem productItem) {
+    public String createProductItem(@ModelAttribute("newItem") ProductItem productItem,
+                                    @RequestParam("imageItem") MultipartFile imageItem)  {
+        String img = uploadService.uploadImage(imageItem, "/product/" + productItem.getProduct().getName());
+
+        productItem.setImage(img);
 
         productItem.setColor(colorService.findByName(productItem.getColor().getName()));
         productItem.setSize(sizeService.findByName(productItem.getSize().getName()));
@@ -78,7 +82,9 @@ public class ProductItemController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateProductItem(@PathVariable("id") String id, Model model) {
+    public String updateProductItem(@PathVariable("id") String id, Model model
+                                    ) {
+
         model.addAttribute("colors", colorService.findAll());
         model.addAttribute("sizes", sizeService.findAll());
         model.addAttribute("products", productService.findAll());
@@ -87,13 +93,48 @@ public class ProductItemController {
     }
 
     @PostMapping("/update")
-    public String updateProductItem(@ModelAttribute("item") ProductItem productItem) {
+    public String updateProductItem(@ModelAttribute("item") ProductItem productItem,
+                                    @RequestParam("imageItem") MultipartFile imageItem) {
 
-        productItem.setColor(colorService.findByName(productItem.getColor().getName()));
-        productItem.setSize(sizeService.findByName(productItem.getSize().getName()));
-        productItem.setProduct(productService.findByProductName(productItem.getProduct().getName()));
-        productItemService.saveProductItem(productItem);
+
+
+
+        ProductItem prd = productItemService.findById(productItem.getId());
+
+
+            if(!imageItem.isEmpty() && (prd.getImage() == null || !prd.getImage().contains(imageItem.getOriginalFilename())) ){
+                String img = uploadService.uploadImage(imageItem, "/product/" + productItem.getProduct().getName());
+
+                productItemService.updateAllImage(productItem, img);
+            }
+
+        prd.setColor(colorService.findByName(productItem.getColor().getName()));
+        prd.setSize(sizeService.findByName(productItem.getSize().getName()));
+        prd.setQuantity(productItem.getQuantity());
+        prd.setPrice(productItem.getPrice());
+        prd.setProduct(productService.findByProductName(productItem.getProduct().getName()));
+        productItemService.saveProductItem(prd);
         return "redirect:/admin/item";
+    }
+
+    @GetMapping("/search")
+    public String findAllByNameProduct(@RequestParam("query") String nameProduct, Model model){
+
+        if(nameProduct.isEmpty()){
+            return "redirect:/admin/item";
+        }
+        List<Product> products = productService.findAll(nameProduct);
+
+        Pageable pageable = PageRequest.of(0, 5);
+
+        Page<ProductItem> itemPage = productItemService.findByProduct(products, pageable);
+        List<ProductItem> items = itemPage.getContent();
+
+
+        model.addAttribute("productItems", items);
+        model.addAttribute("currentPage", 1);
+        model.addAttribute("totalPages", itemPage.getTotalPages());
+        return "/admin/item/show";
     }
 
 

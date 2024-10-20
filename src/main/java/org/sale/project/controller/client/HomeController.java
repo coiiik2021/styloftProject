@@ -3,6 +3,7 @@ package org.sale.project.controller.client;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -45,7 +48,16 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute("newUser") User user){
+    public String register(Model model, @ModelAttribute("newUser") @Valid User user, BindingResult bindingResult){
+
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for(FieldError fieldError : fieldErrors){
+            System.out.println(">> user" + fieldError.getField() + fieldError.getDefaultMessage());
+        }
+        if(bindingResult.hasErrors()){
+            return "/client/auth/register";
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(roleService.findByName("USER"));
         user.setSex(-1);

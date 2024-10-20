@@ -4,14 +4,23 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Product;
+import org.sale.project.entity.ProductItem;
+import org.sale.project.repository.ProductItemRepository;
 import org.sale.project.repository.ProductRepository;
+import org.sale.project.service.spec.ProductItemSpecification;
 import org.sale.project.service.spec.ProductSpec;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -19,6 +28,7 @@ import java.util.List;
 public class ProductService {
 
     ProductRepository productRepository;
+    ProductItemRepository productItemRepository;
 
     public List<Product> findAll() {
         return productRepository.findAll();
@@ -46,6 +56,33 @@ public class ProductService {
 
     public Page<Product> findAll(String name, Pageable pageable) {
         return productRepository.findAll(ProductSpec.nameLike(name), pageable);
+    }
+
+    public int countProduct() {
+        return productRepository.findAll().size();
+    }
+
+    public List<Product> findAll(String name) {
+        return productRepository.findAll(ProductSpec.nameLike(name));
+    }
+
+    public Page<Product> filterProducts(List<String> categories, List<String> colors, List<String> sizes, double min, double max, Pageable pageable) {
+        Specification<ProductItem> specification = Specification
+                .where(ProductItemSpecification.hasCategory(categories))
+                .and(ProductItemSpecification.hasColor(colors))
+                .and(ProductItemSpecification.hasSize(sizes))
+                .and(ProductItemSpecification.hasPriceBetween(min, max));
+
+
+
+        Page<ProductItem> productItemsPage = productItemRepository.findAll(specification, pageable);
+
+        Set<Product> uniqueProducts = new HashSet<>();
+        productItemsPage.forEach(productItem -> uniqueProducts.add(productItem.getProduct()));
+
+        List<Product> productList = new ArrayList<>(uniqueProducts);
+
+        return new PageImpl<>(productList, pageable, uniqueProducts.size());
     }
 
 

@@ -49,7 +49,7 @@
           <tr>
             <td>
               <div class="d-flex align-items-center">
-                <img src="/images/product/${item.productItem.product.image}" class="img-fluid" style="width: 80px; height: 80px;" alt="Hình ảnh sản phẩm">
+                <img src="/images/product/${item.productItem.product.name}/${item.productItem.image}" class="img-fluid" style="width: 80px; height: 80px;" alt="Hình ảnh sản phẩm">
                 <div class="ms-3 text-start" style="color: #000;">
                   <p class="mb-1">${item.productItem.product.name}</p>
                   <small style="color: #000;">Màu: ${item.productItem.color.name} / Kích cỡ: ${item.productItem.size.name}</small>
@@ -69,13 +69,10 @@
               <fmt:formatNumber type="number" value="${item.productItem.price * item.quantity}"/> đ
             </td>
             <td>
-              <form action="/cart/delete-item-in-cart/${item.id}" method="get">
-                <input type="hidden" name="${_csrf.parameterName}"
-                       value="${_csrf.token}" />
-                <button class="btn btn-danger btn-sm">
+
+                <a href = "/cart/delete-item-in-cart/${item.id}" class="btn btn-danger btn-sm">
                   <i class="fas fa-trash"></i>
-                </button>
-              </form>
+                </a>
             </td>
           </tr>
           </c:forEach>

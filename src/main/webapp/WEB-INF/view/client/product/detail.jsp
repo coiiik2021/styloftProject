@@ -7,6 +7,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -28,9 +30,12 @@
     <div class="col-md-6">
       <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100" src="/images/product/${product.image}" alt="Hoodie Image 1">
-          </div>
+            <c:forEach var="item" items="${item.product.productItem}">
+                <div class="carousel-item ${item.image eq item.product.productItem.get(0).image ? 'active' : ''}">
+                    <img class="d-block w-100" src="/images/product/${item.product.name}/${item.image}" alt="${item.product.name}">
+                </div>
+            </c:forEach>
+
 <%--          <div class="carousel-item">--%>
 <%--            <img class="d-block w-100" src="Image/hoodie.png" alt="Hoodie Image 2">--%>
 <%--          </div>--%>
@@ -46,11 +51,11 @@
       </div>
     </div>
     <div class="col-md-6 d-flex flex-column justify-content-center">
-      <h2 class="fw-bold">${product.name}</h2>
+      <h2 class="fw-bold">${item.product.name}</h2>
       <div class="price mb-2"> <!-- New price section -->
-        <strong style="font-size: 1.5rem; color: red;">Giá: ${product.productItem.get(0).price} VND</strong>
+        <strong style="font-size: 1.5rem; color: red;">Giá: ${item.price} VND</strong>
       </div>
-      <p><strong>Mô tả:</strong> ${product.description}.</p>
+      <p><strong>Mô tả:</strong> ${item.product.description}.</p>
       <div class="rating text-warning">
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star checked"></span>
@@ -58,33 +63,70 @@
         <span class="fa fa-star checked"></span>
         <span class="fa fa-star"></span>
       </div>
-      <div class="my-3">
-        <strong>Kích thước:</strong>
-
-        <div>
-          <c:forEach items="${sizes}" var="size">
-
-            <a href ="/product/detail/${product.id}?size=${size.name}" class="btn btn-outline-primary btn-sm me-1 ${item.size.name eq size.name ? 'disabled' : ''}">${size.name}</a>
-
-          </c:forEach>
-<%--          <button class="btn btn-outline-primary btn-sm me-1">S</button>--%>
-<%--          <button class="btn btn-outline-primary btn-sm me-1">M</button>--%>
-<%--          <button class="btn btn-outline-primary btn-sm">L</button>--%>
+        <div class="my-3">
+            <strong>Kích thước:</strong>
+            <div>
+                <c:forEach items="${sizes}" var="size">
+                    <a href="javascript:void(0);"
+                       class="btn btn-outline-primary btn-sm me-1 ${item.size.name eq size.name ? 'disabled' : ''}"
+                       onclick="updateSelection('size', '${size.name}')">
+                            ${size.name}
+                    </a>
+                </c:forEach>
+            </div>
         </div>
-      </div>
-      <div class="my-3">
-        <strong>Màu sắc:</strong>
 
-        <div>
-          <c:forEach items="${colors}" var="color">
-
-            <a href ="/product/detail/${product.id}?color=${color.name}" class="btn btn-outline-primary btn-sm me-1 ${item.color.name eq color.name ? 'disabled' : ''}" >${color.name}</a>
-
-          </c:forEach>
-
+        <div class="my-3">
+            <strong>Màu sắc:</strong>
+            <div>
+                <c:forEach items="${colors}" var="color">
+                    <a href="javascript:void(0);"
+                       class="btn btn-outline-primary btn-sm me-1 ${item.color.name eq color.name ? 'disabled' : ''}"
+                       onclick="updateSelection('color', '${color.name}')">
+                            ${color.name}
+                    </a>
+                </c:forEach>
+            </div>
         </div>
-      </div>
-      <div class="d-flex align-items-center my-3">
+
+        <script>
+            // Biến để lưu giá trị đã chọn của size và color
+            let selectedSize = '${param.size != null ? param.size : ''}';
+            let selectedColor = '${param.color != null ? param.color : ''}';
+
+            function updateSelection(type, value) {
+                if (type === 'size') {
+                    selectedSize = value;
+                } else if (type === 'color') {
+                    selectedColor = value;
+                }
+
+                sendRequest();
+            }
+
+            function sendRequest() {
+                var productId = '${item.product.id}';
+
+                var url = '/product/detail/' + productId;
+                var params = [];
+
+                if (selectedSize) {
+                    params.push('size=' + selectedSize);
+                }
+
+                if (selectedColor) {
+                    params.push('color=' + selectedColor);
+                }
+
+                if (params.length > 0) {
+                    url += '?' + params.join('&');
+                }
+
+                window.location.href = url;
+            }
+        </script>
+
+        <div class="d-flex align-items-center my-3">
         <label class="mb-0 me-2"><strong>Số lượng:</strong></label>
         <input type="number" class="form-control me-2" value="1" min="1" max="${item.quantity}" style="width: 80px;">
         <span>Còn lại ${item.quantity} sản phẩm</span>

@@ -40,8 +40,9 @@ h2 {
 .input-group label {
     display: block;
     margin-bottom: 8px;
-    color: #555;
+    /*color: #555;*/
     font-size: 14px;
+    color:red;
 }
 
 .input-group input {

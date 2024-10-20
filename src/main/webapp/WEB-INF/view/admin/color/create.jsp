@@ -26,13 +26,17 @@
               <form:form action="/admin/color/create" method="post" enctype="multipart/form-data" modelAttribute="newColor" class="row">
 
 
+                <c:set var="errorName">
+                  <form:errors path="name" cssClass="invalid-feedback"/>
+                </c:set>
 
 
                 <div class="mb-3 col-12">
 
                   <label class="form-label">Name</label>
-                  <form:input type="text" class="form-control"  path="name"/>
-                  <!-- <%--                    ${errorEmail}--%> -->
+                  <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}"  path="name"/>
+
+                  ${errorName}
                 </div>
 
 

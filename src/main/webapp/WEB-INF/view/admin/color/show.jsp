@@ -40,6 +40,8 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+<c:if test="${totalPages > 1}">
+
 
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
@@ -63,6 +65,7 @@
                                     </li>
                                 </ul>
                             </nav>
+</c:if>
                         </div>
                     </div>
                 </div>

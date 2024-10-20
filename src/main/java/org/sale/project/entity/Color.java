@@ -1,6 +1,7 @@
 package org.sale.project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,6 +19,7 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @Size(min = 1, message = "Tên của màu sắc không được để trống")
     String name;
     String description;
 

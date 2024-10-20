@@ -1,5 +1,6 @@
 package org.sale.project.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,12 +70,24 @@ public class ProductController {
     }
 
     @PostMapping("/create")
-    public String createProduct(@ModelAttribute("newProduct") Product product,
-                                @RequestParam("imageProduct") MultipartFile imageProduct) {
+    public String createProduct(@ModelAttribute("newProduct") @Valid Product product,
+                                BindingResult bindingResult, Model model
+                                ) {
 
-        String img = uploadService.uploadImage(imageProduct, "/product");
+//        String img = uploadService.uploadImage(imageProduct, "/product");
+//
+//        product.setImage(img);
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
-        product.setImage(img);
+        for(FieldError fieldError : fieldErrors){
+            System.out.println(">>> "+fieldError.getDefaultMessage());
+        }
+        if(bindingResult.hasErrors()){
+            model.addAttribute("categories", categoryService.findAll());
+
+            return "/admin/product/create";
+        }
+
         product.setCategory(categoryService.findCategoryByName(product.getCategory().getName()));
         productService.saveProduct(product);
 
@@ -99,9 +114,9 @@ public class ProductController {
     }
 
     @PostMapping("/update")
-    public String updateProduct(@ModelAttribute("product") Product product, @RequestParam("imageProduct") MultipartFile imageProduct) {
-        String img = uploadService.uploadImage(imageProduct, "/product");
-        product.setImage(img);
+    public String updateProduct(@ModelAttribute("product") Product product) {
+//        String img = uploadService.uploadImage(imageProduct, "/product");
+//        product.setImage(img);
         product.setCategory(categoryService.findCategoryByName(product.getCategory().getName()));
         productService.saveProduct(product);
         return "redirect:/admin/product";

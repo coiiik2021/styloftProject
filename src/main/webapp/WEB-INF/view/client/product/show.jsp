@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,224 +142,108 @@
         <!-- Filter Section -->
         <div class="col-md-3 filter-section" style="border: pink solid 5px; margin-top: 5px; border-radius: 30px;">
             <h5>Bộ lọc tìm kiếm</h5>
-            <form>
+            <form id="filterForm">
+                <!-- Category filter -->
                 <div class="mb-3" style="border: pink solid 5px;">
                     <label class="form-label">Loại:</label><br />
-                    <div class="form-check" >
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="aoThun"
-                        />
-                        <label class="form-check-label" for="aoThun">Áo thun</label>
-                    </div>
-                    <div class="form-check" >
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="aoPolo"
-                        />
-                        <label class="form-check-label" for="aoPolo">Áo Polo</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="hoodie&aoni"
-                        />
-                        <label class="form-check-label" for="hoodie&aoni"
-                        >Hoodie và áo nỉ</label
-                        >
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="aokhoac"
-                        />
-                        <label class="form-check-label" for="aokhoac">Áo khoác</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="quandai"
-                        />
-                        <label class="form-check-label" for="quandai">Quần dài</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="quanngan"
-                        />
-                        <label class="form-check-label" for="quanngan">Quần ngắn</label>
-                    </div>
+                    <c:forEach items="${categories}" var="cate">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="categories" value="${cate.name}" id="${cate.name}" />
+                            <label class="form-check-label" for="${cate.name}">${cate.name}</label>
+                        </div>
+                    </c:forEach>
                 </div>
                 <hr />
 
-                <div class="mb-3" style="border: pink solid 5px;">
-                    <label class="form-label">Giới tính:</label><br />
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="male"
-                        />
-                        <label class="form-check-label" for="male">Nam</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="female"
-                        />
-                        <label class="form-check-label" for="female">Nữ</label>
-                    </div>
-                </div>
-                <hr />
+                <!-- Color filter -->
                 <div class="mb-3" style="border: pink solid 5px;">
                     <label class="form-label">Màu sắc:</label><br />
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="XanhLa"
-                        />
-                        <label class="form-check-label" for="XanhLa">Xanh Lá</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="Do"
-                        />
-                        <label class="form-check-label" for="Do">Đỏ</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="Tim"
-                        />
-                        <label class="form-check-label" for="Tim">Tím</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="Den"
-                        />
-                        <label class="form-check-label" for="Den">Đen</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="Trang"
-                        />
-                        <label class="form-check-label" for="Trang">Trắng</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="Xam"
-                        />
-                        <label class="form-check-label" for="Xam">Xám</label>
-                    </div>
+                    <c:forEach items="${colors}" var="color">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="colors" value="${color.name}" id="${color.name}" />
+                            <label class="form-check-label" for="${color.name}">${color.name}</label>
+                        </div>
+                    </c:forEach>
                 </div>
-
                 <hr />
+
+                <!-- Size filter -->
                 <div class="mb-3" style="border: pink solid 5px;">
                     <label class="form-label">Kích thước:</label><br />
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="XS"
-                        />
-                        <label class="form-check-label" for="XS">XS</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="S"
-                        />
-                        <label class="form-check-label" for="S">S</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="M"
-                        />
-                        <label class="form-check-label" for="M">M</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="L"
-                        />
-                        <label class="form-check-label" for="L">L</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="XL"
-                        />
-                        <label class="form-check-label" for="XL">XL</label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                                class="form-check-input"
-                                type="checkbox"
-                                value=""
-                                id="XXL"
-                        />
-                        <label class="form-check-label" for="XXL">XXL</label>
-                    </div>
+                    <c:forEach items="${sizes}" var="size">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="sizes" value="${size.name}" id="${size.name}" />
+                            <label class="form-check-label" for="${size.name}">${size.name}</label>
+                        </div>
+                    </c:forEach>
                 </div>
                 <hr />
-                <!-- Chọn giá tiền trong khoảng -->
-                <div class="mb-3" style="border: pink solid 5px;">
+
+
+                <div class="mb-3">
                     <label class="form-label">Giá tiền:</label><br />
                     <div class="price-input">
-                        <input type="number" placeholder="₫ Từ" />
+                        <input type="number" name="minPrice" placeholder="Giá tối thiểu" />
                         <span class="separator">-</span>
-                        <input type="number" placeholder="₫ Đến" />
+                        <input type="number" name="maxPrice" placeholder="Giá tối đa" />
                     </div>
-                    <button class="apply-btn">Áp dụng</button>
                 </div>
 
-                <hr />
-                <div class="mb-3" >
-                    <button class="reset-btn">Xóa tất cả</button>
+                <!-- Apply button -->
+                <div class="mb-3">
+                    <button type="button" class="apply-btn" onclick="applyFilters()">Áp dụng</button>
                 </div>
             </form>
         </div>
+
+        <script>
+            function applyFilters() {
+                const form = document.getElementById('filterForm');
+
+                let categories = [];
+                let colors = [];
+                let sizes = [];
+
+                form.querySelectorAll('input[name="categories"]:checked').forEach((checkbox) => {
+                    categories.push(checkbox.value);
+                });
+
+                form.querySelectorAll('input[name="colors"]:checked').forEach((checkbox) => {
+                    colors.push(checkbox.value);
+                });
+
+                form.querySelectorAll('input[name="sizes"]:checked').forEach((checkbox) => {
+                    sizes.push(checkbox.value);
+                });
+
+                const minPrice = form.querySelector('input[name="minPrice"]').value;
+                const maxPrice = form.querySelector('input[name="maxPrice"]').value;
+
+                let queryParams = new URLSearchParams();
+
+                if (categories.length > 0) {
+                    queryParams.append('categories', categories.join(','));
+                }
+
+                if (colors.length > 0) {
+                    queryParams.append('colors', colors.join(','));
+                }
+
+                if (sizes.length > 0) {
+                    queryParams.append('sizes', sizes.join(','));
+                }
+
+                if (minPrice) {
+                    queryParams.append('minPrice', minPrice);
+                }
+                if (maxPrice) {
+                    queryParams.append('maxPrice', maxPrice);
+                }
+
+
+                window.location.href = '/product/filter?' + queryParams.toString();
+            }
+        </script>
 
         <!-- Product Listing -->
         <div class="col-md-9">
@@ -368,7 +254,7 @@
                         <a href="/product/detail/${product.id}">
                             <div class="product-card">
                                 <img
-                                        src="/images/product/${product.image}"
+                                        src="/images/product/${product.name}/${product.productItem.get(0).image}"
                                         alt="${product.name}"
                                         class="product-img"
                                 />

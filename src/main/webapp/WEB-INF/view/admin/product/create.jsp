@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:include page="../layout/headerImport.jsp" />
 <body class="sb-nav-fixed">
@@ -24,14 +26,17 @@
                         <div class="col-md-6 col-12 mx-auto">
                             <form:form action="/admin/product/create" method="post" enctype="multipart/form-data" modelAttribute="newProduct" class="row">
 
+                                <c:set var="errorName">
+                                    <form:errors path="name" cssClass="invalid-feedback" />
+                                </c:set>
 
 
 
                                 <div class="mb-3 col-12">
 
                                     <label class="form-label">Name</label>
-                                    <form:input type="text" class="form-control"  path="name"/>
-                                    <!-- <%--                    ${errorEmail}--%> -->
+                                    <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}"  path="name"/>
+                                    ${errorName}
                                 </div>
 
 
@@ -44,16 +49,10 @@
 
 
 
-
-
-
-
-
-
-                                <div class="mb-3 col-12 col-md-6">
-                                    <label for="imgProduct" class="form-label">Image</label>
-                                    <input class="form-control" type="file" id="imgProduct" name="imageProduct" accept=".png, .jpg, . jpeg">
-                                </div>
+<%--                                <div class="mb-3 col-12 col-md-6">--%>
+<%--                                    <label for="imgProduct" class="form-label">Image</label>--%>
+<%--                                    <input class="form-control" type="file" id="imgProduct" name="imageProduct" accept=".png, .jpg, . jpeg">--%>
+<%--                                </div>--%>
 
 
 

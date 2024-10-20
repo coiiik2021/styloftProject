@@ -24,6 +24,7 @@ public class DashBoardController {
     ProductService productService;
     OrderService orderService;
 
+
     @GetMapping
     public String getPageAdmin(Model model) {
         List<String> months = Arrays.asList("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec");
@@ -33,9 +34,9 @@ public class DashBoardController {
         model.addAttribute("months", months);
         model.addAttribute("revenues", orderService.totalRevenueInMonth());
         model.addAttribute("totalRevenue", orderService.totalRevenue());
-        model.addAttribute("totalUser", 500);
-        model.addAttribute("totalProduct", 300);
-        model.addAttribute("totalOrder", 150);
+        model.addAttribute("totalUser", userService.countUser());
+        model.addAttribute("totalProduct", productService.countProduct());
+        model.addAttribute("totalOrder", orderService.countOrder());
 
 
         return "/admin/dashboard/show";

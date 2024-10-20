@@ -17,13 +17,33 @@
 <section class="container">
     <h2>Register</h2>
     <form:form action="/register" method="POST" class="form-group" modelAttribute="newUser">
+        <c:set var="errorEmail">
+            <form:errors path="email" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
+        </c:set>
+        <c:set var="errorPassword">
+            <form:errors path="password" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
+        </c:set>
+
+
         <div class="input-group">
             <label for="email">Email</label>
-            <form:input path="email" type="email" id="email"  placeholder="Enter your email" aria-label="Email"/>
+            <form:input
+                    style="${not empty errorEmail ? 'border: red solid 1px ':'' } "
+                    path="email" type="email" id="email"
+
+                    placeholder="Enter your email"
+
+                        />
+            ${errorEmail}
+
         </div>
         <div class="input-group">
             <label for="password">Password</label>
-            <form:input path="password" type="password" id="password" placeholder="Enter your password" aria-label="Password"/>
+            <form:input path="password"
+                        style="${not empty errorPassword ? 'border: red solid 1px ':'' } "
+                        type="password" id="password"
+                        placeholder="Enter your password" aria-label="Password"/>
+            ${errorPassword}
         </div>
         <button type="submit" class="btn">Register</button>
     </form:form>

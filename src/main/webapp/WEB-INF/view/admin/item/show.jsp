@@ -1,6 +1,8 @@
 
-<%@ taglib prefix="c" uri="jakarta.tags.core" %> <%@page contentType="text/html"
-                                                         pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:include page="../layout/headerImport.jsp" />
 <body class="sb-nav-fixed">
@@ -14,9 +16,14 @@
                 <div class="container mt-5">
                     <div class="row">
                         <div class="col-md-12 col-12 mx-auto">
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between" style="margin-bottom: 20px;">
                                 <h3>Table product Item</h3>
+                                <form action="/admin/item/search" method="get" class="d-flex">
+                                    <input class="form-control me-2" type="search" name="query" placeholder="Search by name product" value="${nameSearch}" aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
                                 <a href="/admin/item/create" class="btn btn-primary">Create Product Item</a>
+
                             </div>
                             <table class="table table-bordered table-hover">
                                 <thead>
@@ -26,6 +33,7 @@
                                     <th scope="col">Size</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Price</th>
+                                    <th scope="col">Image</th>
                                     <th scope="col">Action</th>
 
                                 </tr>
@@ -39,6 +47,9 @@
                                         <td>${productItem.quantity}</td>
 
                                         <td>${productItem.price}</td>
+                                        <td style="text-align: center">
+                                            <img src="/images/product/${productItem.product.name}/${productItem.image}" alt="${productItem.product.name}" style="width: 100px; height: auto;">
+                                        </td>
 
 
 
@@ -50,6 +61,8 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+<c:if test="${totalPages > 1}">
+
 
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
@@ -73,6 +86,7 @@
                                     </li>
                                 </ul>
                             </nav>
+</c:if>
                         </div>
                     </div>
                 </div>

@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.User;
+import org.sale.project.mapper.UserMapper;
 import org.sale.project.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ public class UserService {
 
 
     UserRepository userRepository;
+    UserMapper userMapper;
 
     public List<User> findAll(){
         return userRepository.findAll();
@@ -47,12 +49,29 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    public int countUser(){
+        return userRepository.findAll().size();
+    }
+
     public User findUserByEmail(String email){
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()){
             return user.get();
         }
         return null;
+    }
+
+    public void updateUser(String email, User userUpdate){
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        User user = new User();
+        if(userOptional.isPresent()){
+            user = userOptional.get();
+        }else{
+            return;
+        }
+        userMapper.updateUser(user, userUpdate);
+        userRepository.save(user);
     }
 
 }

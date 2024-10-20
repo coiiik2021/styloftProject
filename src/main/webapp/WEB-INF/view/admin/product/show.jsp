@@ -1,5 +1,7 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:include page="../layout/headerImport.jsp" />
 <body class="sb-nav-fixed">
@@ -31,7 +33,6 @@
                   <th scope="col">Name</th>
                   <th scope="col">Description</th>
                   <th scope="col">Category</th>
-                  <th scope="col">Image</th>
                   <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -41,9 +42,7 @@
                     <th scope="row">${product.name}</th>
                     <td>${product.description}</td>
                     <td>${product.category.name}</td>
-                    <td style="text-align: center">
-                      <img src="/images/product/${product.image}" alt="${product.name}" style="width: 100px; height: auto;">
-                    </td>
+
                     <td style="text-align: center">
                       <a href="/admin/product/${product.id}" class="btn btn-success">View</a>
                       <a href="/admin/product/update/${product.id}" class="btn btn-warning">Update</a>
@@ -53,6 +52,7 @@
                 </c:forEach>
                 </tbody>
               </table>
+              <c:if test="${totalPages > 1}">
 
               <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-center">
@@ -76,6 +76,7 @@
                   </li>
                 </ul>
               </nav>
+              </c:if>
             </div>
           </div>
         </div>

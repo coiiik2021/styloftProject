@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:include page="../layout/headerImport.jsp" />
 <body class="sb-nav-fixed">
@@ -88,6 +90,18 @@
 <%--                  </form:select>--%>
 <%--                </div>--%>
 
+                  <c:if test="${ not empty item.image}">
+                      <div class="mb-3 col-12 col-md-6" style="display: flex; justify-content: center">
+                          <img style="display: inline-block; width: 100px; height: 150px;" src="/images/product/${item.product.name}/${item.image}">
+                      </div>
+                  </c:if>
+                  <br/>
+
+                  <div class="mb-3 col-12 col-md-6" >
+                      <label for="imageItem" class="form-label">Image</label>
+                      <input class="form-control" type="file" id="imageItem" name="imageItem" accept=".png, .jpg, . jpeg">
+                  </div>
+
 
                 <div class="mb-3 col-12 col-mb-6">
 
@@ -95,6 +109,8 @@
                   <form:input type="text" class="form-control"  path="quantity"/>
                   <!-- <%--                    ${errorEmail}--%> -->
                 </div>
+
+
                 <div class="mb-3 col-12 col-mb-6">
 
                   <label class="form-label">Price</label>

@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 
 <jsp:include page="../layout/headerImport.jsp" />
 <body class="sb-nav-fixed">
@@ -48,10 +50,10 @@
                                 </div>
 
 
-                                <div class="mb-3 col-12 col-md-6">
-                                    <label for="imgProduct" class="form-label">Image</label>
-                                    <input class="form-control" type="file" id="imgProduct" name="imageProduct" accept=".png, .jpg, . jpeg">
-                                </div>
+<%--                                <div class="mb-3 col-12 col-md-6">--%>
+<%--                                    <label for="imgProduct" class="form-label">Image</label>--%>
+<%--                                    <input class="form-control" type="file" id="imgProduct" name="imageProduct" accept=".png, .jpg, . jpeg">--%>
+<%--                                </div>--%>
 
 
 

@@ -1,5 +1,6 @@
 package org.sale.project.controller.admin;
 
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,7 +56,16 @@ public class SizeController {
     }
 
     @PostMapping("/create")
-    public String createSize(Model model, Size size) {
+    public String createSize(Model model,@ModelAttribute("newSize") @Valid Size size, BindingResult bindingResult) {
+
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            model.addAttribute(">>>size: " + fieldError.getField(), fieldError.getDefaultMessage());
+        }
+        if(bindingResult.hasErrors()){
+            return "/admin/size/create";
+        }
+
         sizeService.saveSize(size);
         return "redirect:/admin/size";
     }

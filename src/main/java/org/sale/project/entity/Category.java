@@ -1,6 +1,7 @@
 package org.sale.project.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,6 +19,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+
+
+    @Size(min = 1, message = "Tên của danh mục không được bỏ trống")
     String name;
     String description;
 

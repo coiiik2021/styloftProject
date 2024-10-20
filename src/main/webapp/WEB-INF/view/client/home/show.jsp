@@ -1,13 +1,16 @@
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
 
-<jsp:include page="../layout/header.jsp" />
 <%--- Navbar start -->--%>
 <body>
 <%--<jsp:include page="../layout/header.jsp" />--%>
 <%--- Navbar start -->--%>
+
+<jsp:include page="../layout/header.jsp" />
 
 
 
@@ -26,6 +29,7 @@
             <div class="carousel-item active">
                 <img src="/images/assets/img/Black Bold Men's Fashion Landscape Banner.png"
                      class="d-block w-100 rounded-1" alt="...">
+
             </div>
             <div class="carousel-item">
                 <img src="/images/assets/img/Cream Feminine Aesthetic Best Collection Banner.png"
@@ -77,7 +81,7 @@
                     <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
                         <div class="card border-0 rounded-0 shadow">
 
-                            <img src="/images/product/${product.image}"
+                            <img src="/images/product/${product.name}/${product.productItem.get(0).image}"
                                  class="card-img-top rounded-0" alt="...">
                             <div class="card-body mt-1 mb-1">
                                 <div class="row">
@@ -91,6 +95,7 @@
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
+<%--                                            ${product.productItem.get(0).quantity}--%>
                                             (123)
                                         </p>
                                     </div>

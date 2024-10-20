@@ -72,7 +72,6 @@ public class CartService {
 
     public void removeCartItem(String cart_detail_id){
         cartItemRepository.deleteById(cart_detail_id);
-
     }
 
     public double totalPriceInCart(Cart cart){

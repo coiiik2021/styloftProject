@@ -35,6 +35,7 @@ public class ApplicationInitConfig {
                         .email("admin@gmail.com")
                         .password(passwordEncoder.encode("admin"))
                         .role(roleRepository.findByName("ADMIN"))
+                        .sex(-1)
                         .build();
 
                 userRepository.save(user);

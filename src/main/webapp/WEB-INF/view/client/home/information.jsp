@@ -3,6 +3,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +51,7 @@
       <ul class="list-group sidebar">
         <li class="list-group-item active" onclick="showSection('account-info')">Thông tin tài khoản</li>
         <li class="list-group-item" onclick="showSection('order-history')">Lịch sử đơn hàng</li>
-        <li class="list-group-item">Số địa chỉ</li>
+        <li class="list-group-item" onclick="showSection('account-address')">Số địa chỉ</li>
         <li class="list-group-item">Đánh giá và phản hồi</li>
         <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>
         <li class="list-group-item">Đăng xuất</li>
@@ -75,31 +76,31 @@
               <form:input path="phoneNumber" type="text" class="form-control" id="phone" placeholder="0878888424" />
             </div>
             <div class="col-md-6">
-<%--              <div class="form-group">--%>
-<%--                <label for="gender">Giới tính</label><br>--%>
+              <div class="form-group">
+                <label>Giới tính</label><br>
 
-<%--                <!-- Radio Nam -->--%>
-<%--                <form:radiobutton path="sex" id="male" value="1"--%>
-<%--                                  checked="${user.sex == 1}" />--%>
-<%--                <label for="male">Nam</label>--%>
+                <!-- Radio Nam -->
+                <form:radiobutton path="sex" id="male" value="1"
+                                  checked="${user.sex eq 1}" />
+                <label for="male">Nam</label>
 
-<%--                <!-- Radio Nữ -->--%>
-<%--                <form:radiobutton path="sex" id="female" value="0"--%>
-<%--                                  checked="${user.sex == 0}" />--%>
-<%--                <label for="female">Nữ</label>--%>
+                <!-- Radio Nữ -->
+                <form:radiobutton path="sex" id="female" value="0"
+                                  checked="${user.sex eq 0}" />
+                <label for="female">Nữ</label>
 
-<%--                <!-- Radio Khác giới -->--%>
-<%--                <form:radiobutton path="sex" id="other" value="-1"--%>
-<%--                                  checked="${user.sex == -1 || user.sex == null}" />--%>
-<%--                <label for="other">Khác giới</label>--%>
-<%--              </div>--%>
+                <!-- Radio Khác giới -->
+                <form:radiobutton path="sex" id="other" value="-1"
+                                  checked="${user.sex eq -1}" />
+                <label for="other">Khác giới</label>
+              </div>
 
             </div>
           </div>
           <div class="row mb-4">
             <div class="col-md-6">
               <label for="dob" class="form-label">Ngày sinh</label>
-              <form:input path="birthDay" type="date" class="form-control" id="dob" value="22-05-2003" />
+              <form:input path="birthDay" type="date" class="form-control" id="dob" />
             </div>
           </div>
           <h4 class="mb-3">Thông tin đăng nhập</h4>
@@ -136,6 +137,12 @@
           </c:forEach>
           </tbody>
         </table>
+      </div>
+    </div>
+    <div class="col-md-9 form-container" id="account-address">
+      <div>
+        <h2 class="mb-4">ADDRESS</h2>
+        <input type="text" value="${user.address}" disabled/>
       </div>
     </div>
 

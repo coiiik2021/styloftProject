@@ -18,6 +18,7 @@ public class Size {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
+    @jakarta.validation.constraints.Size(min = 1, message = "Tên kích thước không được để trống")
     String name;
     String description;
 
