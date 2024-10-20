@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Product;
 import org.sale.project.entity.ProductItem;
+import org.sale.project.repository.CategoryRepository;
 import org.sale.project.repository.ProductItemRepository;
 import org.sale.project.repository.ProductRepository;
 import org.sale.project.service.spec.ProductItemSpecification;
@@ -16,10 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +27,9 @@ public class ProductService {
 
     ProductRepository productRepository;
     ProductItemRepository productItemRepository;
+    CategoryRepository categoryRepository;
+    UploadService uploadService;
+
 
     public List<Product> findAll() {
         return productRepository.findAll();
@@ -83,6 +84,25 @@ public class ProductService {
         List<Product> productList = new ArrayList<>(uniqueProducts);
 
         return new PageImpl<>(productList, pageable, uniqueProducts.size());
+    }
+
+    public void updateProduct(Product productUpdate) {
+        Optional<Product> oldProductOptional = productRepository.findById(productUpdate.getId());
+        Product oldProduct = new Product();
+
+        if(oldProductOptional.isPresent()) {
+            oldProduct = oldProductOptional.get();
+        } else{
+            return;
+        }
+
+        uploadService.updateNameFileProduct(oldProduct.getName(), productUpdate.getName());
+        oldProduct.setName(productUpdate.getName());
+        oldProduct.setDescription(productUpdate.getDescription());
+        oldProduct.setCategory(categoryRepository.findByName(productUpdate.getCategory().getName()));
+
+        productRepository.save(oldProduct);
+
     }
 
 

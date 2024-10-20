@@ -114,11 +114,9 @@ public class ProductController {
     }
 
     @PostMapping("/update")
-    public String updateProduct(@ModelAttribute("product") Product product) {
-//        String img = uploadService.uploadImage(imageProduct, "/product");
-//        product.setImage(img);
-        product.setCategory(categoryService.findCategoryByName(product.getCategory().getName()));
-        productService.saveProduct(product);
+    public String updateProduct(@ModelAttribute("product") Product productUpdate) {
+
+        productService.updateProduct(productUpdate);
         return "redirect:/admin/product";
     }
 

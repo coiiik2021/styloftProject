@@ -42,4 +42,26 @@ public class UploadService {
         return finalName;
     }
 
+    public void updateNameFileProduct(String oldName, String newName) {
+
+        String rootPath = this.servletContext.getRealPath("/resources/images/product");
+
+        try{
+            byte[] bytes = oldName.getBytes();
+            File dir = new File(rootPath + File.separator + oldName);
+
+            if(dir.exists()){
+                dir.renameTo(new File(rootPath + File.separator + newName));
+            } else{
+                return;
+            }
+
+        } catch (Exception e) {
+            System.out.println("image error");
+        }
+
+
+
+    }
+
 }

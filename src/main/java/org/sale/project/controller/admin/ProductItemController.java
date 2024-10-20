@@ -40,7 +40,7 @@ public class ProductItemController {
             System.out.println(e.getMessage());
         }
 
-        Pageable pageable = PageRequest.of(page-1, 5);
+        Pageable pageable = PageRequest.of(page-1, 4);
         Page<ProductItem> pItem = productItemService.findAll(pageable);
         List<ProductItem> items = pItem.getContent();
         model.addAttribute("productItems", items);
@@ -96,9 +96,6 @@ public class ProductItemController {
     public String updateProductItem(@ModelAttribute("item") ProductItem productItem,
                                     @RequestParam("imageItem") MultipartFile imageItem) {
 
-
-
-
         ProductItem prd = productItemService.findById(productItem.getId());
 
 
@@ -125,7 +122,7 @@ public class ProductItemController {
         }
         List<Product> products = productService.findAll(nameProduct);
 
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 4);
 
         Page<ProductItem> itemPage = productItemService.findByProduct(products, pageable);
         List<ProductItem> items = itemPage.getContent();
