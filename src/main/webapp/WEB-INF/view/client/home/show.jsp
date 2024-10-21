@@ -11,9 +11,7 @@
 <%--- Navbar start -->--%>
 
 <jsp:include page="../layout/header.jsp" />
-
-
-
+<link rel="stylesheet" href="/css/client/home.css" type="text/css">
 <div class="container">
 
 
@@ -77,7 +75,7 @@
     <div class="row row-cols-4 g-4 mt-2">
         <c:forEach items="${products}" var="product">
             <c:if test="${not empty product.productItem}">
-                <div class="col">
+                <div class="col" >
                     <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
                         <div class="card border-0 rounded-0 shadow">
 

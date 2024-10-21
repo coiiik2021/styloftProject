@@ -18,9 +18,9 @@
                                 <h3>Table color</h3>
                                 <a href="/admin/color/create" class="btn btn-primary">Create color</a>
                             </div>
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover mt-3">
                                 <thead>
-                                <tr style="text-align: center">
+                                <tr style="text-align: center; vertical-align: middle;">
                                     <th scope="col">Name</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Action</th>
@@ -28,7 +28,7 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach var="color" items="${colors}">
-                                    <tr>
+                                    <tr style="text-align: center; vertical-align: middle;">
                                         <th scope="row">${color.name}</th>
                                         <td>${color.description}</td>
 

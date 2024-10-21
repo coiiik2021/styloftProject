@@ -1,0 +1,44 @@
+.col {
+    margin-left: 20px; /* Khoảng cách bên trái */
+    margin-right: 20px; /* Khoảng cách bên phải */
+}
+.tel{
+    font-size: 20px;
+    padding: 0 0 0 10px;
+}
+a {
+    text-decoration: none;
+    margin: 0;
+    color: black;
+}
+.moreTel{
+    font-size: 14px;
+    font-weight: 300;
+}
+.bi{
+    margin-right: 5px;
+    transition: transform 0.5s, color 0.5s;
+}
+.bi:hover{
+    transform: scale(1.05);
+}
+.bi-facebook:hover{
+    color: blue;
+}
+.bi-instagram:hover{
+    background: linear-gradient(to right, blue, red);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+.bi-youtube:hover{
+    color: red;
+}
+.list-group-item{
+    background-color: transparent;
+}
+.copyright {
+    padding: 10px 0;
+    text-align: center;
+    margin-top: 20px;
+}

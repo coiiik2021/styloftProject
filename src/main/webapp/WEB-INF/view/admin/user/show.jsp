@@ -9,11 +9,10 @@
     <jsp:include page="../layout/header.jsp" />
     <div id="layoutSidenav">
       <jsp:include page="../layout/sidebar.jsp" />
-
-                      <div id="layoutSidenav_content">
+        <div id="layoutSidenav_content">
                     <main>
                         <div class="container-fluid px-4">
-                            <h1 class="mt-4">User</h1>
+                            <h1 class="mt-4" style="margin-left: 10px">User</h1>
                             <!-- <ol class="breadcrumb mb-4">
                                 <li class="breadcrumb-item active">Dashboard</li>
                             </ol> -->
@@ -108,8 +107,5 @@
                         </div>
                     </main>
                 </div>
-    
-      <jsp:include page="../layout/footer.jsp" />
-   
   </body>
 </html>

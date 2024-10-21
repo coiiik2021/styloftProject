@@ -27,7 +27,7 @@
                 <a href="/admin/product/create" class="btn btn-primary">Create a product</a>
               </div>
 
-              <table class="table table-bordered table-hover">
+              <table class="table table-bordered table-hover mt-3">
                 <thead>
                 <tr style="text-align: center">
                   <th scope="col">Name</th>
@@ -40,8 +40,8 @@
                 <c:forEach var="product" items="${products}">
                   <tr>
                     <th scope="row">${product.name}</th>
-                    <td>${product.description}</td>
-                    <td>${product.category.name}</td>
+                    <td class="text-center">${product.description}</td>
+                    <td class="text-center">${product.category.name}</td>
 
                     <td style="text-align: center">
                       <a href="/admin/product/${product.id}" class="btn btn-success">View</a>
@@ -83,7 +83,6 @@
       </div>
     </main>
   </div>
-  <jsp:include page="../layout/footer.jsp" />
 </div>
 </body>
 </html>

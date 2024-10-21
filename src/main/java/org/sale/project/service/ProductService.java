@@ -30,7 +30,6 @@ public class ProductService {
     CategoryRepository categoryRepository;
     UploadService uploadService;
 
-
     public List<Product> findAll() {
         return productRepository.findAll();
     }
@@ -67,14 +66,13 @@ public class ProductService {
         return productRepository.findAll(ProductSpec.nameLike(name));
     }
 
-    public Page<Product> filterProducts(List<String> categories, List<String> colors, List<String> sizes, double min, double max, Pageable pageable) {
+    public Page<Product> filterProducts(List<String> categories, List<String> colors, List<String> sizes, double min,
+            double max, Pageable pageable) {
         Specification<ProductItem> specification = Specification
                 .where(ProductItemSpecification.hasCategory(categories))
                 .and(ProductItemSpecification.hasColor(colors))
                 .and(ProductItemSpecification.hasSize(sizes))
                 .and(ProductItemSpecification.hasPriceBetween(min, max));
-
-
 
         Page<ProductItem> productItemsPage = productItemRepository.findAll(specification, pageable);
 
@@ -90,9 +88,9 @@ public class ProductService {
         Optional<Product> oldProductOptional = productRepository.findById(productUpdate.getId());
         Product oldProduct = new Product();
 
-        if(oldProductOptional.isPresent()) {
+        if (oldProductOptional.isPresent()) {
             oldProduct = oldProductOptional.get();
-        } else{
+        } else {
             return;
         }
 
@@ -104,6 +102,5 @@ public class ProductService {
         productRepository.save(oldProduct);
 
     }
-
 
 }

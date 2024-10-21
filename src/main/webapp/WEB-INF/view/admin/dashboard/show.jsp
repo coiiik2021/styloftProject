@@ -13,38 +13,36 @@
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-
-
                 <div class="row">
-                    <div class="col-xl-3 col-md-6">
-                        <div class="card bg-primary text-white mb-4">
-                            <div class="card-body">TOTAL REVENUE</div>
-                            <h3 style="display: flex; justify-content: end;"><fmt:formatNumber value="${totalRevenue}" type="number"/> VND</h3>
+                    <div class="col-xl-3 col-md-6 text-center" >
+                        <div class="card bg-primary text-white mb-6 text-center d-flex flex-column justify-content-center align-items-center" style="height: 95px;">
+                            <div class="text-center" style="font-size: 0.875em">TOTAL REVENUE</div>
+                            <div class="text-center fs-4"><fmt:formatNumber value="${totalRevenue}" type="number"/> VND</div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-primary text-white mb-4">
-                            <div class="card-body">USER</div>
+                            <div class="card-body text-center">USER</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="/admin/user">View Details (${totalUser})</a>
+                                <a class="small text-white stretched-link text-decoration-none text-decoration-none" href="/admin/user">View Details (${totalUser})</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-warning text-white mb-4">
-                            <div class="card-body">PRODUCT</div>
+                            <div class="card-body text-center">PRODUCT</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="/admin/product">View Details (${totalProduct})</a>
+                                <a class="small text-white stretched-link text-decoration-none" href="/admin/product">View Details (${totalProduct})</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
                     </div>
                     <div class="col-xl-3 col-md-6">
                         <div class="card bg-success text-white mb-4">
-                            <div class="card-body">ORDER</div>
+                            <div class="card-body text-center">ORDER</div>
                             <div class="card-footer d-flex align-items-center justify-content-between">
-                                <a class="small text-white stretched-link" href="/admin/order">View Details (${totalOrder})</a>
+                                <a class="small text-white stretched-link text-decoration-none" href="/admin/order">View Details (${totalOrder})</a>
                                 <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                             </div>
                         </div>
@@ -61,7 +59,6 @@
             </div>
         </main>
     </div>
-    <jsp:include page="../layout/footer.jsp" />
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

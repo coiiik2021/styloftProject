@@ -1,0 +1,38 @@
+body {
+    margin-top: 20px; /* Khoảng cách để tránh nội dung bị đè bởi header */
+}
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card {
+    transition: transform 0.5s;
+}
+
+body, html {
+    background-color: #FFFF;
+}
+
+.btn {
+    background-color: #ED4417;
+    color: #fff;
+    font-weight: bold;
+    border: navajowhite;
+}
+
+.btn:hover {
+    background-color: rgba(255, 105, 0, 0.6);
+    color: #fff;
+}
+
+.text-primary {
+    color: #AF1416 !important;
+}
+
+/* Tạo header cố định và trong suốt */
+
+
+/* Tạo khoảng cách giữa nội dung và header */
+body {
+    padding-top: 80px; /* Khoảng cách để tránh nội dung bị đè bởi header */
+}

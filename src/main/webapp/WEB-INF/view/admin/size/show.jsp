@@ -18,9 +18,9 @@
                                 <h3>Table size</h3>
                                 <a href="/admin/size/create" class="btn btn-primary">Create size</a>
                             </div>
-                            <table class="table table-bordered table-hover">
+                            <table class="table table-bordered table-hover mt-3">
                                 <thead>
-                                <tr style="text-align: center">
+                                <tr style="text-align: center; vertical-align: middle;">
                                     <th scope="col">Name</th>
                                     <th scope="col">Description</th>
                                     <th scope="col">Action</th>
@@ -28,7 +28,7 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach var="size" items="${sizes}">
-                                    <tr>
+                                    <tr style="text-align: center; vertical-align: middle;">
                                         <th scope="row">${size.name}</th>
                                         <td>${size.description}</td>
 
@@ -40,8 +40,8 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-                            <c:if test="${totalPages > 1}">
 
+                            <c:if test="${totalPages > 1}">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item">
@@ -65,13 +65,12 @@
                                 </ul>
                             </nav>
                             </c:if>
-                        </div>
+                                </div>
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <jsp:include page="../layout/footer.jsp" />
 </div>
 </body>
 </html>

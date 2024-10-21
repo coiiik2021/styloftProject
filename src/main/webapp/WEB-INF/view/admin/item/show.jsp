@@ -19,7 +19,7 @@
                             <div class="d-flex justify-content-between" style="margin-bottom: 20px;">
                                 <h3>Table product Item</h3>
                                 <form action="/admin/item/search" method="get" class="d-flex">
-                                    <input class="form-control me-2" type="search" name="query" placeholder="Search by name product" value="${nameSearch}" aria-label="Search">
+                                    <input class="form-control me-2 w-auto" type="search" name="query" placeholder="Search by name product" value="${nameSearch}" aria-label="Search">
                                     <button class="btn btn-outline-success" type="submit">Search</button>
                                 </form>
                                 <a href="/admin/item/create" class="btn btn-primary">Create Product Item</a>
@@ -40,7 +40,7 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach var="productItem" items="${productItems}">
-                                    <tr style="text-align: center">
+                                    <tr style="text-align: center; vertical-align: middle; ">
                                         <th scope="row">${productItem.product.name}</th>
                                         <td>${productItem.color.name}</td>
                                         <td>${productItem.size.name}</td>
@@ -50,8 +50,6 @@
                                         <td style="text-align: center">
                                             <img src="/images/product/${productItem.product.name}/${productItem.image}" alt="${productItem.product.name}" style="width: 100px; height: auto;">
                                         </td>
-
-
 
                                         <td style="text-align: center">
                                             <a href="/admin/item/update/${productItem.id}" class="btn btn-warning">Update</a>
@@ -93,7 +91,6 @@
             </div>
         </main>
     </div>
-    <jsp:include page="../layout/footer.jsp" />
 </div>
 </body>
 </html>

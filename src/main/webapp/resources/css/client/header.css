@@ -1,0 +1,48 @@
+body {
+    padding-top: 100px; /* Khoảng cách để tránh nội dung bị đè bởi header */
+}
+
+.slide {
+    margin-top: 100px;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+/* Thêm hiệu ứng đổi màu khi cuộn */
+.scrolled {
+    background-color: rgba(253, 233, 206, 0.9); /* Màu nền khi cuộn */
+}
+
+header {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    background-color: rgba(253, 233, 206, 0.8);
+}
+
+.navbar-nav a {
+    font-size: 20px;
+    color: #ff6900 !important;
+    outline: none;
+}
+
+.btn-custom {
+    background-color: transparent; /* Bỏ màu nền */
+    border: none; /* Bỏ viền */
+    color: #ED4417 !important;
+    font-size: 20px !important;
+}
+
+.btn-custom:hover {
+    /*background-color: rgba(255, 105, 0, 0.3); !* Tạo hiệu ứng hover *!*/
+    background-color: transparent; /* Bỏ màu nền */
+    color: #a16868; /* Màu chữ khi hover */
+}
