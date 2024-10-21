@@ -40,6 +40,8 @@ public class User {
 
     @Pattern(regexp = "^\\d{10}$", message = "Số điện thoại phải gồm 10 chữ số")
     String phoneNumber;
+
+    @Size(min=1, message = "Địa chỉ không được để trống")
     String address;
 
     int sex;

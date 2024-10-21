@@ -3,6 +3,7 @@ package org.sale.project.controller.client;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +13,11 @@ import org.sale.project.service.OrderService;
 import org.sale.project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/pay")
@@ -45,19 +50,29 @@ public class PayController {
 
     @PostMapping("/complete")
     public String complete(Model model, HttpServletRequest request,
-                           @ModelAttribute("name") String name,
-                           @ModelAttribute("phoneNumber") String phoneNumber,
-                           @ModelAttribute("address") String address,
+                           @ModelAttribute("user") @Valid User userPay, BindingResult bindingResult,
                            @ModelAttribute("note") String note) {
-
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
+        userPay.setEmail(email);
         User user = userService.findUserByEmail(email);
 
+        model.addAttribute("items", user.getCart().getCartItems());
+        model.addAttribute("totalPrice", cartService.totalPriceInCart(user.getCart()));
 
-        user.setName(name);
-        user.setPhoneNumber(phoneNumber);
-        user.setAddress(address);
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            System.out.println(">>>pay" +fieldError.getField() + ":" + fieldError.getDefaultMessage());
+        }
+        if(bindingResult.hasErrors()) {
+            return "/client/pay/show";
+        }
+
+
+
+        user.setName(userPay.getName());
+        user.setPhoneNumber(userPay.getPhoneNumber());
+        user.setAddress(userPay.getAddress());
 
         userService.saveUser(user);
 

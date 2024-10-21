@@ -78,12 +78,23 @@
       <h5 class="fw-bold">Thông tin chi tiết</h5>
       <p class="text-muted">Hoàn thành thông tin liên hệ của bạn</p>
       <form:form action="/pay/complete" method="post" modelAttribute="user">
+
+        <c:set var="errorName">
+          <form:errors path="name" cssClass="invalid-feedback"/>
+        </c:set>
+        <c:set var="errorAddrress">
+          <form:errors path="address" cssClass="invalid-feedback"/>
+        </c:set>
+        <c:set var="errorPhoneNumber">
+          <form:errors path="phoneNumber" cssClass="invalid-feedback"/>
+        </c:set>
+
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <div class="input-group">
+          <div class="input-group" >
             <span class="input-group-text"><i class="ri-mail-send-line"></i></span>
-            <input type="email" class="form-control py-3" id="email" placeholder="Nhập email" required value="${user.email}" name="email" />
+            <form:input path="email" type="email" class="form-control py-3" id="email" disabled="true" name="email" />
           </div>
         </div>
 
@@ -91,7 +102,8 @@
           <label for="Username" class="form-label">Họ và tên</label>
           <div class="input-group">
             <span class="input-group-text"><i class="ri-id-card-line"></i></span>
-            <input type="text" class="form-control py-3" id="Username" placeholder="Nhập họ và tên" required value="${user.name}" name="name" />
+            <form:input path="name" type="text" class="form-control py-3 ${not empty errorName ? 'is-invalid' : ''}" id="Username" placeholder="Nhập họ và tên"   name="name" />
+            ${errorName}
           </div>
         </div>
 
@@ -99,7 +111,8 @@
           <label for="UserPhone" class="form-label">Số điện thoại</label>
           <div class="input-group">
             <span class="input-group-text"><i class="ri-phone-line"></i></span>
-            <input type="text" class="form-control py-3" id="UserPhone" placeholder="Nhập số điện thoại" required value="${user.phoneNumber}" name="phoneNumber" />
+            <form:input path="phoneNumber" type="text" class="form-control py-3 ${not empty errorPhoneNumber ? 'is-invalid' : ''}" id="UserPhone" placeholder="Nhập số điện thoại"   name="phoneNumber" />
+            ${errorPhoneNumber}
           </div>
         </div>
 
@@ -107,7 +120,8 @@
           <label for="billing-address" class="form-label">Địa chỉ giao hàng</label>
           <div class="input-group">
             <span class="input-group-text"><i class="ri-home-8-line"></i></span>
-            <input type="text" class="form-control py-3" id="billing-address" placeholder="Nhập địa chỉ" required value="${user.address}" name="address" />
+            <form:input path="address" type="text" class="form-control py-3 ${not empty errorAddrress ? 'is-invalid' : ''}" id="billing-address" placeholder="Nhập địa chỉ"  name="address" />
+            ${errorAddrress}
           </div>
         </div>
 
