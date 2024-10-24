@@ -75,7 +75,7 @@
     <div class="row row-cols-4 g-4 mt-2">
         <c:forEach items="${products}" var="product">
             <c:if test="${not empty product.productItem}">
-                <div class="col" >
+                <div class="col" style = "margin-right: 0; margin-left: 0;">
                     <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
                         <div class="card border-0 rounded-0 shadow">
 

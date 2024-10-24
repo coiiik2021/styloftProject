@@ -15,8 +15,8 @@
     />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/product/products.css" />
-    <link href="/client/css/style.css" rel="stylesheet">
+<%--    <link rel="stylesheet" href="/css/product/products.css" />--%>
+<%--    <link href="/client/css/style.css" rel="stylesheet">--%>
 
     <style>
         body {
@@ -64,6 +64,21 @@
 
         .slide {
             margin-top: 100px;
+        }
+        .apply-btn
+        {
+            background-color: #e65a06;
+            border-radius: 10px;
+            color: white;
+        }
+        .ADD-btn
+        {
+            text-decoration: none;
+        }
+        .btn
+        {
+            background-color: #e65a06;
+            color: white;
         }
 
     </style>
@@ -140,11 +155,11 @@
     </div>
     <div class="row" >
         <!-- Filter Section -->
-        <div class="col-md-3 filter-section" style="border: pink solid 5px; margin-top: 5px; border-radius: 30px;">
+        <div class="col-md-2 filter-section" style="margin-left: 30px; margin-top: 30px;">
             <h5>Bộ lọc tìm kiếm</h5>
             <form id="filterForm">
                 <!-- Category filter -->
-                <div class="mb-3" style="border: pink solid 5px;">
+                <div class="mb-3" style=";">
                     <label class="form-label">Loại:</label><br />
                     <c:forEach items="${categories}" var="cate">
                         <div class="form-check">
@@ -156,7 +171,7 @@
                 <hr />
 
                 <!-- Color filter -->
-                <div class="mb-3" style="border: pink solid 5px;">
+                <div class="mb-3" style=";">
                     <label class="form-label">Màu sắc:</label><br />
                     <c:forEach items="${colors}" var="color">
                         <div class="form-check">
@@ -168,7 +183,7 @@
                 <hr />
 
                 <!-- Size filter -->
-                <div class="mb-3" style="border: pink solid 5px;">
+                <div class="mb-3" style=";">
                     <label class="form-label">Kích thước:</label><br />
                     <c:forEach items="${sizes}" var="size">
                         <div class="form-check">
@@ -183,15 +198,29 @@
                 <div class="mb-3">
                     <label class="form-label">Giá tiền:</label><br />
                     <div class="price-input">
-                        <input type="number" name="minPrice" placeholder="Giá tối thiểu" />
-                        <span class="separator">-</span>
-                        <input type="number" name="maxPrice" placeholder="Giá tối đa" />
+                        <select name="minPrice">
+                            <option value="0">0đ</option>
+                            <option value="100000">100.000đ</option>
+                            <option value="200000">200.000đ</option>
+                            <option value="500000">500.000đ</option>
+                            <option value="1000000">1.000.000đ</option>
+                            <option value="1000001">Lớn hơn 1.000.000đ</option>
+                        </select>
+                        <span class="separator"></span>
+                        <select name="maxPrice">
+                            <option value="100000">100.000đ</option>
+                            <option value="200000">200.000đ</option>
+                            <option value="500000">500.000đ</option>
+                            <option value="1000000">1.000.000đ</option>
+                            <option value="1000001">Lớn hơn 1.000.000đ</option>
+                        </select>
                     </div>
                 </div>
 
+
                 <!-- Apply button -->
-                <div class="mb-3">
-                    <button type="button" class="apply-btn" onclick="applyFilters()">Áp dụng</button>
+                <div class="mb-3 ">
+                    <button type="button" class="apply-btn" onclick="applyFilters()">Tìm</button>
                 </div>
             </form>
         </div>
@@ -246,28 +275,52 @@
         </script>
 
         <!-- Product Listing -->
-        <div class="col-md-9">
-            <div class="row">
+        <div class="col-md" style="margin-top: 30px">
+            <div class="row" style="margin-left: 30px">
                 <!-- Product 1 -->
                 <c:forEach items="${products}" var="product">
-                    <div class="col-md-4">
-                        <a href="/product/detail/${product.id}">
-                            <div class="product-card">
-                                <img
-                                        src="/images/product/${product.name}/${product.productItem.get(0).image}"
-                                        alt="${product.name}"
-                                        class="product-img"
-                                />
-                                <h5 class="mt-3">${product.name}</h5>
-                                <p>${product.productItem.get(0).price} VND</p>
+                    <!-- Mỗi cột chiếm 3 phần (4 sản phẩm trên 1 hàng) -->
+                    <div class="col-md-3 mb-4">
+                        <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
+                            <div class="card border-0 rounded-0 shadow">
+
+                                <img src="/images/product/${product.name}/${product.productItem.get(0).image}"
+                                     class="card-img-top rounded-0" alt="...">
+                                <div class="card-body mt-1 mb-1">
+                                    <div class="row">
+                                        <div class="col-10 gap-0">
+                                            <h5 class="card-title text-black">${product.name}</h5>
+                                            <c:if test="${product.name.length() < 24}">
+                                                <br/>
+                                            </c:if>
+                                            <p class="card-text">
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                (123)
+                                            </p>
+                                        </div>
+                                        <div class="col-2">
+                                            <i class="bi bi-bookmark-plus fs-3"></i>
+                                        </div>
+                                    </div>
+                                    <div class="row align-items-center text-center g-0">
+                                        <div class="text-black mt-2 mb-2">
+                                            <h5>${product.productItem.get(0).price} VNĐ</h5>
+                                        </div>
+                                        <div>
+                                            <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="ADD-btn p-3 rounded-0 " >ADD TO CART</a>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </a>
                     </div>
                 </c:forEach>
-
-
             </div>
         </div>
+
     </div>
 </div>
 <jsp:include page="../layout/footer.jsp" />

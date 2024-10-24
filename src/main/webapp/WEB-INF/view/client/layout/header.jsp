@@ -34,7 +34,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
           rel="stylesheet">
-
+    <link
+            href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css"
+            rel="stylesheet"
+    />
     <!-- Libraries Stylesheet -->
 
     <!-- Customized Bootstrap Stylesheet -->
@@ -44,49 +47,39 @@
 
 </head>
 <body>
-<header class="container-fluid px-4">
-    <nav class="navbar navbar-light navbar-expand-xl">
+<header>
+    <nav class="navbar navbar-expand-md bg-body-tertiary bg-primary py-1">
+
         <a href="/" class="navbar-brand">
             <%--                <h1 class="text-primary display-6 fw-semibold">Anh Dũng Shop</h1>--%>
-            <img class="rounded mx-auto d-block img-fluid" style="width: 100px; height: 80%" src="/images/assets/img/logo.png" alt="">
+            <img class="rounded mx-auto d-block img-fluid" style="width: 90px; height: 70px" src="/images/assets/img/logo.png" alt="a">
         </a>
-        <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="fa fa-bars text-primary"></span>
-        </button>
+
         <div class="collapse navbar-collapse justify-content-between mx--5" id="navbarCollapse">
-            <div class="navbar-nav">
-                <a href="/" class="nav-item nav-link active" style="margin-left: 6px">Home</a>
-                <a href="/product" class="nav-item nav-link mx-3">Product</a>
-            </div>
-
-           <form style="display: flex; justify-content: center;" id="formSearch" onsubmit="return searchByName(event)">
-    <div class="inputGroup">
-        <input type="text" required="" autocomplete="off" name="search" id="nameSearch">
-        <label for="nameSearch">Search</label>
-    </div>
-    <button type="submit" class="button-search">
-        <span>
-            <svg viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M9.145 18.29c-5.042 0-9.145-4.102-9.145-9.145s4.103-9.145 9.145-9.145 9.145 4.103 9.145 9.145-4.102 9.145-9.145 9.145zm0-15.167c-3.321 0-6.022 2.702-6.022 6.022s2.702 6.022 6.022 6.022 6.023-2.702 6.023-6.022-2.702-6.022-6.023-6.022zm9.263 12.443c-.817 1.176-1.852 2.188-3.046 2.981l5.452 5.453 3.014-3.013-5.42-5.421z"></path>
-            </svg>
-        </span>
-    </button>
-</form>
-
-<script>
-    function searchByName(event) {
-        event.preventDefault();
-
-        const form = document.getElementById('formSearch');
-        const name = form.querySelector('input[name="search"]').value.trim();
-
-        if (name) {
-            window.location.href = '/product?name=' + encodeURIComponent(name);
-        }
-    }
-</script>
-
-
+            <nav class="navbar navbar-expand-md bg-body-tertiary py-0">
+                <ul class="navbar-nav">
+                    <li class="nav-item gx-12">
+                        <a href="/" class="nav-link active px-3 py-2" style="font-size: 14px">NEW ARRIVALS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/product" class="nav-link px-3 py-2" style="font-size: 14px">CLOTHING</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">BLOG</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
+                    </li>
+                    <li>
+                        <div class="container-fluid">
+                            <form class="d-flex" role="search">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline bg-orange" type="submit"><i class="ri-search-line"></i></button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
 
 
             <div class="d-flex m-3 me-0">
