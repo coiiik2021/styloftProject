@@ -3,8 +3,11 @@ package org.sale.project.controller.client;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import org.eclipse.jdt.internal.compiler.batch.CompilationUnit;
 import org.sale.project.entity.*;
 import org.sale.project.service.*;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,21 +35,30 @@ public class ItemController {
     CategoryService categoryService;
 
     @GetMapping
-    public String getPageProducts(Model model, @RequestParam("page") Optional<String> pageOptional) {
+    public String getPageProducts(Model model, @RequestParam("name") Optional<String> nameOptional,
+            @RequestParam("page") Optional<String> pageOptional) {
+
 
         int page = 1;
         try {
-            if(pageOptional.isPresent()) {
+            if (pageOptional.isPresent()) {
                 page = Integer.parseInt(pageOptional.get());
             }
         } catch (NumberFormatException e) {
 
         }
 
-        Pageable pageable = PageRequest.of(page-1, 12);
-        Page<Product> productPage = productService.findAll(pageable);
-        List<Product> products = productPage.getContent();
+        Pageable pageable = PageRequest.of(page - 1, 12);
 
+        Page<Product> productPage;
+        if(nameOptional.isPresent()) {
+            productPage = productService.findAll(nameOptional.get(), pageable);
+
+        } else{
+            productPage = productService.findAll(pageable);
+        }
+
+        List<Product> products = productPage.getContent();
 
         List<Category> categories = categoryService.findAll();
         List<Color> colors = colorService.findAll();
@@ -65,13 +77,11 @@ public class ItemController {
 
     @GetMapping("/detail/{id}")
     public String getPageDetailProduct(@PathVariable("id") String id, Model model,
-                                       @RequestParam("size") Optional<String> sizeOptional,
-                                       @RequestParam("color") Optional<String> colorOptional
-                                      ) {
+            @RequestParam("size") Optional<String> sizeOptional,
+            @RequestParam("color") Optional<String> colorOptional) {
 
         String size = sizeOptional.orElse("");
         String color = colorOptional.orElse("");
-
 
         Product product = productService.findById(id);
         Set<Color> colors = new HashSet<>();
@@ -130,10 +140,10 @@ public class ItemController {
 
         List<String> sizeList = sizes != null ? Arrays.asList(sizes.split(",")) : Collections.emptyList();
 
-
         Pageable pageable = PageRequest.of(0, 12);
 
-        Page<Product> productPage = productService.filterProducts(categoryList, colorList, sizeList,minPrice,maxPrice, pageable);
+        Page<Product> productPage = productService.filterProducts(categoryList, colorList, sizeList, minPrice, maxPrice,
+                pageable);
 
         List<Product> products = productPage.getContent();
 
@@ -148,9 +158,6 @@ public class ItemController {
         model.addAttribute("products", products);
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("currentPage", 1);
-
-
-
 
         return "client/product/show";
     }

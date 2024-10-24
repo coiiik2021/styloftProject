@@ -8,7 +8,7 @@ import org.sale.project.entity.Product;
 import org.sale.project.service.CategoryService;
 import org.sale.project.service.ProductItemService;
 import org.sale.project.service.ProductService;
-import org.sale.project.service.UploadService;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,34 +29,29 @@ public class ProductController {
 
     CategoryService categoryService;
     ProductService productService;
-    UploadService uploadService;
+    // UploadService uploadService;
     ProductItemService productItemService;
-
 
     @GetMapping
     public String getPageProduct(Model model, @RequestParam("page") Optional<String> pageOptional) {
         int page = 1;
-        try{
-            if(pageOptional.isPresent()){
+        try {
+            if (pageOptional.isPresent()) {
                 page = Integer.parseInt(pageOptional.get());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        Pageable pageable = PageRequest.of(page-1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 5);
         Page<Product> pProduct = productService.findAll(pageable);
 
-
-        List<Product> products =pProduct.getContent();
-
-
+        List<Product> products = pProduct.getContent();
 
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pProduct.getTotalPages());
         model.addAttribute("nameSearch", "");
-
 
         return "/admin/product/show";
     }
@@ -71,18 +65,17 @@ public class ProductController {
 
     @PostMapping("/create")
     public String createProduct(@ModelAttribute("newProduct") @Valid Product product,
-                                BindingResult bindingResult, Model model
-                                ) {
+            BindingResult bindingResult, Model model) {
 
-//        String img = uploadService.uploadImage(imageProduct, "/product");
-//
-//        product.setImage(img);
+        // String img = uploadService.uploadImage(imageProduct, "/product");
+        //
+        // product.setImage(img);
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
-        for(FieldError fieldError : fieldErrors){
-            System.out.println(">>> "+fieldError.getDefaultMessage());
+        for (FieldError fieldError : fieldErrors) {
+            System.out.println(">>> " + fieldError.getDefaultMessage());
         }
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("categories", categoryService.findAll());
 
             return "/admin/product/create";
@@ -94,12 +87,11 @@ public class ProductController {
         return "redirect:/admin/product";
     }
 
-
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") String id) {
-        try{
+        try {
             productItemService.deleteAllByProductId(id);
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         productService.deleteProduct(id);
@@ -123,14 +115,14 @@ public class ProductController {
     @GetMapping("search")
     public String findAllProductWithName(@RequestParam("query") String name, Model model) {
 
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             return "redirect:/admin/product";
         }
 
         Pageable pageable = PageRequest.of(0, 5);
-        Page<Product> pProduct = productService.findAll(name,pageable);
+        Page<Product> pProduct = productService.findAll(name, pageable);
 
-        List<Product> products =pProduct.getContent();
+        List<Product> products = pProduct.getContent();
 
         model.addAttribute("products", products);
         model.addAttribute("currentPage", 1);

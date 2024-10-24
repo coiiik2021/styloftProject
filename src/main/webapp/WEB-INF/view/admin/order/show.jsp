@@ -18,11 +18,17 @@
                         <div class="col-md-12 col-12 mx-auto">
                             <div class="d-flex justify-content-between">
                                 <h3>Table order</h3>
+                                <form action="/admin/order/search" method="get" class="d-flex">
+                                    <input class="form-control me-2" type="search" name="query" placeholder="Search by Id" value="${startID}" aria-label="Search">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
 
                             </div>
                             <table class="table table-bordered table-hover">
                                 <thead>
                                 <tr style="text-align: center">
+                                    <th scope="col">Id</th>
+
                                     <th scope="col">Name</th>
                                     <th scope="col">total price</th>
                                     <th scope="col">date </th>
@@ -34,6 +40,8 @@
                                 <tbody>
                                 <c:forEach var="order" items="${orders}">
                                     <tr>
+                                        <th scope="row">#${order.id.substring(0,5)}</th>
+
                                         <th scope="row">${order.user.name}</th>
                                         <td>${order.total}Đ</td>
                                         <td>${order.date}</td>

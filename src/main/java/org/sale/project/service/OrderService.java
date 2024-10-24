@@ -1,5 +1,6 @@
 package org.sale.project.service;
 
+import jakarta.validation.constraints.Max;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -11,10 +12,13 @@ import org.sale.project.mapper.OrderMapper;
 import org.sale.project.repository.CartItemRepository;
 import org.sale.project.repository.OrderDetailRepository;
 import org.sale.project.repository.OrderRepository;
+import org.sale.project.repository.ProductItemRepository;
+import org.sale.project.service.spec.OrderSpec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -25,6 +29,8 @@ public class OrderService {
     OrderDetailRepository orderDetailRepository;
     OrderMapper orderMapper;
     CartItemRepository cartItemRepository;
+
+    ProductItemRepository productItemRepository;
 
 
     public List<Order> findAll() {
@@ -61,17 +67,16 @@ public class OrderService {
         return total;
     }
     public List<Double> totalRevenueInMonth() {
+        // Tạo danh sách 12 tháng với giá trị ban đầu là 0.0
         List<Double> revenues = Arrays.asList(new Double[12]);
         Collections.fill(revenues, 0.0);
-
-        Calendar calendar = Calendar.getInstance();
 
         List<Order> orders = orderRepository.findAll();
 
         for (Order order : orders) {
-            if (order.getStatus().equals("COMPLITE")) {
-                calendar.setTime(order.getDate());
-                int month = calendar.get(Calendar.MONTH);
+            if (order.getStatus().equals("COMPLETED")) {
+                // Sử dụng LocalDate để lấy tháng (tháng trong LocalDate bắt đầu từ 1 nên cần trừ đi 1)
+                int month = order.getDate().getMonthValue() - 1; // Lấy giá trị tháng từ LocalDate
                 double currentRevenue = revenues.get(month);
                 revenues.set(month, currentRevenue + order.getTotal());
             }
@@ -81,12 +86,13 @@ public class OrderService {
     }
 
 
-    public void complete(User user, double totalPrice){
+
+    public Order complete(User user, double totalPrice){
 
         Order order = new Order();
-        order.setStatus("PAID");
+        order.setStatus("PLACED");
         order.setUser(user);
-        order.setDate(new Date());
+        order.setDate(LocalDate.now());
         order.setTotal(totalPrice);
         orderRepository.save(order);
 
@@ -97,20 +103,20 @@ public class OrderService {
             orderDetail.setOrder(order);
             orderDetail.setPrice(item.getQuantity() * item.getProductItem().getPrice());
 
-
-
             orderDetailRepository.save(orderDetail);
+
+            item.getProductItem().setQuantity(Math.max(item.getProductItem().getQuantity() - item.getQuantity(), 0));
+            productItemRepository.save(item.getProductItem());
             cartItemRepository.delete(item);
-
-
-
             detail.add(orderDetail);
 
         }
 
         order.setDetails(detail);
 
-        orderRepository.save(order);
+        order = orderRepository.save(order);
+
+        return order;
 
 
     }
@@ -118,6 +124,11 @@ public class OrderService {
 
     public int countOrder(){
         return orderRepository.findAll().size();
+    }
+
+
+    public Page<Order> findAllByStartId(String id, Pageable pageable) {
+        return orderRepository.findAll(OrderSpec.findOrderById(id), pageable);
     }
 
 }

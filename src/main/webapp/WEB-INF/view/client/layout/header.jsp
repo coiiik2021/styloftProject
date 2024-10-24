@@ -36,14 +36,11 @@
           rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="/client/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="/client/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="/client/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="/client/css/style.css" rel="stylesheet">
+<%--    <link href="/client/css/style.css" rel="stylesheet">--%>
 
 </head>
 <body>
@@ -61,6 +58,37 @@
                 <a href="/" class="nav-item nav-link active" style="margin-left: 6px">Home</a>
                 <a href="/product" class="nav-item nav-link mx-3">Product</a>
             </div>
+
+           <form style="display: flex; justify-content: center;" id="formSearch" onsubmit="return searchByName(event)">
+    <div class="inputGroup">
+        <input type="text" required="" autocomplete="off" name="search" id="nameSearch">
+        <label for="nameSearch">Search</label>
+    </div>
+    <button type="submit" class="button-search">
+        <span>
+            <svg viewBox="0 0 24 24" height="24" width="24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.145 18.29c-5.042 0-9.145-4.102-9.145-9.145s4.103-9.145 9.145-9.145 9.145 4.103 9.145 9.145-4.102 9.145-9.145 9.145zm0-15.167c-3.321 0-6.022 2.702-6.022 6.022s2.702 6.022 6.022 6.022 6.023-2.702 6.023-6.022-2.702-6.022-6.023-6.022zm9.263 12.443c-.817 1.176-1.852 2.188-3.046 2.981l5.452 5.453 3.014-3.013-5.42-5.421z"></path>
+            </svg>
+        </span>
+    </button>
+</form>
+
+<script>
+    function searchByName(event) {
+        event.preventDefault();
+
+        const form = document.getElementById('formSearch');
+        const name = form.querySelector('input[name="search"]').value.trim();
+
+        if (name) {
+            window.location.href = '/product?name=' + encodeURIComponent(name);
+        }
+    }
+</script>
+
+
+
+
             <div class="d-flex m-3 me-0">
                 <c:if test="${not empty pageContext.request.userPrincipal}">
                 <form action="/cart" method="get">
@@ -84,7 +112,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="dropdownMenuLink">
                         <li class="d-flex align-items-center flex-column" style="min-width: 300px;">
-                            <img style="width: 150px; height: 150px; border-radius: 50%;" src="/image/avatar/${sessionScope.avatar}" />
+<!-- <%--                            <img style="width: 150px; height: 150px; border-radius: 50%;" src="/image/avatar/${sessionScope.avatar}" />--%> -->
                             <div class="text-center my-3">
                                 <c:out value="${sessionScope.email}" />
                             </div>
@@ -121,4 +149,20 @@
             header.classList.remove('scrolled');
         }
     });
+
+    
 </script>
+
+<!-- <script>
+    function searchByName(){
+        const form = document.getElementById('formSearch');
+
+
+        const name = form.querySelector('input[name="nameSearch"]').value;
+
+        window.location.href = '/product?name=' + name;
+
+
+
+    }
+</script> -->

@@ -1,6 +1,5 @@
 package org.sale.project.controller.client;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,17 +44,17 @@ public class AccountController {
     }
 
     @PostMapping("/update-information")
-    public String updateInformation(Model model, HttpServletRequest request, @ModelAttribute("user") @Valid User userUpdate, BindingResult bindingResult) {
+    public String updateInformation(Model model, HttpServletRequest request,
+            @ModelAttribute("user") @Valid User userUpdate, BindingResult bindingResult) {
 
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
             System.out.println(">>> user: " + fieldError.getField() + fieldError.getDefaultMessage());
 
         }
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "/client/home/information";
         }
-
 
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");

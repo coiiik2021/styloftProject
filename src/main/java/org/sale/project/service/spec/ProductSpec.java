@@ -4,7 +4,6 @@ import org.sale.project.entity.Product;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-@Service
 
 public class ProductSpec {
     public static Specification<Product> nameLike(String name){

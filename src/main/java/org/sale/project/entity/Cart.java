@@ -20,6 +20,8 @@ public class Cart {
 
     @OneToOne
     @JoinColumn(name="user_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     User user;
 
     @OneToMany(mappedBy = "cart", fetch = FetchType.EAGER)

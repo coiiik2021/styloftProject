@@ -15,3 +15,13 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+
+  session:
+    store-type: jdbc
+    timeout: 30m
+
+    jdbc:
+      initialize-schema: always
+# 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
+email:
+#  sendKey: "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"

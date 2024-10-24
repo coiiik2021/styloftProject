@@ -133,15 +133,28 @@
             </script>
 
             <div class="d-flex align-items-center my-3">
-            <label class="mb-0 me-2"><strong>Số lượng:</strong></label>
-            <input type="number" class="form-control me-2" value="1" min="1" max="${item.quantity}" style="width: 80px;">
-            <span>Còn lại ${item.quantity} sản phẩm</span>
-          </div>
-          <div class="text-center mt-1 "> <!-- Changed margin-top to create space -->
-            <a href = "/cart/add-product-item-in-cart/${item.id}" class="btn btn-danger btn-sm ${item.quantity eq 0 ? 'disabled' : ''}" id="checkout-btn" style="background: rgb(247, 240, 229); color: dimgrey; border: 1px solid black;">
-              <strong>Thêm vào giỏ hàng</strong>
-            </a>
-          </div>
+                <label class="mb-0 me-2"><strong>Số lượng:</strong></label>
+                <input id="quantityInput" type="number" class="form-control me-2" value="1" min="1" max="${item.quantity}" style="width: 80px;" name="quantity">
+                <span>Còn lại ${item.quantity} sản phẩm</span>
+            </div>
+
+            <div class="text-center mt-1">
+                <button class="btn btn-danger btn-sm ${item.quantity eq 0 ? 'disabled' : ''}" id="addToCartBtn" style="background: rgb(247, 240, 229); color: dimgrey; border: 1px solid black;">
+                    <strong>Thêm vào giỏ hàng</strong>
+                </button>
+            </div>
+
+            <script>
+                document.getElementById('addToCartBtn').addEventListener('click', function() {
+                    var quantity = document.getElementById('quantityInput').value;
+
+                    var itemId = '${item.id}';
+                    var url = '/cart/add-product-item-in-cart/' + itemId + '?quantity=' + quantity;
+
+                    window.location.href = url;
+                });
+            </script>
+
         </div>
     </div>
   </div>

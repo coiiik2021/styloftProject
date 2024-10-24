@@ -13,10 +13,7 @@ import org.sale.project.service.CartService;
 import org.sale.project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,14 +47,18 @@ public class CartController {
     }
 
     @GetMapping("/add-product-item-in-cart/{id}")
-    public String addProductItemInCart(@PathVariable("id") String id, Model model, HttpServletRequest request){
+    public String addProductItemInCart(@PathVariable("id") String id,
+                                       @RequestParam("quantity") Optional<String> quantityOptional,
+                                       Model model,
+                                       HttpServletRequest request){
+        int quantity = Integer.parseInt(quantityOptional.orElse("1"));
+
+
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
-        cartService.addProductToCart(email, id, 1);
+        cartService.addProductToCart(email, id, quantity, session);
 
-        User user = userService.findUserByEmail(email);
-        session.setAttribute("sum", user.getCart().getCartItems().size() + 1);
-        return "redirect:/";
+        return "redirect:/cart";
     }
 
     @GetMapping("/delete-item-in-cart/{id}")
@@ -79,17 +80,17 @@ public class CartController {
             item.get().setQuantity(item.get().getQuantity() + 1);
             cartItemRepository.save(item.get());
         }
-
         return "redirect:/cart";
-
     }
 
     @GetMapping("updateDown/{id}")
-    public String updateDown(@PathVariable("id") String id){
+    public String updateDown(@PathVariable("id") String id, HttpServletRequest request){
         Optional<CartItem> item = cartItemRepository.findById(id);
         if(item.isPresent()){
             if(item.get().getQuantity() == 1){
                 cartItemRepository.delete(item.get());
+                HttpSession session = request.getSession();
+                session.setAttribute("sum", (Integer) session.getAttribute("sum") - 1);
             }else{
                 item.get().setQuantity(item.get().getQuantity() - 1);
                 cartItemRepository.save(item.get());

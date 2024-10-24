@@ -18,6 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
+import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
 
 
 @Configuration
@@ -59,15 +60,15 @@ public class SecurityConfiguration {
     public AuthenticationSuccessHandler authenticationSuccessHandler() {
         return new CustomSuccessHandler();
     }
-//
-//    @Bean
-//    public SpringSessionRememberMeServices rememberMeServices() {
-//        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-//
-//        // optionally customize
-//        rememberMeServices.setAlwaysRemember(true);
-//        return rememberMeServices;
-//    }
+
+    @Bean
+    public SpringSessionRememberMeServices rememberMeServices() {
+        SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
+
+        // optionally customize
+        rememberMeServices.setAlwaysRemember(true);
+        return rememberMeServices;
+    }
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -78,14 +79,14 @@ public class SecurityConfiguration {
                         .permitAll()
 
                         .requestMatchers("/","/register", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
-                                "/images/**")
+                                "/images/**", "/email ")
 
                         .permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-//                .rememberMe((rememberMe) -> rememberMe
-//                        .rememberMeServices(rememberMeServices()))
+                .rememberMe((rememberMe) -> rememberMe
+                        .rememberMeServices(rememberMeServices()))
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")

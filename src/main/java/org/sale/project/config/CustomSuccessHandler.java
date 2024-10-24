@@ -1,4 +1,5 @@
 package org.sale.project.config;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +14,6 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +27,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException {
+            Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
 
         if (response.isCommitted()) {
@@ -52,12 +51,13 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         User user = userService.findUserByEmail(email);
 
         if (user != null) {
-//            session.setAttribute("fullName", user.getFullName());
-//            session.setAttribute("avatar", user.getAvatar());
-//            System.out.println(">>avatar: " + session.getAttribute("avatar"));
+            // session.setAttribute("fullName", user.getFullName());
+            // session.setAttribute("avatar", user.getAvatar());
+            // System.out.println(">>avatar: " + session.getAttribute("avatar"));
             session.setAttribute("email", email);
             session.setAttribute("id", user.getId());
-            session.setAttribute("sum", user.getCart() == null ||  user.getCart().getCartItems() == null ? 0 : user.getCart().getCartItems().size());
+            session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
+                    : user.getCart().getCartItems().size());
         }
 
     }

@@ -47,7 +47,6 @@ public class UploadService {
         String rootPath = this.servletContext.getRealPath("/resources/images/product");
 
         try{
-            byte[] bytes = oldName.getBytes();
             File dir = new File(rootPath + File.separator + oldName);
 
             if(dir.exists()){
@@ -59,9 +58,6 @@ public class UploadService {
         } catch (Exception e) {
             System.out.println("image error");
         }
-
-
-
     }
 
 }

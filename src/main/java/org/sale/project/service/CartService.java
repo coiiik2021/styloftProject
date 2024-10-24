@@ -33,7 +33,7 @@ public class CartService {
     }
 
 
-    public void addProductToCart(String email, String product_item_id, int quantity){
+    public void addProductToCart(String email, String product_item_id, int quantity, HttpSession session){
 
         Optional<User> user = userRepository.findByEmail(email);
         if(user.isPresent()){
@@ -55,6 +55,7 @@ public class CartService {
                     cartItem.setCart(cart);
                     cartItem.setProductItem(items.get());
                     cartItem.setQuantity(quantity);
+                    session.setAttribute("sum", (Integer)session.getAttribute("sum") + 1);
                 } else{
                     cartItem.setQuantity(quantity + cartItem.getQuantity());
                 }

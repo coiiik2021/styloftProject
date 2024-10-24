@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -87,6 +88,21 @@ public class ProductItemService {
                 .and(ProductItemSpecification.hasSize(sizes));
 
         return productItemRepository.findAll(specification);
+    }
+
+
+    public void updateProductItem(ProductItem productItem, int quantity){
+        Optional<ProductItem> itemOptional =productItemRepository.findById(productItem.getId());
+        ProductItem item = new ProductItem();
+        if(itemOptional.isPresent()){
+            item = itemOptional.get();
+        } else{
+            return;
+        }
+        item.setQuantity(Math.max(item.getQuantity() - productItem.getQuantity(), 0));
+
+        productItemRepository.save(item);
+
     }
 
 

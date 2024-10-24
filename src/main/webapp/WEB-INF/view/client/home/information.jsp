@@ -52,9 +52,9 @@
         <li class="list-group-item active" onclick="showSection('account-info')">Thông tin tài khoản</li>
         <li class="list-group-item" onclick="showSection('order-history')">Lịch sử đơn hàng</li>
         <li class="list-group-item" onclick="showSection('account-address')">Số địa chỉ</li>
-        <li class="list-group-item">Đánh giá và phản hồi</li>
-        <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>
-        <li class="list-group-item">Đăng xuất</li>
+<%--        <li class="list-group-item">Đánh giá và phản hồi</li>--%>
+<%--        <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>--%>
+<%--        <li class="list-group-item">Đăng xuất</li>--%>
       </ul>
     </div>
 
@@ -122,6 +122,8 @@
         <table class="table">
           <thead>
           <tr>
+            <th scope="col">Id</th>
+
             <th scope="col">Ngày đặt</th>
             <th scope="col">Tình trạng</th>
             <th scope="col">Tổng tiền</th>
@@ -130,7 +132,9 @@
           <tbody>
           <c:forEach items="${orders}" var="order">
           <tr>
-            <td>${order.date.date}</td>
+            <td>#${order.id.substring(0, 5)}</td>
+
+            <td>${order.date}</td>
             <td>${order.status}</td>
             <td><fmt:formatNumber type="number" value="${order.total}" /> VND</td>
           </tr>
@@ -141,7 +145,7 @@
     </div>
     <div class="col-md-9 form-container" id="account-address">
       <div>
-        <h2 class="mb-4">ADDRESS</h2>
+        <h2 class="mb-4">address</h2>
         <input type="text" value="${user.address}" disabled/>
       </div>
     </div>
