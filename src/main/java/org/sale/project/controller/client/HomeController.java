@@ -1,13 +1,18 @@
 package org.sale.project.controller.client;
 
+import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.http.client.fluent.Request;
+import org.sale.project.controller.auth.GgSTant;
+import org.sale.project.controller.auth.GoogleLogin;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
+import org.sale.project.entity.GoogleAccount;
 import org.sale.project.entity.Product;
 import org.sale.project.entity.User;
 import org.sale.project.service.ProductService;
@@ -20,10 +25,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,11 +45,6 @@ public class HomeController {
     ProductService productService;
     EmailService emailService;
 
-    // @GetMapping("/login")
-    // public String getPageLogin(Model model){
-    // model.addAttribute("user", new User());
-    // return "/client/auth/login";
-    // }
 
     @GetMapping("/register")
     public String getPageRegister(Model model) {
@@ -97,12 +100,54 @@ public class HomeController {
         return "redirect:/client/home/show";
     }
 
+//    @GetMapping("/google")
+//    public String accessLogin(Model model, @RequestParam("code") Optional<String> codeOptional) throws IOException {
+//
+//
+////        return googlePojo;
+//
+//        return "redirect:/client/home";
+//    }
+
     @GetMapping
     public String getPageHome(Model model, HttpServletRequest request,
-            @RequestParam("page") Optional<String> pageOptional) {
+            @RequestParam("page") Optional<String> pageOptional
+                              ) throws IOException {
+
+
         HttpSession session = request.getSession();
-        String email = (String) session.getAttribute("email");
-        User user = userService.findUserByEmail(email);
+
+//        if(codeOptional.isPresent()) {
+//            System.out.println(codeOptional.get());
+//        }
+
+        String code = request.getParameter("code");
+
+        String email = null;
+        User user = new User();
+
+        if(code != null) {
+            GoogleLogin gg = new GoogleLogin();
+            String accessToken = gg.getToken(code);
+
+            System.out.println(">>>>accessToken: " + accessToken);
+
+            GoogleAccount ggAc = gg.getUserInfo(accessToken);
+            System.out.println(ggAc.toString());
+        } else{
+            email = (String) session.getAttribute("email");
+            user = userService.findUserByEmail(email);
+
+        }
+
+//        if(codeOptional.isPresent()) {
+//
+//
+//
+//        }
+
+
+
 
         // page
         int page = 1;
@@ -115,23 +160,12 @@ public class HomeController {
 
         }
 
-        // int totalProductNotHasItem = 0;
-        // List<Product> prd = productService.findAll();
-        // for(Product p : prd){
-        // if(p.getProductItem().isEmpty()) ++totalProductNotHasItem;
-        // }
-        //
-        // page = page - totalProductNotHasItem/8;
 
         Pageable pageable = PageRequest.of(page - 1, 8);
-        Page<Product> productPage = productService.findAll(pageable);
+        Page<Product> productPage = productService.findAll(pageable, false);
 
         List<Product> products = productPage.getContent();
-        // for(Product product : products){
-        // if(product.getProductItem().isEmpty())
-        // products.remove(product);
-        // }
-        // page = products.size()/8;
+
 
         model.addAttribute("products", products);
         model.addAttribute("user", user);

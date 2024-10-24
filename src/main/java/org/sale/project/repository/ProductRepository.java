@@ -14,6 +14,9 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, String>, JpaSpecificationExecutor<Product> {
     Product findByName(String name);
     Page<Product> findAll(Pageable pageable);
+    Page<Product> findAllByStatus(Pageable pageable, boolean status);
     Page<Product> findAll(Specification<Product> spec, Pageable pageable);
     List<Product> findAll(Specification<Product> spec);
+
+
 }

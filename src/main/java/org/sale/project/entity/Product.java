@@ -33,6 +33,8 @@ public class Product {
     @OneToMany(mappedBy = "product")
     List<ProductItem> productItem;
 
+    boolean status;
+
 //    String image;
 //    List<String> images;
 

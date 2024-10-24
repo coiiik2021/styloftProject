@@ -55,7 +55,7 @@ public class ItemController {
             productPage = productService.findAll(nameOptional.get(), pageable);
 
         } else{
-            productPage = productService.findAll(pageable);
+            productPage = productService.findAll(pageable, false);
         }
 
         List<Product> products = productPage.getContent();

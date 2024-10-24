@@ -44,7 +44,7 @@ public class ProductController {
         }
 
         Pageable pageable = PageRequest.of(page - 1, 5);
-        Page<Product> pProduct = productService.findAll(pageable);
+        Page<Product> pProduct = productService.findAll(pageable, true);
 
         List<Product> products = pProduct.getContent();
 
@@ -82,6 +82,7 @@ public class ProductController {
         }
 
         product.setCategory(categoryService.findCategoryByName(product.getCategory().getName()));
+        product.setStatus(true);
         productService.saveProduct(product);
 
         return "redirect:/admin/product";

@@ -31,6 +31,7 @@ public class ProductService {
     UploadService uploadService;
 
     public List<Product> findAll() {
+
         return productRepository.findAll();
     }
 
@@ -43,15 +44,18 @@ public class ProductService {
     }
 
     public void deleteProduct(String id) {
-        productRepository.deleteById(id);
+        Product product = findById(id);
+        product.setStatus(false);
+        productRepository.save(product);
     }
 
     public Product findByProductName(String productName) {
         return productRepository.findByName(productName);
     }
 
-    public Page<Product> findAll(Pageable pageable) {
-        return productRepository.findAll(pageable);
+    public Page<Product> findAll(Pageable pageable, boolean isAdmin) {
+//        return productRepository.findAll(pageable);
+        return isAdmin ? productRepository.findAll(pageable) : productRepository.findAllByStatus(pageable,true);
     }
 
     public Page<Product> findAll(String name, Pageable pageable) {
@@ -99,6 +103,7 @@ public class ProductService {
         oldProduct.setDescription(productUpdate.getDescription());
         oldProduct.setCategory(categoryRepository.findByName(productUpdate.getCategory().getName()));
 
+        oldProduct.setStatus(true);
         productRepository.save(oldProduct);
 
     }
