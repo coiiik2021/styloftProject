@@ -24,9 +24,9 @@ public class EmailService {
 
     EmailClient emailClient;
 
-//    @NonFinal
-//    @Value("${email.sendKey}")
-//    protected String KEY_API;
+    @NonFinal
+    @Value("${email.sendKey}")
+    protected String KEY_API;
 
     public void sendEmail(SendEmailRequest sendEmailRequest) {
         EmailRequest emailRequest = EmailRequest.builder()
@@ -45,7 +45,7 @@ public class EmailService {
 
 
         try{
-//            emailClient.sendEmail(KEY_API, emailRequest);
+            emailClient.sendEmail(KEY_API, emailRequest);
 
         } catch (Exception e) {
             e.printStackTrace();
