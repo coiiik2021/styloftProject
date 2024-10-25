@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.sale.project.controller.auth.GgSTant;
 import org.sale.project.controller.auth.GoogleLogin;
@@ -19,9 +20,16 @@ import org.sale.project.service.ProductService;
 import org.sale.project.service.RoleService;
 import org.sale.project.service.UserService;
 import org.sale.project.service.email.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,6 +54,12 @@ public class HomeController {
     EmailService emailService;
 
 
+
+
+
+    UserDetailsService userDetailsService;
+    AuthenticationManager authenticationManager;
+
     @GetMapping("/register")
     public String getPageRegister(Model model) {
         model.addAttribute("newUser", new User());
@@ -53,61 +67,77 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(Model model, @ModelAttribute("newUser") @Valid User user, BindingResult bindingResult) {
-
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            System.out.println(">> user" + fieldError.getField() + fieldError.getDefaultMessage());
-        }
+    public String register(@ModelAttribute("newUser") @Valid User user, BindingResult bindingResult) {
+        // Kiểm tra lỗi
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
         }
 
+        // Gửi email chào mừng
         emailService.sendEmail(
                 SendEmailRequest.builder()
                         .subject("REGISTER CORRECT")
-                        .htmlContent("<html>" +
-                                "<body>" +
-                                "<div style='background-color: #f0f0f0; padding: 20px;'>" +
+                        .htmlContent("<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                                 "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
                                 "<p>AnhDungShop</p>" +
-                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong> " +user.getEmail() +"</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
-                                "<p style='color: #333;'>Chúc  <strong> bạn  </strong> có thời gian mua sắm vui vẻ!!!</p>"  +
-                                "<p style='color: #333;'>Nếu có thắc mắc gì mong  <strong> bạn </strong> phản hồi lại sớm cho bên chúng tôi</p>"  +
-
-
+                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + user.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+                                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
+                                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
                                 "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
-                                "<br><br><p>Best regards,<br>AnhDungShop</p>" +
-                                "</div>" +
-                                "</body>" +
-                                "</html>")
-
-                        .to(
-                                Recipient.builder()
-                                        .email(user.getEmail())
-                                        .name(user.getName())
-
-                                        .build()
-                        )
+                                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>")
+                        .to(Recipient.builder().email(user.getEmail()).name(user.getName()).build())
                         .build()
         );
 
-
+        // Mã hóa mật khẩu và lưu người dùng
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(roleService.findByName("USER"));
         user.setSex(-1);
         userService.saveUser(user);
+
+        // Đăng nhập người dùng
+//        System.out.println(">>>user: " + user.getEmail() + ", name: " + user.getPassword());
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+//        UsernamePasswordAuthenticationToken authenticationToken =
+//                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), user.getPassword(), userDetails.getAuthorities());
+//
+//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+//
+//        // Thiết lập SecurityContext để đăng nhập người dùng
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        // Chuyển hướng đến trang chính
         return "redirect:/client/home/show";
     }
 
-//    @GetMapping("/google")
-//    public String accessLogin(Model model, @RequestParam("code") Optional<String> codeOptional) throws IOException {
-//
-//
-////        return googlePojo;
-//
-//        return "redirect:/client/home";
-//    }
+    @GetMapping("/google")
+    public String accessLogin(Model model, HttpServletRequest request) throws Exception {
+
+        String code = request.getParameter("code");
+
+        GoogleLogin gg = new GoogleLogin();
+        String accessToken = gg.getToken(code);
+
+        System.out.println(">>>>accessToken: " + accessToken);
+
+        GoogleAccount ggAc = gg.getUserInfo(accessToken);
+        System.out.println(ggAc.toString());
+
+
+        String email = ggAc.getEmail();
+
+        String password = ggAc.getEmail().substring(0, ggAc.getEmail().indexOf("@"));
+
+        System.out.println(">>>>email: " + email + ", password: " + password);
+
+
+        userService.saveUser(User.builder().email(email).password(passwordEncoder.encode(password)).build());
+
+
+//        return googlePojo;
+
+        return "redirect:/client/home/show";
+    }
 
     @GetMapping
     public String getPageHome(Model model, HttpServletRequest request,
@@ -121,24 +151,22 @@ public class HomeController {
 //            System.out.println(codeOptional.get());
 //        }
 
-        String code = request.getParameter("code");
+//        String code = request.getParameter("code");
 
-        String email = null;
-        User user = new User();
+        String email = (String) session.getAttribute("email");
 
-        if(code != null) {
-            GoogleLogin gg = new GoogleLogin();
-            String accessToken = gg.getToken(code);
+        User user = userService.findUserByEmail(email);
 
-            System.out.println(">>>>accessToken: " + accessToken);
 
-            GoogleAccount ggAc = gg.getUserInfo(accessToken);
-            System.out.println(ggAc.toString());
-        } else{
-            email = (String) session.getAttribute("email");
-            user = userService.findUserByEmail(email);
+//        System.out.println(">>>code" + code );
 
-        }
+//        if(code != null) {
+//
+//        } else{
+//            email = (String) session.getAttribute("email");
+//            user = userService.findUserByEmail(email);
+//
+//        }
 
 //        if(codeOptional.isPresent()) {
 //

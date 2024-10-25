@@ -33,6 +33,8 @@
                   <th scope="col">Name</th>
                   <th scope="col">Description</th>
                   <th scope="col">Category</th>
+                  <th scope="col">Status</th>
+
                   <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -42,6 +44,8 @@
                     <th scope="row">${product.name}</th>
                     <td class="text-center">${product.description}</td>
                     <td class="text-center">${product.category.name}</td>
+                    <td class="text-center" style=" color: ${product.status ? 'green' : 'red'}">${product.status ? 'Hiện' : 'Ẩn'}</td>
+
 
                     <td style="text-align: center">
                       <a href="/admin/product/${product.id}" class="btn btn-success">View</a>

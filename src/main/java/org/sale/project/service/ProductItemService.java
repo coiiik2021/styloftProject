@@ -38,6 +38,9 @@ public class ProductItemService {
 
 
     public ProductItem saveProductItem(ProductItem productItem){
+        productItem.getProduct().setStatus(true);
+
+        productRepository.save(productItem.getProduct());
         return productItemRepository.save(productItem);
     }
 

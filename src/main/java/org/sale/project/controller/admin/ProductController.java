@@ -82,7 +82,7 @@ public class ProductController {
         }
 
         product.setCategory(categoryService.findCategoryByName(product.getCategory().getName()));
-        product.setStatus(true);
+        product.setStatus(false);
         productService.saveProduct(product);
 
         return "redirect:/admin/product";
@@ -90,11 +90,6 @@ public class ProductController {
 
     @GetMapping("/delete/{id}")
     public String deleteProduct(@PathVariable("id") String id) {
-        try {
-            productItemService.deleteAllByProductId(id);
-        } catch (Exception e) {
-
-        }
         productService.deleteProduct(id);
         return "redirect:/admin/product";
     }

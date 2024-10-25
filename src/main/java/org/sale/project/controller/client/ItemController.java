@@ -53,7 +53,6 @@ public class ItemController {
         Page<Product> productPage;
         if(nameOptional.isPresent()) {
             productPage = productService.findAll(nameOptional.get(), pageable);
-
         } else{
             productPage = productService.findAll(pageable, false);
         }

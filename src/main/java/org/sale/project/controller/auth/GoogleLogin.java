@@ -9,6 +9,9 @@ import org.apache.http.client.fluent.Form;
 import org.apache.http.client.fluent.Request;
 import org.sale.project.entity.GoogleAccount;
 
+//import org.apache.hc.core5.http.ClientProtocolException;
+
+
 import java.io.IOException;
 
 
@@ -47,7 +50,7 @@ public class GoogleLogin {
 
     }
 
-    public GoogleAccount getUserInfo(String accessToken) throws ClientProtocolException, IOException {
+    public GoogleAccount getUserInfo(String accessToken) throws Exception {
 
         String link = GgSTant.GOOGLE_LINK_GET_USER_INFO + accessToken;
 

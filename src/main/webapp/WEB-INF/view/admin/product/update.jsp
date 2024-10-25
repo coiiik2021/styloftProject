@@ -57,9 +57,10 @@
 
 
 
-                                <div class = "col-12 mb-3">
-                                    <img style="max-height: 250px; display: none;" alt="avatar-preview" id="avatarPreview"/>
-                                </div>
+<%--                                <div class = "col-12 mb-3">--%>
+<%--                                    <img style="max-height: 250px; display: none;" alt="avatar-preview" id="avatarPreview"/>--%>
+<%--                                </div>--%>
+
                                 <div class="mb-3 col-12 col-md-6">
                                     <lable class ="form-label">Category </lable>
                                     <form:select path="category.name" class="form-select mt-2">

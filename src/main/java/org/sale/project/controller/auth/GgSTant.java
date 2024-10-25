@@ -5,7 +5,7 @@ public class GgSTant {
 
     public static final String GOOGLE_CLIENT_SECRET = "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";
 
-    public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080";
+    public static final String GOOGLE_REDIRECT_URI = "http://localhost:8080/google";
 
     public static final String GOOGLE_GRANT_TYPE = "authorization_code";
 

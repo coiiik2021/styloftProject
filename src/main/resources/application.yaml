@@ -22,6 +22,30 @@ spring:
 
     jdbc:
       initialize-schema: always
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "{localhost:8080}/login/oauth2/code/google"
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v1/userinfo
+            user-name-attribute: email
+
+
+
+  devtools:
+    restart:
+      enabled: false
 # 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
 email:
   sendKey: "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"

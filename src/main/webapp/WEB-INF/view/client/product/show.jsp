@@ -245,8 +245,8 @@
                     sizes.push(checkbox.value);
                 });
 
-                const minPrice = form.querySelector('input[name="minPrice"]').value;
-                const maxPrice = form.querySelector('input[name="maxPrice"]').value;
+                // const minPrice = form.querySelector('input[name="minPrice"]').value;
+                // const maxPrice = form.querySelector('input[name="maxPrice"]').value;
 
                 let queryParams = new URLSearchParams();
 
@@ -262,12 +262,12 @@
                     queryParams.append('sizes', sizes.join(','));
                 }
 
-                if (minPrice) {
-                    queryParams.append('minPrice', minPrice);
-                }
-                if (maxPrice) {
-                    queryParams.append('maxPrice', maxPrice);
-                }
+                // if (minPrice) {
+                //     queryParams.append('minPrice', minPrice);
+                // }
+                // if (maxPrice) {
+                //     queryParams.append('maxPrice', maxPrice);
+                // }
 
 
                 window.location.href = '/product/filter?' + queryParams.toString();
@@ -307,7 +307,7 @@
                                     </div>
                                     <div class="row align-items-center text-center g-0">
                                         <div class="text-black mt-2 mb-2">
-                                            <h5>${product.productItem.get(0).price} VNĐ</h5>
+                                            <h5><fmt:formatNumber value="${product.productItem.get(0).price}" type="number"/> VNĐ</h5>
                                         </div>
                                         <div>
                                             <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="ADD-btn p-3 rounded-0 " >ADD TO CART</a>

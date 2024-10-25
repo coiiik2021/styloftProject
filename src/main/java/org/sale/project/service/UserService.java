@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.User;
 import org.sale.project.mapper.UserMapper;
+import org.sale.project.repository.RoleRepository;
 import org.sale.project.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    private final RoleRepository roleRepository;
 
     public List<User> findAll() {
         return userRepository.findAll();
@@ -41,7 +43,11 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        return userRepository.save(user);
+        if(userRepository.findByEmail(user.getEmail()) != null){
+            user.setRole(roleRepository.findByName("USER"));
+            return userRepository.save(user);
+        }
+        return null;
     }
 
     public Optional<User> findByEmail(String email) {

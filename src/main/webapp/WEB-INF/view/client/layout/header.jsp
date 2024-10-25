@@ -72,8 +72,8 @@
                     </li>
                     <li>
                         <div class="container-fluid">
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <form class="d-flex" role="search" action="/product" method="get">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
                                 <button class="btn btn-outline bg-orange" type="submit"><i class="ri-search-line"></i></button>
                             </form>
                         </div>
@@ -111,7 +111,7 @@
                             </div>
                         </li>
                         <li><a class="dropdown-item" href="/account">Quản lý tài khoản</a></li>
-                        <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>
+<%--                        <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>--%>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="/logout" method="post">

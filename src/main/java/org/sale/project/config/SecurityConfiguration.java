@@ -7,7 +7,9 @@ import org.sale.project.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,7 +26,10 @@ import org.springframework.session.security.web.authentication.SpringSessionReme
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration {
+public class SecurityConfiguration{
+
+    UserDetailsService userDetailsService;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -62,6 +67,11 @@ public class SecurityConfiguration {
     }
 
     @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
     public SpringSessionRememberMeServices rememberMeServices() {
         SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
 
@@ -79,12 +89,18 @@ public class SecurityConfiguration {
                         .permitAll()
 
                         .requestMatchers("/","/register", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/email ")
+                                "/images/**", "/email", "/google")
 
                         .permitAll()
 
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
+//                .oauth2Login(oauth2 -> oauth2
+//                        .loginPage("/login")
+//                        .defaultSuccessUrl("/", true)
+//                        .failureUrl("/login?error")
+//                        .successHandler(authenticationSuccessHandler()) // Thêm success handler
+//                )
                 .rememberMe((rememberMe) -> rememberMe
                         .rememberMeServices(rememberMeServices()))
                 .formLogin(formLogin -> formLogin
