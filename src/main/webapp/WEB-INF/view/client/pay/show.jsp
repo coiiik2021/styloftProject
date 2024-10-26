@@ -152,7 +152,6 @@
         <div class="d-grid mt-4">
           <button class="btn btn-primary py-3">Đặt hàng</button>
         </div>
-      </form:form>
     </div>
 
     <div class="col-lg-5 p-4">
@@ -167,6 +166,7 @@
             <div>
               <h6 class="fw-bold mb-1" style="width: 80%">${item.productItem.product.name}</h6>
               <div class="mt-2">
+                <input style="display: none" name="totalPrice" value="${item.quantity * item.productItem.price + 30000}">
                 <input type="text" class="form-control form-control-sm d-inline" style="width: 40px" value="${item.quantity}" disabled />
                 <span class="fw-bold ms-3 fs-5"><fmt:formatNumber type="number" value="${item.quantity * item.productItem.price}"/>₫</span>
               </div>
@@ -181,7 +181,7 @@
           <!-- Phương thức thanh toán -->
           <div class="payment-method position-relative">
             <input class="form-check-input position-absolute top-50 end-0 translate-middle-y me-3"
-                   type="radio" name="payment" id="codRadio" value="cod" checked />
+                   type="radio" name="paymentMethod" id="codRadio" value="cod" checked />
             <label class="d-flex align-items-center" for="codRadio">
               <i class="ri-truck-line fs-2"></i>
               <div class="ms-3">
@@ -193,7 +193,7 @@
 
           <div class="payment-method position-relative">
             <input class="form-check-input position-absolute top-50 end-0 translate-middle-y me-3"
-                   type="radio" name="payment" id="onlineRadio" value="online" />
+                   type="radio" name="paymentMethod" id="onlineRadio" value="online" />
             <label class="d-flex align-items-center" for="onlineRadio">
               <i class="ri-wallet-3-line fs-2"></i>
               <div class="ms-3">
@@ -207,6 +207,8 @@
 
 
       </div>
+      </form:form>
+
     </div>
   </div>
 </div>

@@ -48,4 +48,15 @@ spring:
       enabled: false
 # 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
 email:
-  sendKey: "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"
+  sendKey: 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
+
+
+payment:
+  vnPay:
+    url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    tmnCode: 5RIH2KL9
+    secretKey: FPHVDV0OM6XV4K6A5646H7UX599AQV9F
+    returnUrl: http://localhost:8080/pay/vn-pay-callback
+    version: 2.1.0
+    command: pay
+    orderType: other

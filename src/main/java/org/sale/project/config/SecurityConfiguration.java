@@ -89,7 +89,7 @@ public class SecurityConfiguration{
                         .permitAll()
 
                         .requestMatchers("/","/register", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/email", "/google")
+                                "/images/**", "/email", "/google", "/payment/**")
 
                         .permitAll()
 
