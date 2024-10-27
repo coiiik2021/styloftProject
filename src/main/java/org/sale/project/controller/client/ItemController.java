@@ -130,8 +130,11 @@ public class ItemController {
             @RequestParam("maxPrice") Optional<String> maxPriceOptional,
             Model model) {
 
+
         double minPrice = Double.parseDouble(minPriceOptional.orElse("0"));
         double maxPrice = Double.parseDouble(maxPriceOptional.orElse("1000000000000.0"));
+
+
 
         List<String> categoryList = categories != null ? Arrays.asList(categories.split(",")) : Collections.emptyList();
 

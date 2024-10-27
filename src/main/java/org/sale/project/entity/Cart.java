@@ -18,7 +18,7 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

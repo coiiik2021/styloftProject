@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.sale.project.dto.request.PaymentDTO;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
 import org.sale.project.entity.CartItem;
@@ -214,10 +213,10 @@ public class PayController {
     @GetMapping("/vn-pay")
     public void pay(HttpServletRequest request, HttpServletResponse response) {
 
-        PaymentDTO.VNPayResponse dto = paymentService.createVnPayPayment(request);
+        String url = paymentService.createVnPayPayment(request);
 
         try{
-            response.sendRedirect(dto.paymentUrl);
+            response.sendRedirect(url);
         } catch (Exception e){
 
         }
@@ -232,16 +231,18 @@ public class PayController {
         HttpSession session = request.getSession();
         String idOrder = (String) session.getAttribute("idOrder");
         Order order = orderService.findById(idOrder);
+        String url;
 
 
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
-            order.setStatus("PLACED");
+            order.setStatus("PREPARING");
+            url = "/client/thank/show";
 
-            return "/client/thank/show";
         } else {
 
-            order.setStatus("Xu li");
+            order.setStatus("PROCESSING");
+            url = "/client/error/show";
 
 
         }
@@ -249,7 +250,7 @@ public class PayController {
 
 
         orderService.saveOrder(order);
-        return "/client/thank/show";
+        return url;
     }
 
 

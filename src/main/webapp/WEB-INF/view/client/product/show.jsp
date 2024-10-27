@@ -245,8 +245,8 @@
                     sizes.push(checkbox.value);
                 });
 
-                // const minPrice = form.querySelector('input[name="minPrice"]').value;
-                // const maxPrice = form.querySelector('input[name="maxPrice"]').value;
+                const minPrice = form.querySelector('select[name="minPrice"]').value;
+                const maxPrice = form.querySelector('select[name="maxPrice"]').value;
 
                 let queryParams = new URLSearchParams();
 
@@ -262,12 +262,12 @@
                     queryParams.append('sizes', sizes.join(','));
                 }
 
-                // if (minPrice) {
-                //     queryParams.append('minPrice', minPrice);
-                // }
-                // if (maxPrice) {
-                //     queryParams.append('maxPrice', maxPrice);
-                // }
+                if (minPrice && minPrice !== '0') {
+                    queryParams.append('minPrice', minPrice);
+                }
+                if (maxPrice && maxPrice !== '100000') {
+                    queryParams.append('maxPrice', maxPrice);
+                }
 
 
                 window.location.href = '/product/filter?' + queryParams.toString();
@@ -310,7 +310,15 @@
                                             <h5><fmt:formatNumber value="${product.productItem.get(0).price}" type="number"/> VNĐ</h5>
                                         </div>
                                         <div>
-                                            <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="ADD-btn p-3 rounded-0 " >ADD TO CART</a>
+                                            <c:if test="${product.productItem.get(0).quantity >= 1}">
+                                            <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="ADD-btn p-3 rounded-0 " >Thêm vào giỏ hàng</a>
+                                            </c:if>
+                                            <c:if test="${product.productItem.get(0).quantity < 1}">
+                                                <a href="#" class="ADD-btn p-3 rounded-0 " >Liên hệ</a>
+
+                                            </c:if>
+
+
                                         </div>
                                     </div>
                                 </div>

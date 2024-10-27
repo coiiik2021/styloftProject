@@ -106,7 +106,16 @@
                                         <h5><fmt:formatNumber value="${product.productItem.get(0).price}" type="number"/> VNĐ</h5>
                                     </div>
                                     <div>
-                                        <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="btn w-100 p-3 rounded-0">ADD TO CART</a>
+
+                                        <c:if test="${product.productItem.get(0).quantity >= 1}">
+                                            <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
+                                        </c:if>
+                                        <c:if test="${product.productItem.get(0).quantity < 1}">
+                                            <a href="#" class="btn w-100 p-3 rounded-0" >Liên hệ</a>
+
+                                        </c:if>
+
+<%--                                        <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="btn w-100 p-3 rounded-0">ADD TO CART</a>--%>
                                     </div>
                                 </div>
                             </div>

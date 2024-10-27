@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <%--
   Created by IntelliJ IDEA.
   User: dungnguyen
@@ -55,7 +56,9 @@
         <div class="infor">
           <h2 class="fw-bold">${item.product.name}</h2>
           <div class="price mb-2"> <!-- New price section -->
-            <strong style="font-size: 1.5rem; color: red;">Giá: ${item.price} VND</strong>
+            <strong style="font-size: 1.5rem; color: red;">Giá:
+                <fmt:formatNumber value="${item.price}" type="number"/>
+                VND</strong>
           </div>
           <p><strong>Mô tả:</strong> ${item.product.description}.</p>
           <div class="rating text-warning">
@@ -132,13 +135,13 @@
                 }
             </script>
 
-            <div class="d-flex align-items-center my-3">
+            <div class="d-flex align-items-center  my-3">
                 <label class="mb-0 me-2"><strong>Số lượng:</strong></label>
-                <input id="quantityInput" type="number" class="form-control me-2" value="1" min="1" max="${item.quantity}" style="width: 80px;" name="quantity">
+                <input id="quantityInput" type="number" class="form-control me-2 text-center" value="1" min="1" max="${item.quantity}" style="width: 80px;" name="quantity">
                 <span>Còn lại ${item.quantity} sản phẩm</span>
             </div>
 
-            <div class="text-center mt-1">
+            <div class=" mt-1">
                 <button class="btn btn-danger btn-sm ${item.quantity eq 0 ? 'disabled' : ''}" id="addToCartBtn" style="background: rgb(247, 240, 229); color: dimgrey; border: 1px solid black;">
                     <strong>Thêm vào giỏ hàng</strong>
                 </button>
