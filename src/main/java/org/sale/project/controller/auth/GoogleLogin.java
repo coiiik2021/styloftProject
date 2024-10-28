@@ -1,22 +1,22 @@
 package org.sale.project.controller.auth;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Form;
-import org.apache.http.client.fluent.Request;
+ import com.google.gson.Gson;
+ import com.google.gson.JsonObject;
+//import com.nimbusds.jose.shaded.gson.Gson;
+//import com.nimbusds.jose.shaded.gson.JsonObject;
+//import lombok.AllArgsConstructor;
+//import lombok.NoArgsConstructor;
+// import org.apache.http.client.ClientProtocolException;
+ import org.apache.http.client.fluent.Form;
+ import org.apache.http.client.fluent.Request;
 import org.sale.project.entity.GoogleAccount;
 
 //import org.apache.hc.core5.http.ClientProtocolException;
 
-
 import java.io.IOException;
 
-
 public class GoogleLogin {
-    public String getToken(String code) throws  IOException {
+    public String getToken(String code) throws IOException {
 
         String response = Request.Post(GgSTant.GOOGLE_LINK_GET_TOKEN)
 
@@ -39,8 +39,6 @@ public class GoogleLogin {
                 )
 
                 .execute().returnContent().asString();
-
-
 
         JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 

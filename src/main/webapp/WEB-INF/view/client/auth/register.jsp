@@ -107,6 +107,9 @@
                         <button class="btn btn-google">
                             <i class="bi bi-google"></i>
                         </button>
+                        <a href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1059853482122901&redirect_uri=http://localhost:8080/facebook" class="btn btn-google">
+                            <i class="bi bi-facebook"></i>
+                        </a>
                         <div class="link">
                             Nếu đã có tài khoản <a href="/login">Trở về đăng nhập!</a>
                         </div>

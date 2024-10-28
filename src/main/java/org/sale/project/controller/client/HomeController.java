@@ -9,13 +9,16 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
+import org.sale.project.controller.auth.FacebookLogin;
 import org.sale.project.controller.auth.GgSTant;
 import org.sale.project.controller.auth.GoogleLogin;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
+import org.sale.project.entity.FacebookAccount;
 import org.sale.project.entity.GoogleAccount;
 import org.sale.project.entity.Product;
 import org.sale.project.entity.User;
+import org.sale.project.service.CustomUserDetailsService;
 import org.sale.project.service.ProductService;
 import org.sale.project.service.RoleService;
 import org.sale.project.service.UserService;
@@ -31,6 +34,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -110,6 +115,9 @@ public class HomeController {
         return "redirect:/client/home/show";
     }
 
+//    SecurityContextHolderFilter securityContextHolderFilter;
+    CustomUserDetailsService customUserDetailsService;
+
     @GetMapping("/google")
     public String accessLogin(Model model, HttpServletRequest request) throws Exception {
 
@@ -131,12 +139,68 @@ public class HomeController {
         System.out.println(">>>>email: " + email + ", password: " + password);
 
 
-        userService.saveUser(User.builder().email(email).password(passwordEncoder.encode(password)).build());
+        if(userService.findUserByEmail(email) == null) {
+
+            userService.saveUser(User.builder().email(email).password(passwordEncoder.encode(password)).build());
+        }
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+
+        // Tạo token xác thực
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
+
+        // Thực hiện xác thực tự động
+//        authenticationManager.authenticate(authToken);
+
+//        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+//        securityContextHolderFilter.doFilter();
+
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+        User user = userService.findUserByEmail(email);
+
+        HttpSession session = request.getSession(true);
+
+
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
+
+        session.setAttribute("email", email);
+        session.setAttribute("id", user.getId());
+        session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
+                : user.getCart().getCartItems().size());
+
+        // Đặt Authentication vào SecurityContextHolder để đăng nhập
+//        if (authToken.isAuthenticated()) {
+//        }
 
 
 //        return googlePojo;
 
-        return "redirect:/client/home/show";
+        return "redirect:/";
+    }
+
+    @GetMapping("/facebook")
+    public String accessLoginFacebook(Model model, HttpServletRequest request) throws Exception {
+        String code = request.getParameter("code");
+        System.out.println(">>>>code: " + code);
+
+
+        String accessToken = FacebookLogin.getToken(code);
+
+        System.out.println(">>>>accessToken: " + accessToken);
+
+        FacebookAccount fbAccount = FacebookLogin.getUserInfo(accessToken);
+        System.out.println(fbAccount.toString());
+
+
+//        String email = fbAccount.getEmail();
+//
+//        String password = fbAccount.getEmail().substring(0, fbAccount.getEmail().indexOf("@"));
+//
+//        System.out.println(">>>>email: " + email + ", password: " + password);
+
+        return "/client/thank/show";
     }
 
     @GetMapping
@@ -163,7 +227,7 @@ public class HomeController {
 //        if(code != null) {
 //
 //        } else{
-//            email = (String) session.getAttribute("email");
+//            email = (String) session.get Attribute("email");
 //            user = userService.findUserByEmail(email);
 //
 //        }

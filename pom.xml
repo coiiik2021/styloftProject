@@ -161,6 +161,36 @@
 			</dependency>
 
 
+<!--			<dependency>-->
+<!--				<groupId>com.google.code.gson</groupId>-->
+<!--				<artifactId>gson</artifactId>-->
+<!--				<version>2.11.0</version>-->
+<!--			</dependency>-->
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.5</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.httpcomponents</groupId>
+				<artifactId>httpclient</artifactId>
+				<version>4.5.13</version>
+			</dependency>
+
+
+<!--			&lt;!&ndash; Apache HTTP Client &ndash;&gt;-->
+
+
+				<!-- Apache HTTP Client Fluent -->
+				<dependency>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>fluent-hc</artifactId>
+					<version>4.5.5</version>
+				</dependency>
+
+
+
 
 
 		</dependencies>

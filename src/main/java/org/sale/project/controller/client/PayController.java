@@ -238,9 +238,7 @@ public class PayController {
         if (status.equals("00")) {
             order.setStatus("PREPARING");
             url = "/client/thank/show";
-
         } else {
-
             order.setStatus("PROCESSING");
             url = "/client/error/show";
 

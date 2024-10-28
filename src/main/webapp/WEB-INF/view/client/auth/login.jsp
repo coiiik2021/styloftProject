@@ -154,10 +154,13 @@ contentType="text/html" pageEncoding="UTF-8" %>
                   </button>
                 </form>
                 <div class="description">
-                  Hoặc đăng nhập với tài khoản Google của bạn
+                  Hoặc đăng nhập với tài khoản Google/Facebook của bạn
                 </div>
                 <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/google&response_type=code&client_id=264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com&approval_prompt=force" class="btn btn-google">
                   <i class="bi bi-google"></i>
+                </a>
+                <a href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1059853482122901&redirect_uri=http://localhost:8080/facebook" class="btn btn-google">
+                  <i class="bi bi-facebook"></i>
                 </a>
                 <div class="link">
                   Chưa có tài khoản <a href="/register">Đăng ký ngay!</a>
