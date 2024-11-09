@@ -2,8 +2,9 @@ package org.sale.project.config;
 
 
 import jakarta.servlet.DispatcherType;
+import org.sale.project.service.AccountService;
 import org.sale.project.service.CustomUserDetailsService;
-import org.sale.project.service.UserService;
+//import org.sale.project.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -36,8 +37,8 @@ public class SecurityConfiguration{
     }
 
     @Bean
-    public UserDetailsService userDetailsService(UserService userService) {
-        return new CustomUserDetailsService(userService);
+    public UserDetailsService userDetailsService(AccountService accountService) {
+        return new CustomUserDetailsService(accountService);
     }
 
     @Bean

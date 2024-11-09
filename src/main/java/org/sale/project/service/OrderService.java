@@ -1,6 +1,5 @@
 package org.sale.project.service;
 
-import jakarta.validation.constraints.Max;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -12,7 +11,7 @@ import org.sale.project.mapper.OrderMapper;
 import org.sale.project.repository.CartItemRepository;
 import org.sale.project.repository.OrderDetailRepository;
 import org.sale.project.repository.OrderRepository;
-import org.sale.project.repository.ProductItemRepository;
+import org.sale.project.repository.ProductVariantRepository;
 import org.sale.project.service.spec.OrderSpec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +29,7 @@ public class OrderService {
     OrderMapper orderMapper;
     CartItemRepository cartItemRepository;
 
-    ProductItemRepository productItemRepository;
+    ProductVariantRepository productVariantRepository;
 
 
     public List<Order> findAll() {
@@ -101,12 +100,12 @@ public class OrderService {
             OrderDetail orderDetail = new OrderDetail();
             orderMapper.updateOrder(orderDetail, item);
             orderDetail.setOrder(order);
-            orderDetail.setPrice(item.getQuantity() * item.getProductItem().getPrice());
+            orderDetail.setPrice(item.getQuantity() * item.getProductVariant().getPrice());
 
             orderDetailRepository.save(orderDetail);
 
-            item.getProductItem().setQuantity(Math.max(item.getProductItem().getQuantity() - item.getQuantity(), 0));
-            productItemRepository.save(item.getProductItem());
+            item.getProductVariant().setQuantity(Math.max(item.getProductVariant().getQuantity() - item.getQuantity(), 0));
+            productVariantRepository.save(item.getProductVariant());
             cartItemRepository.delete(item);
             detail.add(orderDetail);
 

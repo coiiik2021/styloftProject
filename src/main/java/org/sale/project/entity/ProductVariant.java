@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductItem {
+public class ProductVariant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -36,10 +36,10 @@ public class ProductItem {
     @JoinColumn(name = "product_id")
     Product product;
 
-    @OneToMany(mappedBy = "productItem", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "productVariant", fetch = FetchType.EAGER)
     List<CartItem> cartItem;
 
-    @OneToMany(mappedBy = "productItem")
+    @OneToMany(mappedBy = "productVariant")
     List<OrderDetail> orderDetails;
 
     String image;

@@ -14,14 +14,8 @@ import org.sale.project.controller.auth.GgSTant;
 import org.sale.project.controller.auth.GoogleLogin;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
-import org.sale.project.entity.FacebookAccount;
-import org.sale.project.entity.GoogleAccount;
-import org.sale.project.entity.Product;
-import org.sale.project.entity.User;
-import org.sale.project.service.CustomUserDetailsService;
-import org.sale.project.service.ProductService;
-import org.sale.project.service.RoleService;
-import org.sale.project.service.UserService;
+import org.sale.project.entity.*;
+import org.sale.project.service.*;
 import org.sale.project.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +51,7 @@ public class HomeController {
     RoleService roleService;
     ProductService productService;
     EmailService emailService;
+    AccountService accountService;
 
 
 
@@ -72,7 +67,7 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("newUser") @Valid User user, BindingResult bindingResult) {
+    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult) {
         // Kiểm tra lỗi
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
@@ -85,20 +80,19 @@ public class HomeController {
                         .htmlContent("<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                                 "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
                                 "<p>AnhDungShop</p>" +
-                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + user.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
                                 "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
                                 "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
                                 "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
                                 "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>")
-                        .to(Recipient.builder().email(user.getEmail()).name(user.getName()).build())
+                        .to(Recipient.builder().email(account.getEmail()).build())
                         .build()
         );
 
         // Mã hóa mật khẩu và lưu người dùng
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(roleService.findByName("USER"));
-        user.setSex(-1);
-        userService.saveUser(user);
+        account.setPassword(passwordEncoder.encode(account.getPassword()));
+        account.setRole(roleService.findByName("USER"));
+        accountService.saveAccount(account);
 
         // Đăng nhập người dùng
 //        System.out.println(">>>user: " + user.getEmail() + ", name: " + user.getPassword());
@@ -139,9 +133,9 @@ public class HomeController {
         System.out.println(">>>>email: " + email + ", password: " + password);
 
 
-        if(userService.findUserByEmail(email) == null) {
+        if(accountService.findByEmail(email) == null) {
 
-            userService.saveUser(User.builder().email(email).password(passwordEncoder.encode(password)).build());
+            accountService.saveAccount(Account.builder().email(email).password(passwordEncoder.encode(password)).role(roleService.findByName("USER")).build());
         }
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
@@ -166,9 +160,13 @@ public class HomeController {
                 SecurityContextHolder.getContext());
 
         session.setAttribute("email", email);
-        session.setAttribute("id", user.getId());
-        session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
-                : user.getCart().getCartItems().size());
+        if(user != null) {
+            session.setAttribute("id", user.getId());
+            session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
+                    : user.getCart().getCartItems().size());
+
+        }
+
 
         // Đặt Authentication vào SecurityContextHolder để đăng nhập
 //        if (authToken.isAuthenticated()) {
@@ -218,8 +216,11 @@ public class HomeController {
 //        String code = request.getParameter("code");
 
         String email = (String) session.getAttribute("email");
+//        System.out.println(email);
 
-        User user = userService.findUserByEmail(email);
+
+        session.setAttribute("nameSearch" , "");
+//        User user = userService.findUserByEmail(email);
 
 
 //        System.out.println(">>>code" + code );
@@ -259,8 +260,10 @@ public class HomeController {
         List<Product> products = productPage.getContent();
 
 
+
+
         model.addAttribute("products", products);
-        model.addAttribute("user", user);
+//        model.addAttribute("user", user);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", productPage.getTotalPages());
 

@@ -21,7 +21,7 @@
                             <h3 class="mb-4"> ${user.name}</h3>
                             <div class="mb-3">
                                 <label for="email" class="form-label"><strong>Email:</strong></label>
-                                <p id="email">${user.email}</p>
+                                <p id="email">${user.account.email}</p>
                             </div>
                             <div class="mb-3">
                                 <label for="address" class="form-label"><strong>Address:</strong></label>

@@ -87,7 +87,7 @@ public class OrderController {
                                 Recipient
                                         .builder()
                                         .name(user.getName())
-                                        .email(user.getEmail())
+                                        .email(user.getAccount().getEmail())
                                         .build()
                         )
                         .build()

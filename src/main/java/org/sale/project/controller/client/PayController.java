@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
-import org.sale.project.entity.CartItem;
 import org.sale.project.entity.Order;
 import org.sale.project.entity.OrderDetail;
 import org.sale.project.entity.User;
@@ -26,11 +25,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/pay")
@@ -84,7 +80,7 @@ public class PayController {
 
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
-        userPay.setEmail(email);
+//        userPay.setEmail(email);
         User user = userService.findUserByEmail(email);
 
 
@@ -132,6 +128,7 @@ public class PayController {
                 response.sendRedirect(url);
             } catch (IOException e) {
 
+                System.out.println(e);
             }
 
         }
@@ -182,9 +179,9 @@ public class PayController {
 
         for (OrderDetail detail : details) {
             itemOrder.add( "<p> " + ++count +
-                    ". Name: <strong>" +  detail.getProductItem().getProduct().getName() + "</strong> || " +
-                    " color: <strong>" + detail.getProductItem().getColor().getName() + "</strong> || " +
-                    " size: <strong>" + detail.getProductItem().getSize().getName() + "</strong> || " +
+                    ". Name: <strong>" +  detail.getProductVariant().getProduct().getName() + "</strong> || " +
+                    " color: <strong>" + detail.getProductVariant().getColor().getName() + "</strong> || " +
+                    " size: <strong>" + detail.getProductVariant().getSize().getName() + "</strong> || " +
                     "Số lượng: <strong>" + detail.getQuantity() + "</strong> " +
                     "</p>");
 
@@ -196,7 +193,7 @@ public class PayController {
                         .subject("Đặt hàng #" + order.getId().substring(0, 5))
                         .to(Recipient.builder()
                                 .name(order.getUser().getName())
-                                .email(order.getUser().getEmail())
+                                .email(order.getUser().getAccount().getEmail())
                                 .build())
                         .htmlContent("<p>" + header + "</p>" +
                                         String.join("\n", itemOrder)

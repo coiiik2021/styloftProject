@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Entity
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
@@ -25,8 +23,8 @@ public class CartItem {
     Cart cart;
 
     @ManyToOne
-    @JoinColumn(name = "product_item_id")
-    ProductItem productItem;
+    @JoinColumn(name = "product_variant_id")
+    ProductVariant productVariant;
 
 
 }

@@ -74,12 +74,12 @@
     <!-- Product -->
     <div class="row row-cols-4 g-4 mt-2">
         <c:forEach items="${products}" var="product">
-            <c:if test="${not empty product.productItem}">
+            <c:if test="${not empty product.productVariant}">
                 <div class="col" style = "margin-right: 0; margin-left: 0;">
                     <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
                         <div class="card border-0 rounded-0 shadow">
 
-                            <img src="/images/product/${product.name}/${product.productItem.get(0).image}"
+                            <img src="/images/product/${product.name}/${product.productVariant.get(0).image}"
                                  class="card-img-top rounded-0" alt="...">
                             <div class="card-body mt-1 mb-1">
                                 <div class="row">
@@ -93,7 +93,7 @@
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
                                             <i class="bi bi-star-fill text-warning"></i>
-<%--                                            ${product.productItem.get(0).quantity}--%>
+<%--                                            ${product.productVariant.get(0).quantity}--%>
                                             (123)
                                         </p>
                                     </div>
@@ -103,19 +103,19 @@
                                 </div>
                                 <div class="row align-items-center text-center g-0">
                                     <div class="text-primary mt-2 mb-2">
-                                        <h5><fmt:formatNumber value="${product.productItem.get(0).price}" type="number"/> VNĐ</h5>
+                                        <h5><fmt:formatNumber value="${product.productVariant.get(0).price}" type="number"/> VNĐ</h5>
                                     </div>
                                     <div>
 
-                                        <c:if test="${product.productItem.get(0).quantity >= 1}">
-                                            <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
+                                        <c:if test="${product.productVariant.get(0).quantity >= 1}">
+                                            <a href="/cart/add-product-item-in-cart/${product.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
                                         </c:if>
-                                        <c:if test="${product.productItem.get(0).quantity < 1}">
+                                        <c:if test="${product.productVariant.get(0).quantity < 1}">
                                             <a href="#" class="btn w-100 p-3 rounded-0" >Liên hệ</a>
 
                                         </c:if>
 
-<%--                                        <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="btn w-100 p-3 rounded-0">ADD TO CART</a>--%>
+<%--                                        <a href="/cart/add-product-item-in-cart/${product.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0">ADD TO CART</a>--%>
                                     </div>
                                 </div>
                             </div>

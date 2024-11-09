@@ -59,7 +59,7 @@
                   <!-- <%--                    ${errorFullName}--%> -->
                   <form:select path="status" class="form-select mt-2">
                     <option value="PLACED" ${order.status eq "PROCESSING" ? 'selected' : ''}>Xử lý</option>
-                    <option value="PLACED" ${order.status eq "PREPAERINg" ? 'selected' : ''}>Chuẩn bị</option>
+                    <option value="PLACED" ${order.status eq "PLACED" ? 'selected' : ''}>Chuẩn bị</option>
 
                       <option value="SHIPPING" ${order.status eq "SHIPPING" ? 'selected' : ''}>Giao Hàng</option>
                       <option value="COMPLETED" ${order.status eq "COMPLETED" ? 'selected' : ''}>Hoàn Thành</option>

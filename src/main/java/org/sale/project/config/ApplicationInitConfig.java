@@ -1,8 +1,10 @@
 package org.sale.project.config;
 
 
+import org.sale.project.entity.Account;
 import org.sale.project.entity.Role;
 import org.sale.project.entity.User;
+import org.sale.project.repository.AccountRepository;
 import org.sale.project.repository.RoleRepository;
 import org.sale.project.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ public class ApplicationInitConfig {
     PasswordEncoder passwordEncoder;
 
     @Bean
-    ApplicationRunner applicationRunner(UserRepository userRepository, RoleRepository roleRepository) {
+    ApplicationRunner applicationRunner(AccountRepository accountRepository, RoleRepository roleRepository) {
         return args -> {
             if(roleRepository.findByName("USER") == null || roleRepository.findByName("ADMIN") == null) {
                 Role roleAdmin = Role.builder()
@@ -30,15 +32,14 @@ public class ApplicationInitConfig {
                 roleRepository.save(roleAdmin);
                 roleRepository.save(roleUser);
             }
-            if(userRepository.findByEmail("admin@gmail.com").isEmpty()) {
-                User user = User.builder()
+            if(accountRepository.findByEmail("admin@gmail.com").isEmpty()) {
+                Account account = Account.builder()
                         .email("admin@gmail.com")
                         .password(passwordEncoder.encode("admin"))
                         .role(roleRepository.findByName("ADMIN"))
-                        .sex(-1)
                         .build();
 
-                userRepository.save(user);
+                accountRepository.save(account);
             }
 
         };

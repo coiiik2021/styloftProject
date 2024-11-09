@@ -1,5 +1,6 @@
 package org.sale.project.repository;
 
+import org.sale.project.entity.Account;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -16,6 +17,6 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 
     Page<User> findAll(Specification<User> spec, Pageable page);
 
-    Optional<User> findByEmail(String email);
+    Optional<User> findByAccount(Account account);
 
 }

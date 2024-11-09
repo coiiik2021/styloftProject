@@ -24,7 +24,7 @@ public class Color {
     String description;
 
     @OneToMany(mappedBy = "color")
-    List<ProductItem> productItems;
+    List<ProductVariant> productVariants;
 
 
 }

@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.sale.project.entity.Order;
 import org.sale.project.entity.User;
 import org.sale.project.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +26,7 @@ import java.util.Optional;
 @RequestMapping("/account")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @AllArgsConstructor
-public class AccountController {
+public class AccountClientController {
 
     UserService userService;
 
@@ -35,10 +37,11 @@ public class AccountController {
         model.addAttribute("email", email);
 
         Optional<User> userOptional = userService.findByEmail(email);
-        User user = userOptional.get();
+        model.addAttribute("email", email);
+//        User user = userOptional.get();
 
-        model.addAttribute("user", user);
-        model.addAttribute("orders", user.getOrders());
+        model.addAttribute("user", userOptional.isPresent() ? userOptional.get() : new User());
+        model.addAttribute("orders",  userOptional.isEmpty() ? new ArrayList<Order>() :  userOptional.get().getOrders());
 
         return "/client/home/information";
     }

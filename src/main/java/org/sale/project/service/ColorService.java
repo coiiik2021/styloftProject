@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Color;
-import org.sale.project.entity.ProductItem;
+import org.sale.project.entity.ProductVariant;
 import org.sale.project.repository.ColorRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +41,7 @@ public class ColorService {
         return colorRepository.findAll(pageable);
     }
 
-    public List<Color> findByProductItem(ProductItem productItem) {
-        return colorRepository.findAllColorByProductItems(productItem);
+    public List<Color> findByProductVariant(ProductVariant productVariant) {
+        return colorRepository.findAllByProductVariants(productVariant);
     }
 }

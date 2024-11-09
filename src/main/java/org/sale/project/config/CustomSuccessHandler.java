@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.sale.project.entity.Account;
 import org.sale.project.entity.User;
+import org.sale.project.service.AccountService;
 import org.sale.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -22,6 +24,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private AccountService accountService;
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -40,7 +44,7 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
 
     }
 
-    protected void clearAuthenticationAttributes(HttpServletRequest request, Authentication authentication) {
+    protected void clearAuthenticationAttributes(@org.jetbrains.annotations.NotNull HttpServletRequest request, Authentication authentication) {
         HttpSession session = request.getSession(false);
         if (session == null) {
             return;
@@ -50,11 +54,18 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         String email = authentication.getName();
         User user = userService.findUserByEmail(email);
 
+        Account account = accountService.findByEmail(email);
+
+        if(account != null){
+            session.setAttribute("email", email);
+            System.out.println("email " + email );
+        }
+
+
         if (user != null) {
             // session.setAttribute("fullName", user.getFullName());
             // session.setAttribute("avatar", user.getAvatar());
             // System.out.println(">>avatar: " + session.getAttribute("avatar"));
-            session.setAttribute("email", email);
             session.setAttribute("id", user.getId());
             session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
                     : user.getCart().getCartItems().size());

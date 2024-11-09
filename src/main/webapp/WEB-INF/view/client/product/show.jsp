@@ -163,7 +163,7 @@
                     <label class="form-label">Loại:</label><br />
                     <c:forEach items="${categories}" var="cate">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="categories" value="${cate.name}" id="${cate.name}" />
+                            <input class="form-check-input" type="checkbox" name="categories" value="${cate.name}" id="${cate.name}" ${not empty categoryList && categoryList.contains(cate.name) ? 'checked' : ''}/>
                             <label class="form-check-label" for="${cate.name}">${cate.name}</label>
                         </div>
                     </c:forEach>
@@ -175,7 +175,7 @@
                     <label class="form-label">Màu sắc:</label><br />
                     <c:forEach items="${colors}" var="color">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="colors" value="${color.name}" id="${color.name}" />
+                            <input class="form-check-input" type="checkbox" name="colors" value="${color.name}" id="${color.name}" ${not empty colorList && colorList.contains(color.name) ? 'checked' : ''}/>
                             <label class="form-check-label" for="${color.name}">${color.name}</label>
                         </div>
                     </c:forEach>
@@ -187,7 +187,7 @@
                     <label class="form-label">Kích thước:</label><br />
                     <c:forEach items="${sizes}" var="size">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" name="sizes" value="${size.name}" id="${size.name}" />
+                            <input class="form-check-input" type="checkbox" name="sizes" value="${size.name}" id="${size.name}" ${not empty sizeList && sizeList.contains(size.name) ? 'checked' : ''} />
                             <label class="form-check-label" for="${size.name}">${size.name}</label>
                         </div>
                     </c:forEach>
@@ -199,20 +199,19 @@
                     <label class="form-label">Giá tiền:</label><br />
                     <div class="price-input">
                         <select name="minPrice">
-                            <option value="0">0đ</option>
-                            <option value="100000">100.000đ</option>
-                            <option value="200000">200.000đ</option>
-                            <option value="500000">500.000đ</option>
-                            <option value="1000000">1.000.000đ</option>
-                            <option value="1000001">Lớn hơn 1.000.000đ</option>
+                            <option value="0" ${min == 0 ? 'selected' : ''}>0đ</option>
+                            <option value="100000" ${min == 100000 ? 'selected' : ''}>100.000đ</option>
+                            <option value="200000" ${min == 200000 ? 'selected' : ''}>200.000đ</option>
+                            <option value="500000" ${min == 500000 ? 'selected' : ''}>500.000đ</option>
+<%--                            <option value="1000001">Lớn hơn 1.000.000đ</option>--%>
                         </select>
                         <span class="separator"></span>
                         <select name="maxPrice">
-                            <option value="100000">100.000đ</option>
-                            <option value="200000">200.000đ</option>
-                            <option value="500000">500.000đ</option>
-                            <option value="1000000">1.000.000đ</option>
-                            <option value="1000001">Lớn hơn 1.000.000đ</option>
+                            <option value="100000" ${max == 100000 ? 'selected' : ''}>100.000đ</option>
+                            <option value="200000" ${min == 200000 ? 'selected' : ''}>200.000đ</option>
+                            <option value="500000" ${min == 500000 ? 'selected' : ''}>500.000đ</option>
+                            <option value="1000000" ${min == 1000000 ? 'selected' : ''}>1.000.000đ</option>
+<%--                            <option value="1000001" >Lớn hơn 1.000.000đ</option>--%>
                         </select>
                     </div>
                 </div>
@@ -284,7 +283,7 @@
                         <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
                             <div class="card border-0 rounded-0 shadow">
 
-                                <img src="/images/product/${product.name}/${product.productItem.get(0).image}"
+                                <img src="/images/product/${product.name}/${product.productVariant.get(0).image}"
                                      class="card-img-top rounded-0" alt="...">
                                 <div class="card-body mt-1 mb-1">
                                     <div class="row">
@@ -307,13 +306,13 @@
                                     </div>
                                     <div class="row align-items-center text-center g-0">
                                         <div class="text-black mt-2 mb-2">
-                                            <h5><fmt:formatNumber value="${product.productItem.get(0).price}" type="number"/> VNĐ</h5>
+                                            <h5><fmt:formatNumber value="${product.productVariant.get(0).price}" type="number"/> VNĐ</h5>
                                         </div>
                                         <div>
-                                            <c:if test="${product.productItem.get(0).quantity >= 1}">
-                                            <a href="/cart/add-product-item-in-cart/${product.productItem.get(0).id}" class="ADD-btn p-3 rounded-0 " >Thêm vào giỏ hàng</a>
+                                            <c:if test="${product.productVariant.get(0).quantity >= 1}">
+                                            <a href="/cart/add-product-item-in-cart/${product.productVariant.get(0).id}" class="ADD-btn p-3 rounded-0 " >Thêm vào giỏ hàng</a>
                                             </c:if>
-                                            <c:if test="${product.productItem.get(0).quantity < 1}">
+                                            <c:if test="${product.productVariant.get(0).quantity < 1}">
                                                 <a href="#" class="ADD-btn p-3 rounded-0 " >Liên hệ</a>
 
                                             </c:if>

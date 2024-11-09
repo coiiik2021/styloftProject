@@ -4,8 +4,6 @@ package org.sale.project.service;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.sale.project.entity.Product;
-import org.sale.project.entity.ProductItem;
 import org.sale.project.entity.Size;
 import org.sale.project.repository.SizeRepository;
 import org.springframework.data.domain.Page;
@@ -43,7 +41,7 @@ public class SizeService {
         return sizeRepository.findAll(pageable);
     }
 
-    public Size findByProductId(String productId) {
-        return sizeRepository.findByProductItemsId(productId);
-    }
+//    public Size findByProductId(String productId) {
+//        return sizeRepository.findByProducVariantsId(productId);
+//    }
 }

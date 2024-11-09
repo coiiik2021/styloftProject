@@ -25,36 +25,29 @@
                                                 <tr>
                                                     <th scope="col">Name</th>
                                                     <th scope="col">Email</th>
-                                                    <th scope="col">Phone</th>
-                                                    <th scope="col">Address</th>
-                                                    <th scope="col">Sex</th>
-                                                    <th scope="col">BirthDay</th>
                                                     <th scope="col" style="text-align: center">Action</th>
 
 
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <c:forEach var="user" items="${users}">
+                                                <c:forEach var="account" items="${accounts}">
 
                                                     <tr>
-                                                        <th scope="row">${user.name}</th>
-                                                        <td>${user.email}</td>
-                                                        <td>${user.phoneNumber}</td>
-                                                        <td>${user.address}</td>
-                                                        <td>${user.sex == 1 ? 'Nam' : 'Nữ'}</td>
-                                                        <td>${user.birthDay}</td>
+                                                        <th scope="row">${account.user.name}</th>
+                                                        <td>${account.email}</td>
+
 
 
 
 
                                                         <td style="text-align: center">
-                                                            <a href="/admin/user/${user.id}"
+                                                            <a href="/admin/user/${account.user.id}"
                                                                 class="btn btn-success">View</a>
 
 
-                                                            <a href="/admin/user/delete/${user.id}"
-                                                                class="btn btn-danger">delete</a>
+<%--                                                            <a href="/admin/user/delete/${user.id}"--%>
+<%--                                                                class="btn btn-danger">delete</a>--%>
 
                                                             <!-- <form action = "/admin/user/delete/${user.id}" method = "post" onsubmit="return submitDelete(); ">
                                            <button type="button">  delete</button>
@@ -68,6 +61,7 @@
 
 
                                         </table>
+                                        <c:if test="${totalPages > 1}">
 
                                         <nav aria-label="Page navigation example">
                                             <ul class="pagination justify-content-center">
@@ -97,7 +91,7 @@
                                                 </li>
                                             </ul>
                                         </nav>
-
+                                        </c:if>
                                     </div>
 
                                 </div>

@@ -31,7 +31,7 @@ public class Product {
     Category category;
 
     @OneToMany(mappedBy = "product")
-    List<ProductItem> productItem;
+    List<ProductVariant> productVariant;
 
     boolean status;
 

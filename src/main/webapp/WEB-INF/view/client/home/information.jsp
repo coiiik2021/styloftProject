@@ -64,16 +64,31 @@
         <h2 class="mb-4">Thông tin tài khoản</h2>
         <form:form action="/account/update-information"  enctype="multipart/form-data" method="post" modelAttribute="user">
           <div class="row mb-3">
+            <c:set var="errorName">
+              <form:errors path="name" cssClass="invalid-feedback" />
+            </c:set>
+            <c:set var="erroPhone">
+              <form:errors path="phoneNumber" cssClass="invalid-feedback" />
+            </c:set>
+            <c:set var="errorBirthDay">
+              <form:errors path="birthDay" cssClass="invalid-feedback" />
+            </c:set>
 
             <div class="col-md-6">
               <label for="fullName" class="form-label">Họ và tên</label>
-              <form:input path="name" type="text" class="form-control" id="fullName" placeholder="Nguyễn Anh Dũng" />
+
+              <form:input path="name" type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="fullName" placeholder="Nguyễn Anh Dũng" />
+                ${errorName}
+
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="phone" class="form-label">Số điện thoại</label>
-              <form:input path="phoneNumber" type="text" class="form-control" id="phone" placeholder="0878888424" />
+
+              <form:input path="phoneNumber" type="text" class="form-control ${not empty erroPhone ? 'is-invalid' : ''}" id="phone" placeholder="0878888424" />
+                ${erroPhone}
+
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -100,14 +115,16 @@
           <div class="row mb-4">
             <div class="col-md-6">
               <label for="dob" class="form-label">Ngày sinh</label>
-              <form:input path="birthDay" type="date" class="form-control" id="dob" />
+              <form:input path="birthDay" type="date" class="form-control ${not empty errorBirthDay ? 'is-invalid' : ''}" id="dob" />
+                ${errorBirthDay}
+
             </div>
           </div>
           <h4 class="mb-3">Thông tin đăng nhập</h4>
           <div class="row mb-4">
             <div class="col-md-6">
               <label for="email" class="form-label">Email</label>
-              <form:input path="email" disabled="true" type="email" class="form-control" id="email"  placeholder="test@gm.com" />
+              <input path="email" disabled type="email" class="form-control" id="email"  value="${email}">
             </div>
           </div>
           <button type="submit" class="btn btn-save">Lưu thông tin</button>

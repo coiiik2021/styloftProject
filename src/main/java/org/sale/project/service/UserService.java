@@ -4,8 +4,10 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
 import lombok.experimental.FieldDefaults;
+import org.sale.project.entity.Account;
 import org.sale.project.entity.User;
 import org.sale.project.mapper.UserMapper;
+import org.sale.project.repository.AccountRepository;
 import org.sale.project.repository.RoleRepository;
 import org.sale.project.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -24,6 +26,8 @@ public class UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    AccountRepository accountRepository;
+
     private final RoleRepository roleRepository;
 
     public List<User> findAll() {
@@ -43,15 +47,16 @@ public class UserService {
     }
 
     public User saveUser(User user) {
-        if(userRepository.findByEmail(user.getEmail()) != null){
-            user.setRole(roleRepository.findByName("USER"));
+        if(userRepository.findByAccount(user.getAccount()) != null){
+            user.getAccount().setRole(roleRepository.findByName("USER"));
+            accountRepository.save(user.getAccount());
             return userRepository.save(user);
         }
         return null;
     }
 
     public Optional<User> findByEmail(String email) {
-        return userRepository.findByEmail(email);
+        return userRepository.findByAccount(accountRepository.findByEmail(email).get());
     }
 
     public int countUser() {
@@ -59,21 +64,32 @@ public class UserService {
     }
 
     public User findUserByEmail(String email) {
-        Optional<User> user = userRepository.findByEmail(email);
-        return user.orElse(null);
+        Optional<User> userOptional = userRepository.findByAccount(accountRepository.findByEmail(email).get());
+        User user = userOptional.orElse(null);
+        if(user == null){
+            user = saveUser(User.builder().account(accountRepository.findByEmail(email).get()).build());
+        }
+        return user;
     }
 
     public void updateUser(String email, User userUpdate) {
+        Optional<User> userOptional = userRepository.findByAccount(accountRepository.findByEmail(email).get());
 
-        Optional<User> userOptional = userRepository.findByEmail(email);
         User user = new User();
         if (userOptional.isPresent()) {
             user = userOptional.get();
-        } else {
-            return;
         }
         userMapper.updateUser(user, userUpdate);
-        userRepository.save(user);
+
+        Account account = accountRepository.findByEmail(email).get();
+
+        user.setAccount(account);
+
+        user = userRepository.save(user);
+
+        account.setUser(user);
+
+        accountRepository.save(user.getAccount());
     }
 
 

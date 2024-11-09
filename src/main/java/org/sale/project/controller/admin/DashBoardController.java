@@ -3,6 +3,7 @@ package org.sale.project.controller.admin;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.sale.project.service.AccountService;
 import org.sale.project.service.OrderService;
 import org.sale.project.service.ProductService;
 import org.sale.project.service.UserService;
@@ -20,9 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 public class DashBoardController {
 
-    UserService userService;
     ProductService productService;
     OrderService orderService;
+    AccountService accountService;
 
 
     @GetMapping
@@ -34,7 +35,7 @@ public class DashBoardController {
         model.addAttribute("months", months);
         model.addAttribute("revenues", orderService.totalRevenueInMonth());
         model.addAttribute("totalRevenue", orderService.totalRevenue());
-        model.addAttribute("totalUser", userService.countUser());
+        model.addAttribute("totalAccount", accountService.countAccount());
         model.addAttribute("totalProduct", productService.countProduct());
         model.addAttribute("totalOrder", orderService.countOrder());
 

@@ -53,7 +53,6 @@ public class CartController {
                                        HttpServletRequest request){
         int quantity = Integer.parseInt(quantityOptional.orElse("1"));
 
-
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         cartService.addProductToCart(email, id, quantity, session);

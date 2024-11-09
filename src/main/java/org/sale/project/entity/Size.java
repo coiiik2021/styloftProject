@@ -23,7 +23,7 @@ public class Size {
     String description;
 
     @OneToMany(mappedBy = "size")
-    List<ProductItem> productItems;
+    List<ProductVariant> productVariants;
 
 
 }

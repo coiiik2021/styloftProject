@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Product;
-import org.sale.project.entity.ProductItem;
+import org.sale.project.entity.ProductVariant;
 import org.sale.project.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,12 +21,12 @@ import java.util.Optional;
 @RequestMapping("/admin/item")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProductItemController {
+public class ProductVariantController {
 
     ProductService productService;
     ColorService colorService;
     SizeService sizeService;
-    ProductItemService productItemService;
+    ProductVariantService productVariantService;
     UploadService uploadService;
 
     @GetMapping
@@ -41,9 +41,9 @@ public class ProductItemController {
         }
 
         Pageable pageable = PageRequest.of(page-1, 4);
-        Page<ProductItem> pItem = productItemService.findAll(pageable);
-        List<ProductItem> items = pItem.getContent();
-        model.addAttribute("productItems", items);
+        Page<ProductVariant> pItem = productVariantService.findAll(pageable);
+        List<ProductVariant> items = pItem.getContent();
+        model.addAttribute("productVariants", items);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pItem.getTotalPages());
         return "/admin/item/show";
@@ -51,7 +51,7 @@ public class ProductItemController {
 
     @GetMapping("/create")
     public String getPageCreate(Model model) {
-        model.addAttribute("newItem", new ProductItem());
+        model.addAttribute("newItem", new ProductVariant());
         model.addAttribute("colors", colorService.findAll());
         model.addAttribute("sizes", sizeService.findAll());
         model.addAttribute("products", productService.findAll());
@@ -59,17 +59,22 @@ public class ProductItemController {
     }
 
     @PostMapping("/create")
-    public String createProductItem(@ModelAttribute("newItem") ProductItem productItem,
+    public String createProductItem(@ModelAttribute("newItem") ProductVariant productVariant,
                                     @RequestParam("imageItem") MultipartFile imageItem)  {
-        String img = uploadService.uploadImage(imageItem, "/product/" + productItem.getProduct().getName());
+        String img;
+        if(imageItem.isEmpty() || productVariantService.checkExistsByColorAndProduct(productVariant)){
+            img = productVariantService.getImage(productVariant);
+        } else {
+            img = uploadService.uploadImage(imageItem, "/product/" + productVariant.getProduct().getName());
+        }
 
-        productItem.setImage(img);
+        productVariant.setImage(img);
 
-        productItem.setColor(colorService.findByName(productItem.getColor().getName()));
-        productItem.setSize(sizeService.findByName(productItem.getSize().getName()));
-        productItem.setProduct(productService.findByProductName(productItem.getProduct().getName()));
+        productVariant.setColor(colorService.findByName(productVariant.getColor().getName()));
+        productVariant.setSize(sizeService.findByName(productVariant.getSize().getName()));
+        productVariant.setProduct(productService.findByProductName(productVariant.getProduct().getName()));
 
-        productItemService.saveProductItem(productItem);
+        productVariantService.saveProductItem(productVariant);
 
         return "redirect:/admin/item";
 
@@ -77,7 +82,7 @@ public class ProductItemController {
 
     @GetMapping("/delete/{id}")
     public String deleteProductItem(@PathVariable("id") String id) {
-        productItemService.deleteProductItem(id);
+        productVariantService.deleteProductItem(id);
         return "redirect:/admin/item";
     }
 
@@ -88,29 +93,29 @@ public class ProductItemController {
         model.addAttribute("colors", colorService.findAll());
         model.addAttribute("sizes", sizeService.findAll());
         model.addAttribute("products", productService.findAll());
-        model.addAttribute("item", productItemService.findById(id));
+        model.addAttribute("item", productVariantService.findById(id));
         return "/admin/item/update";
     }
 
     @PostMapping("/update")
-    public String updateProductItem(@ModelAttribute("item") ProductItem productItem,
+    public String updateProductItem(@ModelAttribute("item") ProductVariant productVariant,
                                     @RequestParam("imageItem") MultipartFile imageItem) {
 
-        ProductItem prd = productItemService.findById(productItem.getId());
+        ProductVariant prd = productVariantService.findById(productVariant.getId());
 
 
-            if(!imageItem.isEmpty() && (prd.getImage() == null || !prd.getImage().contains(imageItem.getOriginalFilename())) ){
-                String img = uploadService.uploadImage(imageItem, "/product/" + productItem.getProduct().getName());
+        if(!imageItem.isEmpty() && (prd.getImage() == null || !prd.getImage().contains(imageItem.getOriginalFilename())) ){
+                String img = uploadService.uploadImage(imageItem, "/product/" + productVariant.getProduct().getName());
 
-                productItemService.updateAllImage(productItem, img);
-            }
+                productVariantService.updateAllImage(productVariant, img);
+        }
 
-        prd.setColor(colorService.findByName(productItem.getColor().getName()));
-        prd.setSize(sizeService.findByName(productItem.getSize().getName()));
-        prd.setQuantity(productItem.getQuantity());
-        prd.setPrice(productItem.getPrice());
-        prd.setProduct(productService.findByProductName(productItem.getProduct().getName()));
-        productItemService.saveProductItem(prd);
+        prd.setColor(colorService.findByName(productVariant.getColor().getName()));
+        prd.setSize(sizeService.findByName(productVariant.getSize().getName()));
+        prd.setQuantity(productVariant.getQuantity());
+        prd.setPrice(productVariant.getPrice());
+        prd.setProduct(productService.findByProductName(productVariant.getProduct().getName()));
+        productVariantService.saveProductItem(prd);
         return "redirect:/admin/item";
     }
 
@@ -121,14 +126,16 @@ public class ProductItemController {
             return "redirect:/admin/item";
         }
         List<Product> products = productService.findAll(nameProduct);
+        System.out.println("products: " + products.size());
 
         Pageable pageable = PageRequest.of(0, 4);
 
-        Page<ProductItem> itemPage = productItemService.findByProduct(products, pageable);
-        List<ProductItem> items = itemPage.getContent();
+        Page<ProductVariant> itemPage = productVariantService.findByProduct(products, pageable);
+        List<ProductVariant> items = itemPage.getContent();
+        System.out.println("items: " + itemPage.getContent().size());
 
 
-        model.addAttribute("productItems", items);
+        model.addAttribute("productVariants", items);
         model.addAttribute("currentPage", 1);
         model.addAttribute("totalPages", itemPage.getTotalPages());
         return "/admin/item/show";

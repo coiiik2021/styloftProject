@@ -2,7 +2,7 @@ package org.sale.project.repository;
 
 
 import org.sale.project.entity.Color;
-import org.sale.project.entity.ProductItem;
+import org.sale.project.entity.ProductVariant;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +16,6 @@ public interface ColorRepository extends JpaRepository<Color, String>, JpaSpecif
     Color findByName(String name);
     Page<Color> findAll(Pageable pageable);
 
-    List<Color> findAllColorByProductItems(ProductItem productItem);
+    List<Color> findAllByProductVariants(ProductVariant productVariant);
 
 }

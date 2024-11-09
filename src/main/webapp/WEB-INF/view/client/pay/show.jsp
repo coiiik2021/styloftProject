@@ -90,13 +90,13 @@
         </c:set>
 
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-        <div class="mb-3">
-          <label for="email" class="form-label">Email</label>
-          <div class="input-group" >
-            <span class="input-group-text"><i class="ri-mail-send-line"></i></span>
-            <form:input path="email" type="email" class="form-control py-3" id="email" disabled="true" name="email" />
-          </div>
-        </div>
+<%--        <div class="mb-3">--%>
+<%--          <label for="email" class="form-label">Email</label>--%>
+<%--          <div class="input-group" >--%>
+<%--            <span class="input-group-text"><i class="ri-mail-send-line"></i></span>--%>
+<%--            <input type="email" class="form-control py-3" id="email"  name="email" value="${email}" />--%>
+<%--          </div>--%>
+<%--        </div>--%>
 
         <div class="mb-3">
           <label for="Username" class="form-label">Họ và tên</label>
@@ -162,13 +162,13 @@
       <div class="border p-3 mb-4">
         <c:forEach items="${items}" var="item">
           <div class="d-flex mb-3">
-            <img src="/images/product/${item.productItem.product.name}/${item.productItem.image}" class="img-fluid rounded me-3" alt="Product" style="width: 100px; height: 100px" />
+            <img src="/images/product/${item.productVariant.product.name}/${item.productVariant.image}" class="img-fluid rounded me-3" alt="Product" style="width: 100px; height: 100px" />
             <div>
-              <h6 class="fw-bold mb-1" style="width: 80%">${item.productItem.product.name}</h6>
+              <h6 class="fw-bold mb-1" style="width: 80%">${item.productVariant.product.name}</h6>
               <div class="mt-2">
-                <input style="display: none" name="totalPrice" value="${item.quantity * item.productItem.price + 30000}">
+                <input style="display: none" name="totalPrice" value="${item.quantity * item.productVariant.price + 30000}">
                 <input type="text" class="form-control form-control-sm d-inline" style="width: 40px" value="${item.quantity}" disabled />
-                <span class="fw-bold ms-3 fs-5"><fmt:formatNumber type="number" value="${item.quantity * item.productItem.price}"/>₫</span>
+                <span class="fw-bold ms-3 fs-5"><fmt:formatNumber type="number" value="${item.quantity * item.productVariant.price}"/>₫</span>
               </div>
             </div>
           </div>

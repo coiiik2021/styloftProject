@@ -1,17 +1,14 @@
 package org.sale.project.service.spec;
 
 
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
-import org.sale.project.entity.ProductItem;
+import org.sale.project.entity.ProductVariant;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 
-public class ProductItemSpecification {
+public class ProductVariantSpecification {
 
-    public static Specification<ProductItem> hasCategory(List<String> categoryNames) {
+    public static Specification<ProductVariant> hasCategory(List<String> categoryNames) {
         return (root, query, criteriaBuilder) -> {
             if (categoryNames == null || categoryNames.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -21,7 +18,7 @@ public class ProductItemSpecification {
     }
 
 
-    public static Specification<ProductItem> hasColor(List<String> colors) {
+    public static Specification<ProductVariant> hasColor(List<String> colors) {
         return (root, query, criteriaBuilder) -> {
             if (colors == null || colors.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -30,7 +27,7 @@ public class ProductItemSpecification {
         };
     }
 
-    public static Specification<ProductItem> hasSize(List<String> sizes) {
+    public static Specification<ProductVariant> hasSize(List<String> sizes) {
         return (root, query, criteriaBuilder) -> {
             if (sizes == null || sizes.isEmpty()) {
                 return criteriaBuilder.conjunction();
@@ -39,7 +36,7 @@ public class ProductItemSpecification {
         };
     }
 
-    public static Specification<ProductItem> hasPriceBetween(Double minPrice, Double maxPrice) {
+    public static Specification<ProductVariant> hasPriceBetween(Double minPrice, Double maxPrice) {
         return (root, query,builder) -> {
             if (minPrice != null && maxPrice != null) {
                 return builder.between(root.get("price"), minPrice, maxPrice);

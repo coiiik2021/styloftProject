@@ -11,9 +11,9 @@
                             Dashboard
                         </a>
 
-                        <a class="nav-link" href="/admin/user">
+                        <a class="nav-link" href="/admin/account">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            User
+                            Account
                         </a>
 
                         <a class="nav-link" href="/admin/product">
@@ -27,7 +27,7 @@
                         </a>
                         <a class="nav-link" href="/admin/item">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                            Product Items
+                            Product Variant
                         </a>
 
                         <a class="nav-link" href="/admin/size">

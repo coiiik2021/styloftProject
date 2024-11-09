@@ -49,12 +49,12 @@
           <c:forEach items="#{items}" var="item">
           <tr>
             <td>
-              <a href="/product/detail/${item.productItem.product.id}">
+              <a href="/product/detail/${item.productVariant.product.id}">
               <div class="d-flex align-items-center">
-                <img src="/images/product/${item.productItem.product.name}/${item.productItem.image}" class="img-fluid" style="width: 80px; height: 80px;" alt="Hình ảnh sản phẩm">
+                <img src="/images/product/${item.productVariant.product.name}/${item.productVariant.image}" class="img-fluid" style="width: 80px; height: 80px;" alt="Hình ảnh sản phẩm">
                 <div class="ms-3 text-start" style="color: #000;">
-                  <p class="mb-1">${item.productItem.product.name}</p>
-                  <small style="color: #000;">Màu: ${item.productItem.color.name} / Kích cỡ: ${item.productItem.size.name}</small>
+                  <p class="mb-1">${item.productVariant.product.name}</p>
+                  <small style="color: #000;">Màu: ${item.productVariant.color.name} / Kích cỡ: ${item.productVariant.size.name}</small>
                 </div>
               </div>
               </a>
@@ -62,16 +62,16 @@
             <td>
               <div class="input-group mx-auto" style="width: 140px; align-content: center">
                 <a class="btn btn-outline-secondary" type="button" href="/cart/updateDown/${item.id}">-</a>
-                <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="${item.productItem.quantity}" readonly style="width: 40px;">
-                <c:if test="${item.quantity < item.productItem.quantity}">
+                <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="${item.productVariant.quantity}" readonly style="width: 40px;">
+                <c:if test="${item.quantity < item.productVariant.quantity}">
                 <a class="btn btn-outline-secondary" type="button" href="/cart/updateUp/${item.id}">+</a>
                 </c:if>
               </div>
             </td>
 
-            <td style="color: #000;"><fmt:formatNumber type="number" value="${item.productItem.price}"/> đ</td>
+            <td style="color: #000;"><fmt:formatNumber type="number" value="${item.productVariant.price}"/> đ</td>
             <td style="color: #000;">
-              <fmt:formatNumber type="number" value="${item.productItem.price * item.quantity}"/> đ
+              <fmt:formatNumber type="number" value="${item.productVariant.price * item.quantity}"/> đ
             </td>
             <td style="display: flex; justify-content: center; align-items: center;">
               <form method="get" action="/cart/delete-item-in-cart/${item.id}">

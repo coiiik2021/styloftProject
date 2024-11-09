@@ -42,7 +42,7 @@
                                 <tbody>
                                 <c:forEach var="detail" items="${details}">
                                     <tr>
-                                        <td>${detail.productItem.product.name}</td>
+                                        <td>${detail.productVariant.product.name}</td>
                                         <td style="text-align: center;">${detail.quantity}</td>
                                         <td style="text-align: center;">${detail.price} VNĐ</td>
                                     </tr>

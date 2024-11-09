@@ -6,12 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Cart;
 import org.sale.project.entity.CartItem;
-import org.sale.project.entity.ProductItem;
+import org.sale.project.entity.ProductVariant;
 import org.sale.project.entity.User;
-import org.sale.project.repository.CartItemRepository;
-import org.sale.project.repository.CartRepository;
-import org.sale.project.repository.ProductItemRepository;
-import org.sale.project.repository.UserRepository;
+import org.sale.project.repository.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,7 +23,8 @@ public class CartService {
     CartRepository cartRepository;
     CartItemRepository cartItemRepository;
     UserRepository userRepository;
-    ProductItemRepository productItemRepository;
+    ProductVariantRepository productVariantRepository;
+    AccountRepository accountRepository;
 
     public Cart findCartByUser(User user){
         return cartRepository.findByUser(user);
@@ -35,7 +33,7 @@ public class CartService {
 
     public void addProductToCart(String email, String product_item_id, int quantity, HttpSession session){
 
-        Optional<User> user = userRepository.findByEmail(email);
+        Optional<User> user = userRepository.findByAccount(accountRepository.findByEmail(email).get());
         if(user.isPresent()){
             Cart cart = findCartByUser(user.get());
             if(cart == null){
@@ -47,13 +45,13 @@ public class CartService {
                 userRepository.save(user.get());
             }
 
-            Optional<ProductItem> items = productItemRepository.findById(product_item_id);
+            Optional<ProductVariant> items = productVariantRepository.findById(product_item_id);
             if(items.isPresent()){
-                CartItem cartItem = cartItemRepository.findByCartAndProductItem(cart, items.get());
+                CartItem cartItem = cartItemRepository.findByCartAndProductVariant(cart, items.get());
                 if(cartItem == null){
                     cartItem = new CartItem();
                     cartItem.setCart(cart);
-                    cartItem.setProductItem(items.get());
+                    cartItem.setProductVariant(items.get());
                     cartItem.setQuantity(quantity);
                     session.setAttribute("sum", (Integer)session.getAttribute("sum") + 1);
                 } else{
@@ -82,7 +80,7 @@ public class CartService {
         }
         double total = 0;
         for(CartItem item : items){
-            total += item.getProductItem().getPrice() * item.getQuantity();
+            total += item.getProductVariant().getPrice() * item.getQuantity();
         }
         return total;
     }

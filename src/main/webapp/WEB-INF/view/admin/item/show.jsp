@@ -39,21 +39,21 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="productItem" items="${productItems}">
+                                <c:forEach var="productVariant" items="${productVariants}">
                                     <tr style="text-align: center; vertical-align: middle; ">
-                                        <th scope="row">${productItem.product.name}</th>
-                                        <td>${productItem.color.name}</td>
-                                        <td>${productItem.size.name}</td>
-                                        <td>${productItem.quantity}</td>
+                                        <th scope="row">${productVariant.product.name}</th>
+                                        <td>${productVariant.color.name}</td>
+                                        <td>${productVariant.size.name}</td>
+                                        <td>${productVariant.quantity}</td>
 
-                                        <td>${productItem.price}</td>
+                                        <td>${productVariant.price}</td>
                                         <td style="text-align: center">
-                                            <img src="/images/product/${productItem.product.name}/${productItem.image}" alt="${productItem.product.name}" style="width: 100px; height: auto;">
+                                            <img src="/images/product/${productVariant.product.name}/${productVariant.image}" alt="${productVariant.product.name}" style="width: 100px; height: auto;">
                                         </td>
 
                                         <td style="text-align: center">
-                                            <a href="/admin/item/update/${productItem.id}" class="btn btn-warning">Update</a>
-                                            <a href="/admin/item/delete/${productItem.id}" class="btn btn-danger">Delete</a>
+                                            <a href="/admin/item/update/${productVariant.id}" class="btn btn-warning">Update</a>
+                                            <a href="/admin/item/delete/${productVariant.id}" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

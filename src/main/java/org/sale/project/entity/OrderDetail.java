@@ -17,8 +17,8 @@
         String id;
 
         @ManyToOne
-        @JoinColumn(name = "productItem_Id")
-        ProductItem productItem;
+        @JoinColumn(name = "product_variant_id")
+        ProductVariant productVariant;
 
         @ManyToOne
         @JoinColumn(name = "order_Id")

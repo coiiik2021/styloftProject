@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Product;
 import org.sale.project.service.CategoryService;
-import org.sale.project.service.ProductItemService;
+import org.sale.project.service.ProductVariantService;
 import org.sale.project.service.ProductService;
 
 import org.springframework.data.domain.Page;
@@ -30,7 +30,7 @@ public class ProductController {
     CategoryService categoryService;
     ProductService productService;
     // UploadService uploadService;
-    ProductItemService productItemService;
+    ProductVariantService productVariantService;
 
     @GetMapping
     public String getPageProduct(Model model, @RequestParam("page") Optional<String> pageOptional) {

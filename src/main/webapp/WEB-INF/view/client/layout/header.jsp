@@ -72,11 +72,77 @@
                     </li>
                     <li>
                         <div class="container-fluid">
-                            <form class="d-flex" role="search" action="/product" method="get">
-                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
+                            <form class="d-flex position-relative" role="search" action="/product" method="get">
+                                <input class="form-control me-2" type="search" id="itemInput" placeholder="Search" aria-label="Search" name="name" autocomplete="off" value="${sessionScope.nameSearch}">
+
+                                <!-- Div để hiển thị danh sách kết quả tìm kiếm -->
+                                <div id="itemList" style="position: absolute; background: white; border: 1px solid #ddd; max-height: 200px; overflow-y: auto; width: calc(100% - 40px); z-index: 1000; top: 100%; left: 0;"></div>
+
                                 <button class="btn btn-outline bg-orange" type="submit"><i class="ri-search-line"></i></button>
                             </form>
                         </div>
+
+                        <script>
+                            let allItems = []; // Mảng chứa toàn bộ danh sách từ server
+
+                            // Lấy danh sách từ server khi input được focus lần đầu tiên
+                            document.getElementById('itemInput').addEventListener('focus', function() {
+                                if (allItems.length === 0) { // Chỉ tải một lần duy nhất
+                                    fetch('/search')
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            allItems = data; // Lưu toàn bộ danh sách vào mảng
+                                            showItemList(''); // Hiển thị toàn bộ danh sách khi người dùng lần đầu nhấp vào input
+                                        })
+                                        .catch(error => {
+                                            console.error('Error fetching items:', error);
+                                        });
+                                } else {
+                                    showItemList(''); // Hiển thị toàn bộ danh sách khi đã tải dữ liệu
+                                }
+                            });
+
+                            // Lọc và hiển thị danh sách khi người dùng nhập vào input
+                            document.getElementById('itemInput').addEventListener('input', function() {
+                                const query = this.value.toLowerCase(); // Lấy giá trị người dùng nhập vào và chuyển thành chữ thường
+                                showItemList(query); // Cập nhật danh sách dựa trên từ khóa
+                            });
+
+                            // Hàm hiển thị danh sách
+                            function showItemList(query) {
+                                const filteredItems = allItems.filter(item => item.toLowerCase().includes(query)); // Lọc danh sách dựa trên từ khóa
+
+                                // Hiển thị danh sách đã lọc
+                                const itemList = document.getElementById('itemList');
+                                itemList.innerHTML = ''; // Xóa nội dung cũ
+
+                                filteredItems.forEach(item => {
+                                    const itemElement = document.createElement('div');
+                                    itemElement.textContent = item;
+                                    itemElement.style.padding = '8px';
+                                    itemElement.style.cursor = 'pointer';
+
+                                    // Thêm sự kiện click để chọn item
+                                    itemElement.addEventListener('click', function() {
+                                        document.getElementById('itemInput').value = item;
+                                        itemList.innerHTML = ''; // Ẩn danh sách sau khi chọn
+                                    });
+
+                                    itemList.appendChild(itemElement);
+                                });
+                            }
+
+                            // Ẩn danh sách khi click ra ngoài
+                            document.addEventListener('click', function(event) {
+                                const itemList = document.getElementById('itemList');
+                                const itemInput = document.getElementById('itemInput');
+
+                                if (!itemInput.contains(event.target) && !itemList.contains(event.target)) {
+                                    itemList.innerHTML = ''; // Xóa danh sách khi click ra ngoài
+                                }
+                            });
+                        </script>
+
                     </li>
                 </ul>
             </nav>

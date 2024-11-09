@@ -22,12 +22,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     String Id;
 
-    @Email(message = "Email is in valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
-    String email;
-
-    @Size(min = 5, message = "password phải dài hơn 5 kí tự")
-    String password;
-
     @Size(min = 1, message = "Tên không được để trống")
     String name;
 
@@ -36,23 +30,27 @@ public class User {
 
     @Size(min = 1, message = "Địa chỉ không được để trống")
     String address;
-
     int sex;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Past(message = "Ngày sinh phải là một ngày trong quá khứ")
     LocalDate birthDay;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    Role role;
+
 
     @OneToOne
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     Cart cart;
 
+    @OneToOne
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    Account account;
+
     @OneToMany(mappedBy = "user")
     List<Order> orders;
+
+    @OneToMany(mappedBy = "user")
+    List<HistorySearch> historySearches;
 
 }

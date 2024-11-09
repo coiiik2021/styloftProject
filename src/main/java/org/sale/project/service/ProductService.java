@@ -4,13 +4,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Product;
-import org.sale.project.entity.ProductItem;
+import org.sale.project.entity.ProductVariant;
 import org.sale.project.repository.CategoryRepository;
-import org.sale.project.repository.ProductItemRepository;
+import org.sale.project.repository.ProductVariantRepository;
 import org.sale.project.repository.ProductRepository;
-import org.sale.project.service.spec.ProductItemSpecification;
+import org.sale.project.service.spec.ProductVariantSpecification;
 import org.sale.project.service.spec.ProductSpec;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +17,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -26,7 +24,7 @@ import java.util.stream.Collectors;
 public class ProductService {
 
     ProductRepository productRepository;
-    ProductItemRepository productItemRepository;
+    ProductVariantRepository productVariantRepository;
     CategoryRepository categoryRepository;
     UploadService uploadService;
 
@@ -40,6 +38,9 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product) {
+
+
+
         return productRepository.save(product);
     }
 
@@ -73,13 +74,13 @@ public class ProductService {
 
     public Page<Product> filterProducts(List<String> categories, List<String> colors, List<String> sizes, double min,
             double max, Pageable pageable) {
-        Specification<ProductItem> specification = Specification
-                .where(ProductItemSpecification.hasCategory(categories))
-                .and(ProductItemSpecification.hasColor(colors))
-                .and(ProductItemSpecification.hasSize(sizes))
-                .and(ProductItemSpecification.hasPriceBetween(min, max));
+        Specification<ProductVariant> specification = Specification
+                .where(ProductVariantSpecification.hasCategory(categories))
+                .and(ProductVariantSpecification.hasColor(colors))
+                .and(ProductVariantSpecification.hasSize(sizes))
+                .and(ProductVariantSpecification.hasPriceBetween(min, max));
 
-        Page<ProductItem> productItemsPage = productItemRepository.findAll(specification, pageable);
+        Page<ProductVariant> productItemsPage = productVariantRepository.findAll(specification, pageable);
 
         Set<Product> uniqueProducts = new HashSet<>();
         productItemsPage.forEach(productItem -> uniqueProducts.add(productItem.getProduct()));
