@@ -27,6 +27,6 @@ public class FacebookLogin {
     public static FacebookAccount getUserInfo(final String accessToken) throws ClientProtocolException, IOException {
         String link = FaceTant.FACEBOOK_LINK_GET_USER_INFO + accessToken;
         String response = Request.Get(link).execute().returnContent().asString();
-        return new Gson().fromJson(response, FacebookAccount .class);
+        return new Gson().fromJson(response, FacebookAccount.class);
     }
 }

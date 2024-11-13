@@ -96,6 +96,7 @@ public class OrderService {
         orderRepository.save(order);
 
         List<OrderDetail> detail = new ArrayList<>();
+        System.out.println(user.getCart().getCartItems().size());
         for(CartItem item : user.getCart().getCartItems()){
             OrderDetail orderDetail = new OrderDetail();
             orderMapper.updateOrder(orderDetail, item);
@@ -105,13 +106,16 @@ public class OrderService {
             orderDetailRepository.save(orderDetail);
 
             item.getProductVariant().setQuantity(Math.max(item.getProductVariant().getQuantity() - item.getQuantity(), 0));
+
             productVariantRepository.save(item.getProductVariant());
             cartItemRepository.delete(item);
             detail.add(orderDetail);
 
         }
+        System.out.println(">>>size detail"+detail.size());
 
         order.setDetails(detail);
+        System.out.println(order.getDetails().size());
 
         order = orderRepository.save(order);
 

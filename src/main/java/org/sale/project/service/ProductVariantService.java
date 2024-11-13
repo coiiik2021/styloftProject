@@ -10,11 +10,13 @@ import org.sale.project.mapper.ProductVariantMapper;
 import org.sale.project.repository.ColorRepository;
 import org.sale.project.repository.ProductVariantRepository;
 import org.sale.project.repository.ProductRepository;
+import org.sale.project.repository.SizeRepository;
 import org.sale.project.service.spec.ProductVariantSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +31,7 @@ public class ProductVariantService {
     ColorRepository colorRepository;
 
     ProductVariantMapper productVariantMapper;
+    private final SizeRepository sizeRepository;
 
     public List<ProductVariant> getAllProductItem(){
         return productVariantRepository.findAll();
@@ -43,6 +46,16 @@ public class ProductVariantService {
                 colorRepository.findByName(productVariant.getColor().getName()),
                 productRepository.findByName(productVariant.getProduct().getName())
         ).isEmpty();
+    }
+
+    public boolean checkExistsByColorAndProductAndSize(ProductVariant productVariant){
+        return
+                productVariantRepository.findByColorAndProductAndSize(
+                colorRepository.findByName(productVariant.getColor().getName()),
+                productRepository.findByName(productVariant.getProduct().getName()),
+                sizeRepository.findByName(productVariant.getSize().getName())
+        ) != null;
+
     }
 
     public String getImage(ProductVariant productVariant){

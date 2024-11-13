@@ -27,13 +27,13 @@
           <div class="row">
             <div class="col-md-6 col-12 mx-auto">
               <form:form action="/admin/item/create" method="post" enctype="multipart/form-data" modelAttribute="newItem" class="row">
-
+                  <p style="color: red">${errorProductVariantExists}</p>
 
                   <div class="mb-3 col-12 ">
                       <lable class ="form-label">Product </lable>
                       <form:select path="product.name" class="form-select mt-2" >
                           <c:forEach var="product" items="${products}">
-                              <option value="${product.name}">${product.name}</option>
+                              <option value="${product.name}" ${product.name == newItem.product.name ? 'selected' : ''}>${product.name}</option>
                           </c:forEach>
 
                       </form:select>
@@ -43,7 +43,7 @@
                       <lable class ="form-label">Color </lable>
                       <form:select path="color.name" class="form-select mt-2" >
                           <c:forEach var="color" items="${colors}">
-                              <option value="${color.name}">${color.name}</option>
+                              <option value="${color.name}" ${color.name == newItem.color.name ? 'selected' : ''}>${color.name}</option>
                           </c:forEach>
 
                       </form:select>
@@ -53,7 +53,7 @@
                       <lable class ="form-label">Size </lable>
                       <form:select path="size.name" class="form-select mt-2" >
                           <c:forEach var="size" items="${sizes}">
-                              <option value="${size.name}">${size.name}</option>
+                              <option value="${size.name}" ${size.name == newItem.size.name ? 'selected' : ''}>${size.name}</option>
                           </c:forEach>
 
                       </form:select>

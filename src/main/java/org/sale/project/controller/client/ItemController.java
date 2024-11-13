@@ -94,7 +94,8 @@ public class ItemController {
     @GetMapping("/detail/{id}")
     public String getPageDetailProduct(@PathVariable("id") String id, Model model,
             @RequestParam("size") Optional<String> sizeOptional,
-            @RequestParam("color") Optional<String> colorOptional) {
+            @RequestParam("color") Optional<String> colorOptional
+                                       ) {
 
         String size = sizeOptional.orElse("");
         String color = colorOptional.orElse("");
@@ -137,6 +138,12 @@ public class ItemController {
         model.addAttribute("item", selectedItem);
         model.addAttribute("colors", sortedColors);
         model.addAttribute("sizes", sortedSizes);
+        model.addAttribute("newFeedBackReview", new FeedBackReview());
+
+
+
+        // review
+
 
         return "/client/product/detail";
     }

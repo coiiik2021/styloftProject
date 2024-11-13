@@ -144,16 +144,21 @@
             <th scope="col">Ngày đặt</th>
             <th scope="col">Tình trạng</th>
             <th scope="col">Tổng tiền</th>
+            <th scope="col">Chi Tiết</th>
+
+
           </tr>
           </thead>
           <tbody>
           <c:forEach items="${orders}" var="order">
           <tr>
-            <td>#${order.id.substring(0, 5)}</td>
+
+            <td>  <a href="/order/${order.id}" > #${order.id.substring(0, 5)} </a></td>
 
             <td>${order.date}</td>
             <td>${order.status}</td>
             <td><fmt:formatNumber type="number" value="${order.total}" /> VND</td>
+            <td> <a href="/order/${order.id}" class = "btn btn-primary">Xem</a> </td>
           </tr>
           </c:forEach>
           </tbody>

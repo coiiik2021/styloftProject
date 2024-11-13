@@ -26,5 +26,12 @@
         int quantity;
         double price;
 
+        @OneToOne(cascade = CascadeType.ALL)
+        @JoinColumn(name="review_id")
+        @ToString.Exclude
+        @EqualsAndHashCode.Exclude
+        Review review;
+
+
 
     }

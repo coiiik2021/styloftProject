@@ -60,7 +60,19 @@ public class ProductVariantController {
 
     @PostMapping("/create")
     public String createProductItem(@ModelAttribute("newItem") ProductVariant productVariant,
-                                    @RequestParam("imageItem") MultipartFile imageItem)  {
+                                    @RequestParam("imageItem") MultipartFile imageItem,
+                                    Model model)  {
+
+        if(productVariantService.checkExistsByColorAndProductAndSize(productVariant)){
+            model.addAttribute("errorProductVariantExists", "Product variant already exists");
+            model.addAttribute("newItem", productVariant);
+            model.addAttribute("colors", colorService.findAll());
+            model.addAttribute("sizes", sizeService.findAll());
+            model.addAttribute("products", productService.findAll());
+            return "/admin/item/create";
+        }
+
+
         String img;
         if(imageItem.isEmpty() || productVariantService.checkExistsByColorAndProduct(productVariant)){
             img = productVariantService.getImage(productVariant);

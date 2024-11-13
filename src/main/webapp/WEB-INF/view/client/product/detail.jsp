@@ -9,6 +9,9 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="input" uri="http://www.springframework.org/tags/form" %>
+<%@ page import="org.sale.project.entity.FeedBackReview" %>
 
 <!doctype html>
 <html lang="en">
@@ -21,6 +24,14 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
 
   <title>Chi tiết sản phẩm</title>
+
+    <style>
+        /* CSS ẩn input ban đầu */
+        .input-container-feedback {
+            display: none;
+        }
+    </style>
+
 </head>
 <body>
 <jsp:include page="../layout/header.jsp" />
@@ -184,6 +195,7 @@
                                   <div class="col-6">
                                       <p class="mb-0">Name</p>
                                   </div>
+
                                   <div class="col-6">
                                       <p class="mb-0">
                                           <strong>${item.product.name}</strong>
@@ -229,49 +241,94 @@
                   </div>
               </div>
               <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                  <div class="d-flex">
-                      <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                      <div class="">
-                          <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                          <div class="d-flex justify-content-between">
-                              <h5>Jason Smith</h5>
-                              <div class="d-flex mb-3">
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star"></i>
+                  <c:forEach var="detail" items="${item.orderDetails}">
+                      <c:if test="${not empty detail.review}">
+                          <div class="d-flex">
+                              <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                              <div>
+                                  <p class="mb-2" style="font-size: 14px;">${detail.review.dateReview.toString()}</p>
+                                  <div class="d-flex justify-content-between">
+                                      <h5>${detail.order.user.name}</h5>
+                                      <div class="d-flex mb-3">
+                                          <c:forEach begin="1" end="${detail.review.star}">
+                                              <i class="fa fa-star text-secondary"></i>
+                                          </c:forEach>
+                                          <c:forEach begin="${detail.review.star + 1}" end="5">
+                                              <i class="fa fa-star"></i>
+                                          </c:forEach>
+
+                                      </div>
+                                  </div>
+                                  <p>${detail.review.description}</p>
                               </div>
+                              <c:if test="${sessionScope.isAdmin && empty detail.review.feedBackReview}">
+
+                              <!-- Nút "Trả lời" kèm theo hàm toggleInput với id duy nhất -->
+                                  <button class="btn btn-outline-primary btn-sm" onclick="toggleInput('inputContainer-${detail.id}')">Trả lời</button>
+
+                                  <!-- Input cho câu trả lời, ẩn ban đầu và có id duy nhất -->
+                                  <div class="mt-2" id="inputContainer-${detail.id}" style="display: none;">
+                                      <div class="input-group">
+                                          <%
+                                            FeedBackReview feedBackReview = new FeedBackReview();
+                                          %>
+                                          
+                                          <form:form action="/feedBack/create" modelAttribute="newFeedBackReview" method="post">
+
+                                              <div style="display: none">
+                                                  <label>
+                                                      <input type="text" value="${detail.review.id}" name = "idReview">
+                                                  </label>
+                                                  <label>
+                                                      <input type="text" value="${item.product.id}" name="idProduct">
+                                                  </label>
+                                              </div>
+
+
+
+                                          <label>
+                                              <input:input type="text" class="form-control" placeholder="Nhập câu trả lời của bạn" name="feedBackReview" path="description" />
+                                          </label>
+                                          <button class="btn btn-primary">Gửi</button>
+                                          </form:form>
+                                      </div>
+                                  </div>
+                              <script>
+                                  // Hàm hiển thị/ẩn input dựa vào id duy nhất
+                                  function toggleInput(id) {
+                                      const inputContainer = document.getElementById(id);
+                                      if (inputContainer.style.display === "none" || inputContainer.style.display === "") {
+                                          inputContainer.style.display = "block"; // Hiển thị phần input
+                                      } else {
+                                          inputContainer.style.display = "none"; // Ẩn phần input
+                                      }
+                                  }
+
+                                  // Hàm xử lý khi bấm nút "Gửi" (có thể thay đổi theo nhu cầu)
+
+                              </script>
+                              </c:if>
+
+
                           </div>
-                          <p>The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic
-                              words etc. Susp endisse ultricies nisi vel quam suscipit </p>
-                      </div>
-                  </div>
-                  <div class="d-flex">
-                      <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
-                      <div class="">
-                          <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                          <div class="d-flex justify-content-between">
-                              <h5>Sam Peters</h5>
-                              <div class="d-flex mb-3">
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star text-secondary"></i>
-                                  <i class="fa fa-star"></i>
-                                  <i class="fa fa-star"></i>
+                          <c:if test="${not empty detail.review.feedBackReview}">
+
+                              <div>
+                                  <p class="mb-2" style="font-size: 14px;">${detail.review.feedBackReview.date.toString()}</p>
+                                  <div class="d-flex justify-content-between">
+                                      <h5>Chủ Cửa hàng</h5>
+
+                                  </div>
+                                  <p>${detail.review.feedBackReview.description}</p>
                               </div>
-                          </div>
-                          <p class="text-dark">The generated Lorem Ipsum is therefore always free from repetition injected humour, or non-characteristic
-                              words etc. Susp endisse ultricies nisi vel quam suscipit </p>
-                      </div>
-                  </div>
+
+                          </c:if>
+                      </c:if>
+                  </c:forEach>
               </div>
-              <div class="tab-pane" id="nav-vision" role="tabpanel">
-                  <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et tempor sit. Aliqu diam
-                      amet diam et eos labore. 3</p>
-                  <p class="mb-0">Diam dolor diam ipsum et tempor sit. Aliqu diam amet diam et eos labore.
-                      Clita erat ipsum et lorem et sit</p>
-              </div>
+
+
+
           </div>
       </div>
   </div>

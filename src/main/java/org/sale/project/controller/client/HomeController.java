@@ -62,7 +62,7 @@ public class HomeController {
 
     @GetMapping("/register")
     public String getPageRegister(Model model) {
-        model.addAttribute("newUser", new User());
+        model.addAttribute("newUser", new Account());
         return "/client/auth/register";
     }
 
@@ -192,11 +192,11 @@ public class HomeController {
         System.out.println(fbAccount.toString());
 
 
-//        String email = fbAccount.getEmail();
-//
-//        String password = fbAccount.getEmail().substring(0, fbAccount.getEmail().indexOf("@"));
-//
-//        System.out.println(">>>>email: " + email + ", password: " + password);
+        String email = fbAccount.getEmail();
+
+        String password = fbAccount.getEmail().substring(0, fbAccount.getEmail().indexOf("@"));
+
+        System.out.println(">>>>email: " + email + ", password: " + password);
 
         return "/client/thank/show";
     }

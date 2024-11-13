@@ -19,4 +19,16 @@ public class OrderDetailService {
     public List<OrderDetail> findAllOrderDetailByOrderId(String orderId) {
         return orderDetailRepository.findByOrderId(orderId);
     }
+
+    public OrderDetail saveOrderDetail(OrderDetail orderDetail) {
+        return orderDetailRepository.save(orderDetail);
+    }
+
+
+
+
+    public OrderDetail findById(String id) {
+        return orderDetailRepository.findById(id).orElse(null);
+
+    }
 }
