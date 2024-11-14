@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -37,5 +38,9 @@ public class Product {
 
 //    String image;
 //    List<String> images;
+
+    public List<String> getTokens() {
+        return Arrays.asList((category.getName() + " " + name + " " + description).toLowerCase().split(" "));
+    }
 
 }

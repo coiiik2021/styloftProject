@@ -62,7 +62,7 @@
             <td>
               <div class="input-group mx-auto" style="width: 140px; align-content: center">
                 <a class="btn btn-outline-secondary" type="button" href="/cart/updateDown/${item.id}">-</a>
-                <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="${item.productVariant.quantity}" readonly style="width: 40px;">
+                  <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="${item.productVariant.quantity}" readonly style="width: 40px;">
                 <c:if test="${item.quantity < item.productVariant.quantity}">
                 <a class="btn btn-outline-secondary" type="button" href="/cart/updateUp/${item.id}">+</a>
                 </c:if>
@@ -101,6 +101,72 @@
         </c:if>
       </div>
     </div>
+
+
+
+    <hr/>
+
+    <c:if test="${not empty recommenderProducts}">
+    <h2>Những sản phẩm tương tự</h2>
+    <div class="row row-cols-4 g-4 mt-2">
+      <c:forEach items="${recommenderProducts}" var="product">
+        <c:if test="${not empty product.productVariant}">
+          <div class="col" style = "margin-right: 0; margin-left: 0;">
+            <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
+              <div class="card border-0 rounded-0 shadow">
+
+                <img src="/images/product/${product.name}/${product.productVariant.get(0).image}"
+                     class="card-img-top rounded-0" alt="...">
+                <div class="card-body mt-1 mb-1">
+                  <div class="row">
+                    <div class="col-10 gap-0">
+                      <h5 class="card-title text-primary text-primary">${product.name}</h5>
+                      <c:if test="${product.name.length() < 24}">
+                        <br/>
+                      </c:if>
+                      <p class="card-text">
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                        <i class="bi bi-star-fill text-warning"></i>
+                          <%--                                            ${product.productVariant.get(0).quantity}--%>
+                        (123)
+                      </p>
+                    </div>
+                    <div class="col-2">
+                      <i class="bi bi-bookmark-plus fs-3"></i>
+                    </div>
+                  </div>
+                  <div class="row align-items-center text-center g-0">
+                    <div class="text-primary mt-2 mb-2">
+                      <h5><fmt:formatNumber value="${product.productVariant.get(0).price}" type="number"/> VNĐ</h5>
+                    </div>
+                    <div>
+
+                      <c:if test="${product.productVariant.get(0).quantity >= 1}">
+                        <a href="/cart/add-product-item-in-cart/${product.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
+                      </c:if>
+                      <c:if test="${product.productVariant.get(0).quantity < 1}">
+                        <a href="#" class="btn w-100 p-3 rounded-0" >Liên hệ</a>
+
+                      </c:if>
+
+                        <%--                                        <a href="/cart/add-product-item-in-cart/${product.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0">ADD TO CART</a>--%>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </c:if>
+
+      </c:forEach>
+
+
+
+    </div>
+    </c:if>
+
   </div>
 </main>
 <jsp:include page="../layout/footer.jsp" />

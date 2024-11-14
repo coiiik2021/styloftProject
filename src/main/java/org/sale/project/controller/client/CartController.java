@@ -7,17 +7,18 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Cart;
 import org.sale.project.entity.CartItem;
+import org.sale.project.entity.Product;
 import org.sale.project.entity.User;
+import org.sale.project.recommender.RecommenderSystem;
 import org.sale.project.repository.CartItemRepository;
 import org.sale.project.service.CartService;
+import org.sale.project.service.ProductService;
 import org.sale.project.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/cart")
@@ -28,6 +29,7 @@ public class CartController {
     CartService cartService;
     UserService userService;
     private final CartItemRepository cartItemRepository;
+    ProductService productService;
 
 
     @GetMapping
@@ -40,6 +42,22 @@ public class CartController {
         List<CartItem> items = cart == null ? new ArrayList<>() : cart.getCartItems();
 
         model.addAttribute("items", items);
+
+        Set<Product> recommenderProducts = new HashSet<>();
+        List<Product> products = productService.findAll();
+
+        for (CartItem item : items) {
+            Product productRecommender = RecommenderSystem.recommendProducts(item.getProductVariant().getProduct(), products, 1).getFirst();
+
+            recommenderProducts.add(productRecommender);
+        }
+
+        for(CartItem item : items){
+            recommenderProducts.remove(item.getProductVariant().getProduct());
+        }
+
+
+        model.addAttribute("recommenderProducts", recommenderProducts.stream().toList());
 
         model.addAttribute("totalPrice", cartService.totalPriceInCart(cart));
 

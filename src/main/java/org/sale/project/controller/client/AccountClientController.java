@@ -40,7 +40,7 @@ public class AccountClientController {
         model.addAttribute("email", email);
 //        User user = userOptional.get();
 
-        model.addAttribute("user", userOptional.isPresent() ? userOptional.get() : new User());
+        model.addAttribute("user", userOptional.orElseGet(User::new));
         model.addAttribute("orders",  userOptional.isEmpty() ? new ArrayList<Order>() :  userOptional.get().getOrders());
 
         return "/client/home/information";

@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import org.sale.project.entity.*;
+import org.sale.project.recommender.RecommenderSystem;
 import org.sale.project.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +34,8 @@ public class ItemController {
     SizeService sizeService;
     CategoryService categoryService;
     HistorySearchService historySearchService;
-    private final UserService userService;
+    UserService userService;
+
 
     @GetMapping
     public String getPageProducts(Model model, @RequestParam("name") Optional<String> nameOptional,
@@ -141,7 +143,13 @@ public class ItemController {
         model.addAttribute("newFeedBackReview", new FeedBackReview());
 
 
+        List<Product> recommenderProducts = RecommenderSystem.recommendProducts(selectedItem.getProduct(),productService.findAll(), 5);
 
+
+
+        recommenderProducts.forEach(x -> System.out.println(">>> name product - recommender" +x.getName()));
+        System.out.println(recommenderProducts.size());
+        model.addAttribute("recommenderProducts", recommenderProducts);
         // review
 
 
