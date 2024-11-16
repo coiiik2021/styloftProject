@@ -1,5 +1,7 @@
 
-<%@ taglib prefix="c" uri="jakarta.tags.core" %> <%@page contentType="text/html"
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page contentType="text/html"
                                                          pageEncoding="UTF-8" %>
 
 <jsp:include page="../layout/headerImport.jsp" />
@@ -16,25 +18,32 @@
                         <div class="col-md-12 col-12 mx-auto">
                             <div class="d-flex justify-content-between">
                                 <h3>Table color</h3>
-                                <a href="/admin/color/create" class="btn btn-primary">Create color</a>
+                                <a href="/admin/voucher/create" class="btn btn-primary">Create voucher</a>
                             </div>
                             <table class="table table-bordered table-hover mt-3">
                                 <thead>
                                 <tr style="text-align: center; vertical-align: middle;">
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Description</th>
+                                    <th scope="col">Code</th>
+                                    <th scope="col">Discount</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Quantity</th>
+
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <c:forEach var="color" items="${colors}">
+                                <c:forEach var="voucher" items="${vouchers}">
                                     <tr style="text-align: center; vertical-align: middle;">
-                                        <th scope="row">${color.name}</th>
-                                        <td>${color.description}</td>
+                                        <th scope="row">${voucher.code}</th>
+                                        <td><fmt:formatNumber value="${voucher.discountValue}" type="number"/>%</td>
+                                        <td><fmt:formatNumber value="${voucher.quantity}" type="number"/></td>
+
+                                        <td style="color:${voucher.active ? 'green' : 'red'} ;">  ${voucher.active ? 'Còn' : 'Hết'}</td>
+
 
                                         <td style="text-align: center">
-                                            <a href="/admin/color/update/${color.id}" class="btn btn-warning">Update</a>
-                                            <a href="/admin/color/delete/${color.id}" class="btn btn-danger">Delete</a>
+                                            <a href="/admin/voucher/update/${voucher.id}" class="btn btn-warning">Update</a>
+                                            <a href="/admin/voucher/delete/${voucher.id}" class="btn btn-danger">Delete</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

@@ -29,8 +29,10 @@ public class SizeService {
     }
 
 
-    public Size saveSize(Size size) {
-        return sizeRepository.save(size);
+    public void saveSize(Size size) {
+        if(size.getId() != null || findByName(size.getName()) == null) {
+            sizeRepository.save(size);
+        }
     }
 
     public Size findByName(String name) {

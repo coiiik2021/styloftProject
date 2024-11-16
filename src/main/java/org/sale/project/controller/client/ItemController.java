@@ -6,9 +6,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import org.sale.project.dto.request.StarReview;
 import org.sale.project.entity.*;
+import org.sale.project.enums.ActionType;
 import org.sale.project.recommender.RecommenderSystem;
 import org.sale.project.service.*;
+import org.sale.project.service.review.ScoreStarService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -36,10 +39,13 @@ public class ItemController {
     HistorySearchService historySearchService;
     UserService userService;
 
+    UserActionService userActionService;
+    ScoreStarService scoreStarService;
+
 
     @GetMapping
     public String getPageProducts(Model model, @RequestParam("name") Optional<String> nameOptional,
-            @RequestParam("page") Optional<String> pageOptional, HttpServletRequest request) {
+                                  @RequestParam("page") Optional<String> pageOptional, HttpServletRequest request, Map map) {
 
 
         int page = 1;
@@ -54,6 +60,7 @@ public class ItemController {
         Pageable pageable = PageRequest.of(page - 1, 12);
 
         Page<Product> productPage;
+        List<Product> products;
         if(nameOptional.isPresent()) {
             productPage = productService.findAll(nameOptional.get(), pageable);
 
@@ -71,12 +78,31 @@ public class ItemController {
 
                         .build());
             }
+            products = productPage.getContent();
+
+            for(Product product : products) {
+                userActionService.save(
+                        UserAction.builder()
+                                .user(userService.findUserByEmail(session.getAttribute("email").toString()))
+                                .product(product)
+                                .actionType(ActionType.SEARCH)
+                                .build()
+                );
+            }
 
         } else{
             productPage = productService.findAll(pageable, false);
+            products = productPage.getContent();
         }
 
-        List<Product> products = productPage.getContent();
+        Map<Product, StarReview> mapProductStarReview = new HashMap<>();
+        for(Product product : products) {
+            mapProductStarReview.put(product, scoreStarService.score(product));
+        }
+
+
+
+
 
         List<Category> categories = categoryService.findAll();
         List<Color> colors = colorService.findAll();
@@ -86,7 +112,7 @@ public class ItemController {
         model.addAttribute("colors", colors);
         model.addAttribute("sizes", sizes);
 
-        model.addAttribute("products", products);
+        model.addAttribute("products", mapProductStarReview);
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("currentPage", page);
 
@@ -96,7 +122,8 @@ public class ItemController {
     @GetMapping("/detail/{id}")
     public String getPageDetailProduct(@PathVariable("id") String id, Model model,
             @RequestParam("size") Optional<String> sizeOptional,
-            @RequestParam("color") Optional<String> colorOptional
+            @RequestParam("color") Optional<String> colorOptional,
+                                       HttpServletRequest request
                                        ) {
 
         String size = sizeOptional.orElse("");
@@ -136,6 +163,10 @@ public class ItemController {
         List<Size> sortedSizes = new ArrayList<>(sizes);
         sortedSizes.sort(Comparator.comparing(Size::getName));
 
+        StarReview starReview = scoreStarService.score(selectedItem.getProduct());
+
+
+        model.addAttribute("starReview", starReview);
         model.addAttribute("images", images);
         model.addAttribute("item", selectedItem);
         model.addAttribute("colors", sortedColors);
@@ -143,13 +174,28 @@ public class ItemController {
         model.addAttribute("newFeedBackReview", new FeedBackReview());
 
 
-        List<Product> recommenderProducts = RecommenderSystem.recommendProducts(selectedItem.getProduct(),productService.findAll(), 5);
+        // recommender
+        List<Product> recommenderProducts = RecommenderSystem.recommendProducts(selectedItem.getProduct(),productService.findAll(), 4);
 
 
 
         recommenderProducts.forEach(x -> System.out.println(">>> name product - recommender" +x.getName()));
         System.out.println(recommenderProducts.size());
         model.addAttribute("recommenderProducts", recommenderProducts);
+
+        //action
+
+        HttpSession session = request.getSession();
+
+        userActionService.save(
+                UserAction.builder()
+                        .product(selectedItem.getProduct())
+                        .user(userService.findUserByEmail(session.getAttribute("email").toString()))
+                        .actionType(ActionType.VIEW)
+                        .build()
+        );
+
+
         // review
 
 
@@ -177,6 +223,7 @@ public class ItemController {
             @RequestParam(value = "sizes", required = false) String sizes,
             @RequestParam("minPrice") Optional<String> minPriceOptional,
             @RequestParam("maxPrice") Optional<String> maxPriceOptional,
+            HttpServletRequest request,
             Model model) {
 
 
@@ -207,9 +254,27 @@ public class ItemController {
 
         List<Product> products = productPage.getContent();
 
+        // action
+        HttpSession session = request.getSession();
+
+        for(Product product : products) {
+            userActionService.save(
+                    UserAction.builder()
+                            .user(userService.findUserByEmail(session.getAttribute("email").toString()))
+                            .product(product)
+                            .actionType(ActionType.SEARCH)
+                            .build()
+            );
+        }
+
         List<Category> category = categoryService.findAll();
         List<Color> color = colorService.findAll();
         List<Size> size = sizeService.findAll();
+
+        Map<Product, StarReview> mapProductStarReview = new HashMap<>();
+        for(Product product : products) {
+            mapProductStarReview.put(product, scoreStarService.score(product));
+        }
 
         model.addAttribute("categories", category);
         model.addAttribute("colors", color);
@@ -219,7 +284,7 @@ public class ItemController {
         model.addAttribute("sizeList", sizeList);
         model.addAttribute("colorList", colorList);
 
-        model.addAttribute("products", products);
+        model.addAttribute("products", mapProductStarReview);
         model.addAttribute("totalPages", productPage.getTotalPages());
         model.addAttribute("currentPage", 1);
 

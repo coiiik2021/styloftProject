@@ -3,6 +3,7 @@ package org.sale.project.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.sale.project.enums.StatusOrder;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -31,10 +32,14 @@ public class Order {
 
     String note;
 
-    String status;
+    @Enumerated(EnumType.STRING)
+    StatusOrder status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     List<OrderDetail> details;
 
+
+    @OneToOne
+    Voucher voucher;
 
 }

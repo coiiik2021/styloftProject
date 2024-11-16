@@ -5,15 +5,12 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.sale.project.entity.Cart;
-import org.sale.project.entity.CartItem;
-import org.sale.project.entity.Product;
-import org.sale.project.entity.User;
+import org.sale.project.entity.*;
+import org.sale.project.enums.ActionType;
 import org.sale.project.recommender.RecommenderSystem;
 import org.sale.project.repository.CartItemRepository;
-import org.sale.project.service.CartService;
-import org.sale.project.service.ProductService;
-import org.sale.project.service.UserService;
+import org.sale.project.repository.UserActionRepository;
+import org.sale.project.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +27,9 @@ public class CartController {
     UserService userService;
     private final CartItemRepository cartItemRepository;
     ProductService productService;
+    UserActionService userActionService;
+    ProductVariantService productVariantService;
+
 
 
     @GetMapping
@@ -46,11 +46,13 @@ public class CartController {
         Set<Product> recommenderProducts = new HashSet<>();
         List<Product> products = productService.findAll();
 
-        for (CartItem item : items) {
-            Product productRecommender = RecommenderSystem.recommendProducts(item.getProductVariant().getProduct(), products, 1).getFirst();
+       if(products.size() >= 2){
+           for (CartItem item : items) {
+               Product productRecommender = RecommenderSystem.recommendProducts(item.getProductVariant().getProduct(), products, 1).getFirst();
 
-            recommenderProducts.add(productRecommender);
-        }
+               recommenderProducts.add(productRecommender);
+           }
+       }
 
         for(CartItem item : items){
             recommenderProducts.remove(item.getProductVariant().getProduct());
@@ -75,6 +77,18 @@ public class CartController {
         String email = (String) session.getAttribute("email");
         cartService.addProductToCart(email, id, quantity, session);
 
+        User user = userService.findUserByEmail(email);
+
+         userActionService.save(UserAction.builder().
+                user(user)
+                .product(productVariantService.findById(id).getProduct())
+                         .actionType(ActionType.ADD_TO_CART)
+                .build());
+
+
+
+
+
         return "redirect:/cart";
     }
 
@@ -82,10 +96,22 @@ public class CartController {
     public String removeProductItemInCart(@PathVariable("id") String id, Model model, HttpServletRequest request){
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
+        CartItem cartItem = cartItemRepository.findById(id).orElse(null);
+        String idProduct = cartItem.getProductVariant().getProduct().getId();
         cartService.removeCartItem(id);
 
         User user = userService.findUserByEmail(email);
         session.setAttribute("sum", user.getCart().getCartItems().size() - 1);
+
+        for(UserAction userAction : user.getUserActions()){
+            if(userAction.getProduct().getId().equals(idProduct) && userAction.getActionType().equals(ActionType.ADD_TO_CART)){
+                System.out.println(userAction.getActionType());
+
+                userActionService.deleteUserAction(userAction.getId());
+                break;
+            }
+        }
+
         return "redirect:/cart";
     }
 

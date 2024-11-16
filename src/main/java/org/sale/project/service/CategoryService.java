@@ -30,8 +30,10 @@ public class CategoryService {
         categoryRepository.deleteById(id);
     }
 
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
+    public void saveCategory(Category category) {
+        if(category.getId() != null || findCategoryByName(category.getName()) == null) {
+            categoryRepository.save(category);
+        }
     }
 
     public Category findCategoryByName(String name) {

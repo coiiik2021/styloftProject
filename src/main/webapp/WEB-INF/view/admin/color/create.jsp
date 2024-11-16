@@ -30,6 +30,9 @@
                   <form:errors path="name" cssClass="invalid-feedback"/>
                 </c:set>
 
+                <c:set var="errorDescription">
+                  <form:errors path="description" cssClass="invalid-feedback"/>
+                </c:set>
 
                 <div class="mb-3 col-12">
 
@@ -42,9 +45,10 @@
 
 
                 <div class="mb-3 col-12">
-                  <label class="form-label">Description</label>
-                  <form:input cols="50" class="form-control "  path="description"/>
+                  <label class="form-label">Description: (Viết bằng tiếng anh)</label>
+                  <form:input cols="50" class="form-control ${not empty errorName ? 'is-invalid' : ''}"  path="description"/>
                   <!-- <%--                    ${errorFullName}--%> -->
+                  ${errorDescription}
                 </div>
 
 

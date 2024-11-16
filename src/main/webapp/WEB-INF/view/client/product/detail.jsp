@@ -73,11 +73,33 @@
           </div>
           <p><strong>Mô tả:</strong> ${item.product.description}.</p>
           <div class="rating text-warning">
+    <c:if test="${starReview.countReview >= 1}">
+        <c:forEach begin="${1}" end="${starReview.scoreProduct}" step="1">
+            <span class="fa fa-star checked"></span>
+
+
+        </c:forEach>
+
+        <c:forEach begin="${starReview.scoreProduct+1}" end="${5}" step="1">
+
+            <span class="fa fa-star" style="color: black;"></span>
+
+
+        </c:forEach>
+        (${starReview.countReview})
+    </c:if>
+
+
+        <c:if test="${starReview.countReview < 1}">
             <span class="fa fa-star checked"></span>
             <span class="fa fa-star checked"></span>
             <span class="fa fa-star checked"></span>
             <span class="fa fa-star checked"></span>
-            <span class="fa fa-star"></span>
+            <span class="fa fa-star checked"></span>
+            (0)
+
+        </c:if>
+
           </div>
             <div class="my-3">
                 <strong>Kích thước:</strong>
@@ -251,7 +273,9 @@
                                       <h5>${detail.order.user.name}</h5>
                                       <div class="d-flex mb-3">
                                           <c:forEach begin="1" end="${detail.review.star}">
-                                              <i class="fa fa-star text-secondary"></i>
+<%--                                              <i class="fa fa-star text-secondary"></i>--%>
+                                              <span class="fa fa-star checked" style="color: #bdbd00"></span>
+
                                           </c:forEach>
                                           <c:forEach begin="${detail.review.star + 1}" end="5">
                                               <i class="fa fa-star"></i>

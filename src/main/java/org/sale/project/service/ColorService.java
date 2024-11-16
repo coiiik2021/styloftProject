@@ -25,8 +25,11 @@ public class ColorService {
         return colorRepository.findById(id).orElse(null);
     }
 
-    public Color saveColor(Color color) {
-        return colorRepository.save(color);
+    public void saveColor(Color color) {
+        if(color.getId() != null || findByName(color.getName()) == null) {
+            colorRepository.save(color);
+        }
+
     }
 
     public void deleteById(String id) {

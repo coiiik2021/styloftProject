@@ -21,6 +21,8 @@ public class Color {
 
     @Size(min = 1, message = "Tên của màu sắc không được để trống")
     String name;
+
+    @Size(min = 1, message = "Tên của mô tả không được để trống")
     String description;
 
     @OneToMany(mappedBy = "color")

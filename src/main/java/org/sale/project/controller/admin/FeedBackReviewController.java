@@ -1,4 +1,4 @@
-package org.sale.project.controller.client;
+package org.sale.project.controller.admin;
 
 
 import lombok.AccessLevel;

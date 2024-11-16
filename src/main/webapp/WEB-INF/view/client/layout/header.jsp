@@ -149,11 +149,9 @@
 
 
             <div class="d-flex m-3 me-0">
-                <c:if test="${not empty pageContext.request.userPrincipal}">
+                <c:if test="${not empty pageContext.request.userPrincipal && !sessionScope.isAdmin}">
                 <form action="/cart" method="get">
-                    <div>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    </div>
+
                     <button class="position-relative me-4 my-auto btn-custom">
                         <i class="fa fa-shopping-bag" style="font-size: 1.5em;"></i>
 
@@ -164,6 +162,7 @@
 
                     </button>
                 </form>
+
 
                 <div class="dropdown my-auto">
                     <a href="#" class="dropdown" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -192,6 +191,9 @@
 <c:if test="${ empty pageContext.request.userPrincipal}">
     <a href="/login" class="position-relative me-4 my-auto btn btn-custom fw-semibold">Đăng nhập</a>
 </c:if>
+                <c:if test="${sessionScope.isAdmin}">
+                    <a href="/admin" class="position-relative me-4 my-auto btn btn-custom fw-semibold">Quản lý</a>
+                </c:if>
             </div>
         </div>
     </nav>

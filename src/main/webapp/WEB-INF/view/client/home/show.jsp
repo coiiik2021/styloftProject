@@ -74,27 +74,47 @@
     <!-- Product -->
     <div class="row row-cols-4 g-4 mt-2">
         <c:forEach items="${products}" var="product">
-            <c:if test="${not empty product.productVariant}">
+            <c:if test="${not empty product.key.productVariant}">
                 <div class="col" style = "margin-right: 0; margin-left: 0;">
-                    <a href="/product/detail/${product.id}" class="card-link text-decoration-none">
+                    <a href="/product/detail/${product.key.id}" class="card-link text-decoration-none">
                         <div class="card border-0 rounded-0 shadow">
 
-                            <img src="/images/product/${product.name}/${product.productVariant.get(0).image}"
+                            <img src="/images/product/${product.key.name}/${product.key.productVariant.get(0).image}"
                                  class="card-img-top rounded-0" alt="...">
                             <div class="card-body mt-1 mb-1">
                                 <div class="row">
                                     <div class="col-10 gap-0">
-                                        <h5 class="card-title text-primary text-primary">${product.name}</h5>
-                                        <c:if test="${product.name.length() < 24}">
+                                        <h5 class="card-title text-primary text-primary">${product.key.name}</h5>
+                                        <c:if test="${product.key.name.length() < 24}">
                                             <br/>
                                         </c:if>
                                         <p class="card-text">
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
-                                            <i class="bi bi-star-fill text-warning"></i>
+                                            <c:if test="${product.value.countReview >= 1}">
+                                                <c:forEach begin="${1}" end="${product.value.scoreProduct}" step="1">
+                                                    <i class="bi bi-star-fill text-warning"></i>
+
+                                                </c:forEach>
+                                                <c:forEach begin="${product.value.scoreProduct+1}" end="${5}" step="1">
+                                                    <i class="bi bi-star-fill"></i>
+
+                                                </c:forEach>
+
+
+
+                                                (${product.value.countReview})
+                                            </c:if>
+                                            <c:if test="${product.value.countReview == 0}">
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                                <i class="bi bi-star-fill text-warning"></i>
+
+                                                (0)
+                                            </c:if>
+
 <%--                                            ${product.productVariant.get(0).quantity}--%>
-                                            (123)
+
                                         </p>
                                     </div>
                                     <div class="col-2">
@@ -103,14 +123,14 @@
                                 </div>
                                 <div class="row align-items-center text-center g-0">
                                     <div class="text-primary mt-2 mb-2">
-                                        <h5><fmt:formatNumber value="${product.productVariant.get(0).price}" type="number"/> VNĐ</h5>
+                                        <h5><fmt:formatNumber value="${product.key.productVariant.get(0).price}" type="number"/> VNĐ</h5>
                                     </div>
                                     <div>
 
-                                        <c:if test="${product.productVariant.get(0).quantity >= 1}">
-                                            <a href="/cart/add-product-item-in-cart/${product.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
+                                        <c:if test="${product.key.productVariant.get(0).quantity >= 1}">
+                                            <a href="/cart/add-product-item-in-cart/${product.key.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
                                         </c:if>
-                                        <c:if test="${product.productVariant.get(0).quantity < 1}">
+                                        <c:if test="${product.key.productVariant.get(0).quantity < 1}">
                                             <a href="#" class="btn w-100 p-3 rounded-0" >Liên hệ</a>
 
                                         </c:if>
@@ -132,31 +152,6 @@
 
     <!-- Pagination -->
 
-    <c:if test="${totalPages > 1}">
-        <nav aria-label="Page navigation example" class="mt-4">
-
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link text-primary ${currentPage eq 1 ? 'disabled' : ''}" href="/?page=${currentPage-1}">Previous</a>
-                </li>
-                <c:forEach begin="1" end="${totalPages}" varStatus="loop">
-                    <li class="page-item">
-                        <a class="${(loop.index) eq currentPage ? 'active' : ''} page-link text-primary"
-                           href="/?page=${loop.index}">${loop.index}</a>
-                    </li>
-                </c:forEach>
-
-                    <%--            <li class="page-item"><a class="page-link " href="#">1</a></li>--%>
-                    <%--            <li class="page-item"><a class="page-link text-primary" href="#">2</a></li>--%>
-                    <%--            <li class="page-item"><a class="page-link text-primary" href="#">3</a></li>--%>
-                    <%--            <li class="page-item"><a class="page-link text-primary" href="#">...</a></li>--%>
-
-                <li class="page-item">
-                    <a class="page-link text-primary ${currentPage eq totalPages ? 'disabled' : ''}" href="/?page=${currentPage+1}">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </c:if>
 
 </div>
 <jsp:include page="../layout/footer.jsp" />

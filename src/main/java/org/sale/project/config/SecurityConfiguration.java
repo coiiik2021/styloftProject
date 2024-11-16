@@ -8,6 +8,9 @@ import org.sale.project.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -22,6 +25,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.session.security.web.authentication.SpringSessionRememberMeServices;
+
+import java.util.List;
 
 
 @Configuration
@@ -94,7 +99,10 @@ public class SecurityConfiguration{
 
                         .permitAll()
 
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/admin/**", "/feedBack/**").hasRole("ADMIN")
+
+                        .requestMatchers("/cart/**", "order/**", "/review/**", "/pay/**", "/account/**" , "/apply/**").hasRole("USER")
+
                         .anyRequest().authenticated())
 //                .oauth2Login(oauth2 -> oauth2
 //                        .loginPage("/login")
@@ -112,4 +120,6 @@ public class SecurityConfiguration{
                 .exceptionHandling(ex -> ex.accessDeniedPage("/404"));
         return http.build();
     }
+
+
 }

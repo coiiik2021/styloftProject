@@ -52,9 +52,10 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 
         String email = authentication.getName();
-        User user = userService.findUserByEmail(email);
-
         Account account = accountService.findByEmail(email);
+
+        User user = account.getRole().getName().equals("ADMIN") ? new User() :  userService.findUserByEmail(email);
+
 
         if(account != null){
             session.setAttribute("email", email);

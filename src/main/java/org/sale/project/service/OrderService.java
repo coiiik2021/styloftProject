@@ -3,10 +3,9 @@ package org.sale.project.service;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.sale.project.entity.CartItem;
-import org.sale.project.entity.Order;
-import org.sale.project.entity.OrderDetail;
-import org.sale.project.entity.User;
+import org.sale.project.entity.*;
+import org.sale.project.enums.ActionType;
+import org.sale.project.enums.StatusOrder;
 import org.sale.project.mapper.OrderMapper;
 import org.sale.project.repository.CartItemRepository;
 import org.sale.project.repository.OrderDetailRepository;
@@ -28,6 +27,8 @@ public class OrderService {
     OrderDetailRepository orderDetailRepository;
     OrderMapper orderMapper;
     CartItemRepository cartItemRepository;
+
+    UserActionService userActionService;
 
     ProductVariantRepository productVariantRepository;
 
@@ -89,7 +90,7 @@ public class OrderService {
     public Order complete(User user, double totalPrice){
 
         Order order = new Order();
-        order.setStatus("PLACED");
+        order.setStatus(StatusOrder.SPACED);
         order.setUser(user);
         order.setDate(LocalDate.now());
         order.setTotal(totalPrice);
@@ -110,6 +111,15 @@ public class OrderService {
             productVariantRepository.save(item.getProductVariant());
             cartItemRepository.delete(item);
             detail.add(orderDetail);
+
+            // action
+            userActionService.save(
+                    UserAction.builder()
+                            .user(user)
+                            .actionType(ActionType.PURCHASE)
+                            .product(item.getProductVariant().getProduct())
+                            .build()
+            );
 
         }
         System.out.println(">>>size detail"+detail.size());

@@ -36,6 +36,9 @@ public class Product {
 
     boolean status;
 
+    @OneToMany(mappedBy = "product")
+    List<UserAction> userActions;
+
 //    String image;
 //    List<String> images;
 

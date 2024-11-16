@@ -7,23 +7,25 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.HistorySearch;
+import org.sale.project.entity.Voucher;
 import org.sale.project.service.HistorySearchService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.sale.project.service.VoucherService;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/search")
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class HistorySearchController {
 
     HistorySearchService historySearchService;
 
-    @GetMapping
+    @GetMapping("/search")
     public List<String> getAllSearchByUser(HttpServletRequest request) {
 
         HttpSession session = request.getSession();
@@ -34,9 +36,10 @@ public class HistorySearchController {
         for (HistorySearch hs : ls) {
             list.add(hs.getTitle());
         }
-
         return list;
-
-
     }
+
+    VoucherService voucherService;
+
+
 }

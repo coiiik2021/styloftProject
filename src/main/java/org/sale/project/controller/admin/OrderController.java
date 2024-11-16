@@ -70,7 +70,7 @@ public class OrderController {
 
         oldOrder.setStatus(order.getStatus());
         String content = "<p> Status:  <strong>" + oldOrder.getStatus() + "</strong></p>" ;
-        if(order.getStatus().equals("SHIPPING")){
+        if(order.getStatus().name().equals("SHIPPING")){
             content += "</br>  <p> Đơn hàng của bạn đang trong quá trình vận chuyển </p>";
         } else{
             content += "</br>  <p> Đơn hàng của bạn đã thành công </p>";

@@ -65,10 +65,14 @@ public class UserService {
 
     public User findUserByEmail(String email) {
         Optional<User> userOptional = userRepository.findByAccount(accountRepository.findByEmail(email).get());
+
         User user = userOptional.orElse(null);
-        if(user == null){
-            user = saveUser(User.builder().account(accountRepository.findByEmail(email).get()).build());
+        if(!accountRepository.findByEmail(email).isPresent() || !accountRepository.findByEmail(email).get().getRole().getName().equals("ADMIN") ){
+            if(user == null){
+                user = saveUser(User.builder().account(accountRepository.findByEmail(email).get()).build());
+            }
         }
+
         return user;
     }
 

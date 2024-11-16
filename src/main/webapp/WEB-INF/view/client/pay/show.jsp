@@ -133,23 +133,71 @@
           </div>
         </div>
 
-        <div class="py-2 border-top border-bottom">
-          <div class="d-flex justify-content-between">
-            <span>Tạm tính</span>
-            <span class="fw-bold"><fmt:formatNumber value="${totalPrice}" type="number"/> VND</span>
-          </div>
-          <div class="d-flex justify-content-between">
-            <span>Phí giao hàng</span>
-            <span class="fw-bold">30,000 VND</span>
+      <div class="py-2 border-top border-bottom">
+        <div class="d-flex justify-content-between">
+          <span>Tạm tính</span>
+          <span class="fw-bold" id="totalPrice" data-total="${totalPrice}"><fmt:formatNumber value="${totalPrice}" type="number"/> VND</span>
+        </div>
+        <div class="mb-3 mt-3">
+          <label for="voucherCode" class="form-label">Mã Voucher</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="ri-ticket-line"></i></span>
+            <input
+                    type="text"
+                    class="form-control py-3"
+                    id="voucherCode"
+                    name="voucherCode"
+                    placeholder="Nhập mã voucher"
+            />
+            <button type="button" class="btn btn-secondary" id="applyVoucher">Áp dụng</button>
           </div>
         </div>
 
-        <div class="d-flex justify-content-between mt-3">
-          <span>Tổng</span>
-          <span class="fs-4 fw-bold"><fmt:formatNumber value="${totalPrice + 30000}" type="number"/> VND</span>
-        </div>
+        <script>
+          document.getElementById("applyVoucher").addEventListener("click", () => {
+            const voucherCode = document.getElementById("voucherCode").value.trim();
+            const totalPriceElement = document.querySelector(".fs-4.fw-bold");
+            const total = parseFloat(totalPriceElement.getAttribute("data-total")); // Giá trị tạm tính ban đầu
 
-        <div class="d-grid mt-4">
+            if (!voucherCode) {
+              alert("Vui lòng nhập mã voucher!");
+              return;
+            }
+
+            // Gửi yêu cầu GET với tham số trong URL
+            fetch(`/apply/voucher?voucher=${voucherCode}&priceTotal=${total}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.error) {
+                        // Báo lỗi nếu mã giảm giá không hợp lệ
+                        alert(data.error);
+                      } else {
+                        // Áp dụng giảm giá và cập nhật tổng tiền
+                        totalPriceElement.textContent = new Intl.NumberFormat("vi-VN").format(data.finalTotal) + " VND";
+                        alert(data.message);
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Lỗi khi áp dụng mã giảm giá:", error);
+                      alert("Đã xảy ra lỗi, vui lòng thử lại!");
+                    });
+          });
+
+        </script>
+
+        <div class="d-flex justify-content-between">
+          <span>Phí giao hàng</span>
+          <span class="fw-bold">30,000 VND</span>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between mt-3">
+        <span>Tổng</span>
+        <span class="fs-4 fw-bold" id="totalPriceFinal"><fmt:formatNumber value="${totalPrice + 30000}" type="number"/> VND</span>
+      </div>
+
+
+      <div class="d-grid mt-4">
           <button class="btn btn-primary py-3">Đặt hàng</button>
         </div>
     </div>
@@ -212,6 +260,8 @@
     </div>
   </div>
 </div>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

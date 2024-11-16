@@ -1,7 +1,6 @@
 package org.sale.project.entity;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -53,4 +52,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     List<HistorySearch> historySearches;
 
+    @OneToMany(mappedBy = "user")
+    List<UserAction> userActions;
 }

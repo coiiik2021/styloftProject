@@ -14,11 +14,15 @@ import org.sale.project.controller.auth.GgSTant;
 import org.sale.project.controller.auth.GoogleLogin;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
+import org.sale.project.dto.request.StarReview;
 import org.sale.project.entity.*;
 import org.sale.project.service.*;
 import org.sale.project.service.email.EmailService;
+import org.sale.project.service.review.ScoreStarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,9 +42,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @AllArgsConstructor
@@ -52,6 +54,8 @@ public class HomeController {
     ProductService productService;
     EmailService emailService;
     AccountService accountService;
+    RecommendationService recommendationService;
+    ScoreStarService scoreStarService;
 
 
 
@@ -202,8 +206,8 @@ public class HomeController {
     }
 
     @GetMapping
-    public String getPageHome(Model model, HttpServletRequest request,
-            @RequestParam("page") Optional<String> pageOptional
+    public String getPageHome(Model model, HttpServletRequest request
+
                               ) throws IOException {
 
 
@@ -223,54 +227,60 @@ public class HomeController {
 //        User user = userService.findUserByEmail(email);
 
 
-//        System.out.println(">>>code" + code );
-
-//        if(code != null) {
-//
-//        } else{
-//            email = (String) session.get Attribute("email");
-//            user = userService.findUserByEmail(email);
-//
-//        }
-
-//        if(codeOptional.isPresent()) {
-//
-//
-//
-//        }
 
 
 
 
-        // page
-        int page = 1;
 
-        try {
-            if (pageOptional.isPresent()) {
-                page = Integer.parseInt(pageOptional.get());
-            }
-        } catch (NumberFormatException e) {
 
+//        Pageable pageable = PageRequest.of(page - 1, 8);
+//        Page<Product> productPage = productService.findAll(pageable, false);
+
+        List<Product> products = email != null ? productService.findAll(recommendationService.getTopNRecommendations(userService.findUserByEmail(email), 12))
+                : productService.findAll() ;
+
+
+        if(email != null) {
+            products = products.size() == 12 ? products : fullProduct(products);
+        }
+        Map<Product, StarReview> mapProductAndScore = new HashMap<>();
+        for(Product p : products) {
+            mapProductAndScore.put(p, scoreStarService.score(p));
         }
 
 
-        Pageable pageable = PageRequest.of(page - 1, 8);
-        Page<Product> productPage = productService.findAll(pageable, false);
-
-        List<Product> products = productPage.getContent();
 
 
 
-
-        model.addAttribute("products", products);
+        model.addAttribute("products", mapProductAndScore);
 //        model.addAttribute("user", user);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", productPage.getTotalPages());
+//        model.addAttribute("currentPage", page);
+//        model.addAttribute("totalPages", productPage.getTotalPages());
 
         // session.setAttribute("sum", user.getCart().getCartItems());
 
         return "/client/home/show";
     }
+
+
+
+    private List<Product> fullProduct(List<Product> products) {
+        // Tạo một bản sao chỉnh sửa được từ danh sách `products`
+        List<Product> editableProducts = new ArrayList<>(products);
+
+        List<Product> fullProducts = productService.findAll();
+        for (Product product : fullProducts) {
+            if (editableProducts.size() == 12) {
+                break;
+            }
+            if (!editableProducts.contains(product)) {
+                editableProducts.add(product);
+            }
+        }
+        return editableProducts;
+    }
+
+
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -280,6 +290,15 @@ public class HomeController {
     @GetMapping("/404")
     public String notFound(Model model) {
         return "/client/error/404";
+    }
+
+
+     private <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), list.size());
+
+        List<T> sublist = list.subList(start, end);
+        return new PageImpl<>(sublist, pageable, list.size());
     }
 
 }

@@ -39,6 +39,10 @@
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Colors
                         </a>
+                        <a class="nav-link" href="/admin/voucher">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Voucher
+                        </a>
                         <a class="nav-link" href="/admin/order">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Order

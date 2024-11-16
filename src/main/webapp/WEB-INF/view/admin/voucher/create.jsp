@@ -11,7 +11,7 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h1 class="mt-4">Create color</h1>
+        <h1 class="mt-4">Create voucher</h1>
         <hr />
 
         <!-- Import header -->
@@ -19,38 +19,69 @@
 
 
 
-
+        <c:if test="${not empty errorMessage}">
+          <div style="color: red;">${errorMessage}</div>
+        </c:if>
         <div class="container mt-5">
           <div class="row">
             <div class="col-md-6 col-12 mx-auto">
-              <form:form action="/admin/color/create" method="post" enctype="multipart/form-data" modelAttribute="newColor" class="row">
+              <form:form action="/admin/voucher/create" method="post" enctype="multipart/form-data" modelAttribute="newVoucher" class="row">
 
 
-                <c:set var="errorName">
-                  <form:errors path="name" cssClass="invalid-feedback"/>
+                <c:set var="errorCode">
+                  <form:errors path="code" cssClass="invalid-feedback"/>
                 </c:set>
 
-                <c:set var="errorDescription">
-                  <form:errors path="description" cssClass="invalid-feedback"/>
+                <c:set var="errorDiscountValue">
+                  <form:errors path="discountValue" cssClass="invalid-feedback"/>
+                </c:set>
+                <c:set var="errorStartDate">
+                  <form:errors path="startDate" cssClass="invalid-feedback"/>
+                </c:set>
+                <c:set var="errorEndDate">
+                  <form:errors path="endDate" cssClass="invalid-feedback"/>
+                </c:set>
+
+                <c:set var="errorQuantity">
+                  <form:errors path="quantity" cssClass="invalid-feedback"/>
                 </c:set>
 
                 <div class="mb-3 col-12">
 
-                  <label class="form-label">Name</label>
-                  <form:input type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}"  path="name"/>
+                  <label class="form-label">Code</label>
+                  <form:input type="text" class="form-control ${not empty errorCode ? 'is-invalid' : ''}"  path="code"/>
 
-                  ${errorName}
+                  ${errorCode}
                 </div>
 
 
 
                 <div class="mb-3 col-12">
-                  <label class="form-label">Description: (Viết bằng tiếng anh)</label>
-                  <form:input cols="50" class="form-control ${not empty errorName ? 'is-invalid' : ''}"  path="description"/>
+                  <label class="form-label">Discount</label>
+                  <form:input type="text" class="form-control ${not empty errorDiscountValue ? 'is-invalid' : ''}"  path="discountValue"/>
                   <!-- <%--                    ${errorFullName}--%> -->
-                  ${errorDescription}
+                  ${errorDiscountValue}
+
+                </div>
+                <div class="mb-3 col-12">
+                  <label class="form-label">Quantity</label>
+                  <form:input type="text" class="form-control ${not empty errorQuantity ? 'is-invalid' : ''}"  path="quantity"/>
+                  <!-- <%--                    ${errorFullName}--%> -->
+                    ${errorQuantity}
+
                 </div>
 
+                <div class="mb-3 col-12">
+                  <label class="form-label">Ngày bắt đầu</label>
+                  <form:input path="startDate" type="date" class="form-control ${not empty errorStartDate ? 'is-invalid' : ''}" />
+                    ${errorStartDate}
+
+                </div>
+                <div class="mb-3 col-12">
+                  <label class="form-label">Ngày kết thúc </label>
+                  <form:input path="endDate" type="date" class="form-control ${not empty errorEndDate ? 'is-invalid' : ''}" />
+                    ${errorEndDate}
+                </div>
 
 
 
@@ -74,7 +105,7 @@
                 <%--                                </div>--%>
                 <div class = "mb-3 col-12 col-md-6">
                   <button type="submit" class="btn btn-primary">Submit</button>
-                  <a href="/admin/color" class ="btn btn-dark">Cancel</a>
+                  <a href="/admin/voucher" class ="btn btn-dark">Cancel</a>
 
                 </div>
               </form:form>

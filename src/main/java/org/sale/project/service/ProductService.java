@@ -38,11 +38,19 @@ public class ProductService {
     }
 
     public Product saveProduct(Product product) {
+        if(product.getId() == null && productRepository.findByName(product.getName()) == null) {
+            return productRepository.save(product);
 
+        }
+        return null;
 
-
-        return productRepository.save(product);
     }
+
+    public List<Product> findAll(List<String> productIds) {
+        return productRepository.findAllById(productIds);
+    }
+
+
 
     public void deleteProduct(String id) {
         Product product = findById(id);
