@@ -7,10 +7,7 @@ import org.sale.project.entity.*;
 import org.sale.project.enums.ActionType;
 import org.sale.project.enums.StatusOrder;
 import org.sale.project.mapper.OrderMapper;
-import org.sale.project.repository.CartItemRepository;
-import org.sale.project.repository.OrderDetailRepository;
-import org.sale.project.repository.OrderRepository;
-import org.sale.project.repository.ProductVariantRepository;
+import org.sale.project.repository.*;
 import org.sale.project.service.spec.OrderSpec;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,6 +28,7 @@ public class OrderService {
     UserActionService userActionService;
 
     ProductVariantRepository productVariantRepository;
+    private final VoucherRepository voucherRepository;
 
 
     public List<Order> findAll() {
@@ -87,7 +85,9 @@ public class OrderService {
 
 
 
-    public Order complete(User user, double totalPrice){
+    public Order complete(User user, double totalPrice, Voucher voucher){
+
+
 
         Order order = new Order();
         order.setStatus(StatusOrder.SPACED);
@@ -104,7 +104,7 @@ public class OrderService {
             orderDetail.setOrder(order);
             orderDetail.setPrice(item.getQuantity() * item.getProductVariant().getPrice());
 
-            orderDetailRepository.save(orderDetail);
+            orderDetail = orderDetailRepository.save(orderDetail);
 
             item.getProductVariant().setQuantity(Math.max(item.getProductVariant().getQuantity() - item.getQuantity(), 0));
 
@@ -126,11 +126,19 @@ public class OrderService {
 
         order.setDetails(detail);
         System.out.println(order.getDetails().size());
+        if(voucher != null){
+            order.setVoucher(voucher);
+            voucher.setQuantity(voucher.getQuantity() - 1);
+
+            if(voucher.getQuantity() <= 0){
+                voucher.setActive(false);
+            }
+            voucherRepository.save(voucher);
+        }
 
         order = orderRepository.save(order);
 
         return order;
-
 
     }
 

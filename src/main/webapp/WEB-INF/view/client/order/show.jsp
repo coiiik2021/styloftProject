@@ -312,16 +312,20 @@
 
             <div class="d-flex justify-content-between pt-2">
               <p class="text-muted mb-0">Note : ${order.note}</p>
-              <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> 0</p>
+              <c:if test="${not empty order.voucher}">
+              <p class="text-muted mb-0"><span class="fw-bold me-4">Discount</span> ${order.voucher.code}</p>
+              </c:if>
             </div>
 
             <div class="d-flex justify-content-between">
               <p class="text-muted mb-0">Invoice Date : ${order.date}</p>
-              <p class="text-muted mb-0"><span class="fw-bold me-4">GST 18%</span> 123</p>
+<c:if test="${not empty order.voucher}">
+
+              <p class="text-muted mb-0"><span class="fw-bold me-4">${order.voucher.discountValue}%</span> ${order.total  * (1/(1-order.voucher.discountValue/100.0) -1)}</p>
+</c:if>
             </div>
 
             <div class="d-flex justify-content-between mb-5">
-              <p class="text-muted mb-0">Recepits Voucher : #</p>
               <p class="text-muted mb-0"><span class="fw-bold me-4">Delivery Charges</span> 30.000VND</p>
             </div>
           </div>

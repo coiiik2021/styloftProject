@@ -43,7 +43,7 @@
 
                                         <td style="text-align: center">
                                             <a href="/admin/voucher/update/${voucher.id}" class="btn btn-warning">Update</a>
-                                            <a href="/admin/voucher/delete/${voucher.id}" class="btn btn-danger">Delete</a>
+                                            <a href="/admin/voucher/active/${voucher.id}" class="btn btn-danger">Active</a>
                                         </td>
                                     </tr>
                                 </c:forEach>

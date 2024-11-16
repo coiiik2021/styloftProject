@@ -16,7 +16,7 @@ pageEncoding="UTF-8" %>
   <form
     class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"
   >
-    <span style="color: white">Welcome ${user.name}</span>
+    <span style="color: white">Welcome ADMIN</span>
   </form>
   <!-- Navbar-->
   <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
@@ -39,7 +39,14 @@ pageEncoding="UTF-8" %>
         <li>
           <hr class="dropdown-divider" />
         </li>
-        <li><a class="dropdown-item" href="/login">Logout</a></li>
+        <li>
+        <li>
+          <form action="/logout" method="post">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <button class="dropdown-item">Đăng xuất</button>
+          </form>
+        </li>
+        </li>
       </ul>
     </li>
   </ul>

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/apply")
@@ -23,21 +24,28 @@ public class ApplyController {
     VoucherService voucherService;
 
     @GetMapping("/voucher")
-    public Map<String, Object> validateVoucher(@RequestParam("voucher") String code, @RequestParam("priceTotal") double total) {
+    public Map<String, Object> validateVoucher(@RequestParam("voucher") Optional<String> codeOptional, @RequestParam("priceTotal") Optional<Double> totalOptional) {
+
+        System.out.println(">>>: function valid" );
         Map<String, Object> response = new HashMap<>();
 
-        Voucher voucher = voucherService.findByCode(code);
+        Voucher voucher = voucherService.findByCode(codeOptional.orElse(""));
+        double total = totalOptional.orElse(0.0D);
 
-        if (isVoucherValid(voucher.getEndDate().toString())) {
-            response.put("discount", voucher.getDiscountValue());
-            response.put("finalTotal", Math.max(0, total - voucher.getDiscountValue()));
-            response.put("message", "Mã giảm giá áp dụng thành công!");
-        } else if (voucher.getActive()) {
-            voucher.setActive(false);
-            voucherService.saveVoucher(voucher);
-            response.put("error", "Mã giảm giá đã hết hạn!");
-        } else {
-            response.put("error", "Mã giảm giá không hợp lệ!");
+
+
+        if(voucher != null){
+            if (!voucher.getActive()) {
+                response.put("error", "Mã giảm giá đã hết hạn!");
+            } else if (isVoucherValid(voucher.getEndDate().toString())) {
+                response.put("discount", voucher.getDiscountValue());
+                response.put("finalTotal", Math.max(0, total*(1 - voucher.getDiscountValue() / 100.0)));
+                response.put("message", "Mã giảm giá áp dụng thành công!");
+            } else  {
+                response.put("error", "Mã giảm giá không hợp lệ!");
+            }
+        } else{
+            response.put("error", "Mã giảm giá không tồn tại");
         }
 
         return response;

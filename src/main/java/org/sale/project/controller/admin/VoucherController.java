@@ -6,12 +6,14 @@ import lombok.AllArgsConstructor;
 import org.sale.project.dto.response.CustomDoubleEditor;
 import org.sale.project.entity.Voucher;
 import org.sale.project.service.VoucherService;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -32,6 +34,8 @@ public class VoucherController {
     @InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(Double.class, new CustomDoubleEditor());
+        binder.registerCustomEditor(Double.class, new CustomNumberEditor(Double.class, true));
+        binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
     }
 
     @GetMapping
@@ -62,6 +66,10 @@ public class VoucherController {
 
     @PostMapping("/create")
     public String createVoucher(@ModelAttribute("newVoucher") @Valid Voucher voucher, BindingResult bindingResult, Model model){
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for(FieldError fieldError : fieldErrors){
+            System.out.println(fieldError.getDefaultMessage());
+        }
 
         if(bindingResult.hasErrors() || voucherService.findByCode(voucher.getCode()) != null){
             model.addAttribute("newVoucher", voucher);
@@ -79,10 +87,10 @@ public class VoucherController {
 
     }
 
-    @GetMapping("/delete/{id}")
+    @GetMapping("/active/{id}")
     public String deleteVoucher(@PathVariable("id") String id, Model model){
 
-        voucherService.deleteVoucher(id);
+        voucherService.active(id);
         return "redirect:/admin/voucher";
     }
 
@@ -102,7 +110,9 @@ public class VoucherController {
             return "/admin/voucher/update";
         }
 
-        voucherService.saveVoucher(voucherUpdate);
+        System.out.println( ">>>voucher id: " + voucherUpdate.getId());
+
+        voucherService.updateQuantity(voucherUpdate);
 
         return "redirect:/admin/voucher";
     }

@@ -66,29 +66,36 @@ public class ItemController {
 
             HttpSession session = request.getSession();
             session.setAttribute("nameSearch", nameOptional.get());
-            if(session.getAttribute("user") != null) {
+            products = productPage.getContent();
+            String email = (String) session.getAttribute("email");
+
+            if(email != null && userService.findUserByEmail(email) != null) {
                 historySearchService.saveHistorySearch(HistorySearch.builder().
                         user(
                                 userService.findUserByEmail(
-                                        (String) session.getAttribute("email")
+                                        email
                                 )
                         )
                         .title(nameOptional.get())
                         .localDate(LocalDate.now())
 
                         .build());
-            }
-            products = productPage.getContent();
 
-            for(Product product : products) {
-                userActionService.save(
-                        UserAction.builder()
-                                .user(userService.findUserByEmail(session.getAttribute("email").toString()))
-                                .product(product)
-                                .actionType(ActionType.SEARCH)
-                                .build()
-                );
+                for(Product product : products) {
+                    userActionService.save(
+                            UserAction.builder()
+                                    .user(userService.findUserByEmail(session.getAttribute("email").toString()))
+                                    .product(product)
+                                    .actionType(ActionType.SEARCH)
+                                    .build()
+                    );
+                }
+
             }
+
+
+
+
 
         } else{
             productPage = productService.findAll(pageable, false);
@@ -186,14 +193,17 @@ public class ItemController {
         //action
 
         HttpSession session = request.getSession();
+        if(session.getAttribute("user") != null) {
+            userActionService.save(
+                    UserAction.builder()
+                            .product(selectedItem.getProduct())
+                            .user(userService.findUserByEmail(session.getAttribute("email").toString()))
+                            .actionType(ActionType.VIEW)
+                            .build()
+            );
+        }
 
-        userActionService.save(
-                UserAction.builder()
-                        .product(selectedItem.getProduct())
-                        .user(userService.findUserByEmail(session.getAttribute("email").toString()))
-                        .actionType(ActionType.VIEW)
-                        .build()
-        );
+
 
 
         // review
@@ -257,14 +267,16 @@ public class ItemController {
         // action
         HttpSession session = request.getSession();
 
-        for(Product product : products) {
-            userActionService.save(
-                    UserAction.builder()
-                            .user(userService.findUserByEmail(session.getAttribute("email").toString()))
-                            .product(product)
-                            .actionType(ActionType.SEARCH)
-                            .build()
-            );
+        if(session.getAttribute("user") != null) {
+            for(Product product : products) {
+                userActionService.save(
+                        UserAction.builder()
+                                .user(userService.findUserByEmail(session.getAttribute("email").toString()))
+                                .product(product)
+                                .actionType(ActionType.SEARCH)
+                                .build()
+                );
+            }
         }
 
         List<Category> category = categoryService.findAll();

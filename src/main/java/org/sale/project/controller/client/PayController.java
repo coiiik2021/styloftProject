@@ -40,6 +40,7 @@ public class PayController {
     PaymentService paymentService;
 
     UserActionService userActionService;
+    VoucherService voucherService;
 
 
     @GetMapping
@@ -77,20 +78,14 @@ public class PayController {
                            @ModelAttribute("note") String note,
                            @ModelAttribute("paymentMethod") String paymentMethod,
                            @ModelAttribute("totalPrice") String totalPrice,
+                           @ModelAttribute("totalPriceFinal") String totalPriceFinal,
+
+                           @RequestParam(value = "voucherCode", required = false) String voucherCode,
                            HttpServletResponse response) {
 
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
-//        userPay.setEmail(email);
         User user = userService.findUserByEmail(email);
-
-
-
-//        System.out.println(">>> method: " + paymentMethod);
-
-//        System.out.println(">>> method: " + Double.parseDouble(totalOptional.get()));
-
-
 
 
 
@@ -101,6 +96,8 @@ public class PayController {
         if(bindingResult.hasErrors()) {
             model.addAttribute("items", user.getCart().getCartItems());
             model.addAttribute("totalPrice", cartService.totalPriceInCart(user.getCart()));
+            model.addAttribute("voucherCode", voucherCode);
+
             return "/client/pay/show";
         }
 
@@ -112,9 +109,12 @@ public class PayController {
         userService.saveUser(user);
 
 
-        double total = cartService.totalPriceInCart(user.getCart()) + 30000;
+        double total = Double.parseDouble(totalPriceFinal);
 
-        Order order = orderService.complete(user, total);
+        System.out.println( ">>>total: " + total);
+        Voucher voucher = voucherService.findByCode(voucherCode);
+
+        Order order = orderService.complete(user, total, voucher);
 
 
 
@@ -142,29 +142,10 @@ public class PayController {
 
 
 
-//        LocalDate day = order.getDate();
 
-//        int date = day.getDay();
-//        int month = day.getMonth();
-//        int year = day.getYear();
         sendCompleteEmailOrder(order);
 
 
-
-//        if(date <= 27){
-//            date = 2;
-//            if(month == 12){
-//                month = 1;
-//                year +=1;
-//
-//            } else{
-//                month++;
-//            }
-//        } else{
-//            date += 2;
-//        }
-
-//        String footer = "Đơn hàng dự kiến sẽ tới tay bạn vào: " + date + "/" + month + "/" + year;
 
 
         return "/client/thank/show";
@@ -178,6 +159,7 @@ public class PayController {
         List<String> itemOrder = new ArrayList<>();
 
         List<OrderDetail> details = order.getDetails();
+        System.out.println(">>>send email: size " +  details.size());
         int count = 0;
 
         for (OrderDetail detail : details) {

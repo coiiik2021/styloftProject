@@ -11,7 +11,7 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h1 class="mt-4">Update color</h1>
+        <h1 class="mt-4">Update Voucher</h1>
         <hr />
 
         <!-- Import header -->

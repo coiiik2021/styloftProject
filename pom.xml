@@ -37,6 +37,13 @@
 
 	</properties>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/fluent-hc -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>4.5.14</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -146,6 +153,11 @@
             <version>17.0.0</version>
             <scope>compile</scope>
         </dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.11.0</version>
+		</dependency>
 
 
     </dependencies>
@@ -167,11 +179,7 @@
 			</dependency>
 
 
-<!--			<dependency>-->
-<!--				<groupId>com.google.code.gson</groupId>-->
-<!--				<artifactId>gson</artifactId>-->
-<!--				<version>2.11.0</version>-->
-<!--			</dependency>-->
+
 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>

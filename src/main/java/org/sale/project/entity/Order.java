@@ -39,7 +39,8 @@ public class Order {
     List<OrderDetail> details;
 
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "voucher_id")
     Voucher voucher;
 
 }

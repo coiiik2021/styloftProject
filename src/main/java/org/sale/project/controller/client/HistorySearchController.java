@@ -39,7 +39,6 @@ public class HistorySearchController {
         return list;
     }
 
-    VoucherService voucherService;
 
 
 }

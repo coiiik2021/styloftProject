@@ -17,6 +17,7 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     String id;
+
     @Email(message = "Email is in valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     String email;
 
@@ -32,4 +33,5 @@ public class Account {
     @ManyToOne
     @JoinColumn(name = "role_id")
     Role role;
+
 }

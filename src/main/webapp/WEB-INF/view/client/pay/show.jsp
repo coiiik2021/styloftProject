@@ -67,11 +67,13 @@
 </head>
 <body>
 <div class="container py-4">
+  <a href="/cart" class="btn btn-danger" >back</a>
   <div class="d-flex flex-column flex-sm-row align-items-center bg-white py-4 px-3">
     <p class="text-decoration-none fs-2 fw-bold text-dark">
       Thông tin vận chuyển
     </p>
   </div>
+
 
   <div class="row mt-4">
     <div class="col-lg-6 form-section" style="margin-right: 50px">
@@ -136,8 +138,14 @@
       <div class="py-2 border-top border-bottom">
         <div class="d-flex justify-content-between">
           <span>Tạm tính</span>
-          <span class="fw-bold" id="totalPrice" data-total="${totalPrice}"><fmt:formatNumber value="${totalPrice}" type="number"/> VND</span>
+          <span id="priceWrapper">
+    <span class="fw-bold" id="originalPrice" data-total="${totalPrice}">
+      <fmt:formatNumber value="${totalPrice}" type="number" /> VND
+    </span>
+    <span class="fw-bold text-danger" id="discountedPrice" style="display: none;">0 VND</span>
+  </span>
         </div>
+
         <div class="mb-3 mt-3">
           <label for="voucherCode" class="form-label">Mã Voucher</label>
           <div class="input-group">
@@ -148,53 +156,88 @@
                     id="voucherCode"
                     name="voucherCode"
                     placeholder="Nhập mã voucher"
-            />
+                    value="${voucherCode != null ? voucherCode : ''}" />
             <button type="button" class="btn btn-secondary" id="applyVoucher">Áp dụng</button>
           </div>
+          <small id="voucherError" class="text-danger" style="display: none;">Mã giảm giá không hợp lệ!</small>
         </div>
-
-        <script>
-          document.getElementById("applyVoucher").addEventListener("click", () => {
-            const voucherCode = document.getElementById("voucherCode").value.trim();
-            const totalPriceElement = document.querySelector(".fs-4.fw-bold");
-            const total = parseFloat(totalPriceElement.getAttribute("data-total")); // Giá trị tạm tính ban đầu
-
-            if (!voucherCode) {
-              alert("Vui lòng nhập mã voucher!");
-              return;
-            }
-
-            // Gửi yêu cầu GET với tham số trong URL
-            fetch(`/apply/voucher?voucher=${voucherCode}&priceTotal=${total}`)
-                    .then((response) => response.json())
-                    .then((data) => {
-                      if (data.error) {
-                        // Báo lỗi nếu mã giảm giá không hợp lệ
-                        alert(data.error);
-                      } else {
-                        // Áp dụng giảm giá và cập nhật tổng tiền
-                        totalPriceElement.textContent = new Intl.NumberFormat("vi-VN").format(data.finalTotal) + " VND";
-                        alert(data.message);
-                      }
-                    })
-                    .catch((error) => {
-                      console.error("Lỗi khi áp dụng mã giảm giá:", error);
-                      alert("Đã xảy ra lỗi, vui lòng thử lại!");
-                    });
-          });
-
-        </script>
-
         <div class="d-flex justify-content-between">
           <span>Phí giao hàng</span>
           <span class="fw-bold">30,000 VND</span>
         </div>
       </div>
 
+
+
+
+
       <div class="d-flex justify-content-between mt-3">
         <span>Tổng</span>
-        <span class="fs-4 fw-bold" id="totalPriceFinal"><fmt:formatNumber value="${totalPrice + 30000}" type="number"/> VND</span>
+        <span class="fs-4 fw-bold"  id="totalPriceFinal"><fmt:formatNumber value="${totalPrice + 30000}" type="number"/> VND</span>
+        <input type="hidden" name="totalPriceFinal" id="hiddenTotalPriceFinal" value="${totalPrice + 30000}">
+
       </div>
+
+      <script>
+        document.getElementById("applyVoucher").addEventListener("click", () => {
+          const voucherCodeInput = document.getElementById("voucherCode");
+          const voucherCode = voucherCodeInput.value.trim();
+          const originalPriceElement = document.getElementById("originalPrice");
+          const discountedPriceElement = document.getElementById("discountedPrice");
+          const totalPriceFinalElement = document.getElementById("totalPriceFinal");
+          const voucherErrorElement = document.getElementById("voucherError");
+          const shippingFee = 30000; // Phí giao hàng cố định
+
+          const total = parseFloat(originalPriceElement.getAttribute("data-total")); // Giá trị tạm tính ban đầu
+
+          // Reset trạng thái
+          voucherErrorElement.style.display = "none";
+          voucherErrorElement.textContent = "";
+
+          if (!voucherCode) {
+            voucherErrorElement.style.display = "block";
+            voucherErrorElement.textContent = "Vui lòng nhập mã voucher!";
+            return;
+          }
+
+          // Gửi yêu cầu GET với tham số trong URL
+          fetch(`/apply/voucher?voucher=` + voucherCode + `&priceTotal=` + total)
+                  .then((response) => response.json())
+                  .then((data) => {
+                    if (data.error) {
+                      voucherErrorElement.style.display = "block";
+                      voucherErrorElement.textContent = data.error;
+
+                      voucherCodeInput.removeAttribute("readonly");
+                      voucherCodeInput.classList.remove("text-success");
+                    } else {
+                      voucherErrorElement.style.display = "none";
+
+                      // Cập nhật giá sau giảm
+                      discountedPriceElement.textContent = new Intl.NumberFormat("vi-VN").format(data.finalTotal) + " VND";
+                      discountedPriceElement.style.display = "inline";
+                      originalPriceElement.style.textDecoration = "line-through";
+
+                      // Cập nhật tổng tiền linh hoạt
+                      const totalFinal = data.finalTotal + shippingFee;
+                      totalPriceFinalElement.textContent = new Intl.NumberFormat("vi-VN").format(totalFinal) + " VND";
+
+                      // Đặt trạng thái cho ô voucher
+                      voucherCodeInput.value = voucherCode;
+                      voucherCodeInput.classList.add("text-success");
+                      voucherCodeInput.setAttribute("readonly", true);
+
+                      document.getElementById("hiddenTotalPriceFinal").value = totalFinal;
+
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Lỗi khi áp dụng mã giảm giá:", error);
+                    alert("Đã xảy ra lỗi, vui lòng thử lại!");
+                  });
+        });
+
+      </script>
 
 
       <div class="d-grid mt-4">
