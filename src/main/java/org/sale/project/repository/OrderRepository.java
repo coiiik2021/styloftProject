@@ -15,4 +15,5 @@ public interface OrderRepository extends JpaRepository<Order, String>, JpaSpecif
 //    Page<Order> findAllBeginToFinish(Specification<Order> spec);
 
     Page<Order> findAll(Specification<Order> spec, Pageable pageable);
+
 }

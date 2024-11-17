@@ -74,7 +74,7 @@
 
                   <!-- Button container using flexbox -->
                   <div class="d-flex col justify-content-end">
-                    <c:if test="${empty orderDetail.review}">
+                    <c:if test="${empty orderDetail.review && order.status.toString() == 'COMPLETED'}">
                       <a href="/order/detail/review/${orderDetail.id}" class="btn btn-danger">Review</a>
                     </c:if>
                   </div>
@@ -108,11 +108,18 @@
           </div>
           <div class="card-footer border-0 px-4 py-5"
                style="background-color: #a8729a; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;">
+
             <h5 class="d-flex align-items-center justify-content-end text-white text-uppercase mb-0">Total
               paid: <span class="h2 mb-0 ms-2">${order.total} VNĐ</span></h5>
+
+
           </div>
+          <c:if test="${order.status.toString() == 'PROCESSING' || order.status.toString() == 'SPACED'}">
+            <a href="/order/cancel/${order.id}" class = "btn btn-danger">Huỷ Đơn hàng </a>
+          </c:if>
 
         </div>
+
       </div>
     </div>
   </div>

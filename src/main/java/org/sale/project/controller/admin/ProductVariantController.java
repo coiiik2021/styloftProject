@@ -64,7 +64,7 @@ public class ProductVariantController {
                                     Model model)  {
 
         if(productVariantService.checkExistsByColorAndProductAndSize(productVariant)){
-            model.addAttribute("errorProductVariantExists", "Product variant already exists");
+            model.addAttribute("errorProductVariantExists", "Product variant đã tồn tại");
             model.addAttribute("newItem", productVariant);
             model.addAttribute("colors", colorService.findAll());
             model.addAttribute("sizes", sizeService.findAll());

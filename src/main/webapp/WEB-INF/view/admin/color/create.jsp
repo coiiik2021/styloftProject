@@ -46,7 +46,7 @@
 
                 <div class="mb-3 col-12">
                   <label class="form-label">Description: (Viết bằng tiếng anh)</label>
-                  <form:input cols="50" class="form-control ${not empty errorName ? 'is-invalid' : ''}"  path="description"/>
+                  <form:input cols="50" class="form-control ${not empty errorDescription ? 'is-invalid' : ''}"  path="description"/>
                   <!-- <%--                    ${errorFullName}--%> -->
                   ${errorDescription}
                 </div>

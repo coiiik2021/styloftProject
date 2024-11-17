@@ -42,6 +42,7 @@ public class CategoryController {
 
 
         List<Category> categories = pCate.getContent();
+
         model.addAttribute("categories", categories);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pCate.getTotalPages());
@@ -77,7 +78,7 @@ public class CategoryController {
     }
 
     @GetMapping("/update/{id}")
-    public String getPageUpdate(@PathVariable String id, Model model) {
+    public String getPageUpdate(@PathVariable("id") String id, Model model) {
         model.addAttribute("category", categoryService.findById(id));
         return "/admin/category/update";
     }

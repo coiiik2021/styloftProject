@@ -10,7 +10,9 @@ import org.sale.project.mapper.OrderMapper;
 import org.sale.project.repository.*;
 import org.sale.project.service.spec.OrderSpec;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -25,9 +27,10 @@ public class OrderService {
     OrderMapper orderMapper;
     CartItemRepository cartItemRepository;
 
+    ProductVariantRepository productVariantRepository;
+
     UserActionService userActionService;
 
-    ProductVariantRepository productVariantRepository;
     private final VoucherRepository voucherRepository;
 
 
@@ -44,14 +47,39 @@ public class OrderService {
     }
 
 
+    public void cancelOrder(String id){
+        Order order = findById(id);
+        if(order != null){
+            order.setStatus(StatusOrder.CANCEL);
+            orderRepository.save(order);
+
+            for(OrderDetail detail : order.getDetails()){
+                Optional<ProductVariant> itemOptional = productVariantRepository.findById(detail.getProductVariant().getId());
+                if(itemOptional.isPresent()){
+                    ProductVariant item = itemOptional.get();
+                    item.setQuantity(item.getQuantity() + detail.getQuantity());
+                    productVariantRepository.save(item);
+                }
+
+            }
+        }
+
+
+    }
+
+
 
     public void deleteOrder(String id) {
         orderRepository.deleteById(id);
     }
 
     public Page<Order> findAll(Pageable pageable) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "date");
+        pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
         return orderRepository.findAll(pageable);
     }
+
+
 
     public double totalRevenue(){
         List<Order> orders = orderRepository.findAll();
@@ -72,7 +100,7 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
 
         for (Order order : orders) {
-            if (order.getStatus().equals("COMPLETED")) {
+            if (order.getStatus().toString().equals("COMPLETED")) {
                 // Sử dụng LocalDate để lấy tháng (tháng trong LocalDate bắt đầu từ 1 nên cần trừ đi 1)
                 int month = order.getDate().getMonthValue() - 1; // Lấy giá trị tháng từ LocalDate
                 double currentRevenue = revenues.get(month);

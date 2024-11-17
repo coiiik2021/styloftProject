@@ -268,7 +268,7 @@
                         <c:if test="${not empty detail.review}">
                             <div class="d-flex row" >
                                 <div class="col-1">
-                                    <img src="img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
+                                    <img src="/images/avatar/${detail.order.user.image != null ? detail.order.user.image : 'default.png'}" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
                                 </div>
                                 <div class="col">
                                     <h5 style="font-weight: bold">${detail.order.user.name}</h5>

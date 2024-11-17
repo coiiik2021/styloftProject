@@ -34,6 +34,8 @@ public class User {
     @Past(message = "Ngày sinh phải là một ngày trong quá khứ")
     LocalDate birthDay;
 
+    String image;
+
 
 
     @OneToOne

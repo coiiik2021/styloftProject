@@ -64,4 +64,11 @@ public class OrderClientController {
         return "redirect:/order/" + orderDetail.getOrder().getId();
     }
 
+    @GetMapping("/cancel/{id}")
+    public String cancelOrder(@PathVariable("id") String id){
+        orderService.cancelOrder(id);
+
+        return "redirect:/account";
+    }
+
 }

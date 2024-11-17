@@ -29,7 +29,6 @@ public class ColorService {
         if(color.getId() != null || findByName(color.getName()) == null) {
             colorRepository.save(color);
         }
-
     }
 
     public void deleteById(String id) {

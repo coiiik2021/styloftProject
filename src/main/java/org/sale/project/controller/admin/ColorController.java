@@ -45,6 +45,7 @@ public class ColorController {
 
 
         List<Color> colors = pColor.getContent();
+
         model.addAttribute("colors", colors);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", pColor.getTotalPages());

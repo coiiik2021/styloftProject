@@ -48,6 +48,7 @@ public class UserService {
 
     public User saveUser(User user) {
         if(userRepository.findByAccount(user.getAccount()) != null){
+            user.setImage("/default.png");
             user.getAccount().setRole(roleRepository.findByName("USER"));
             accountRepository.save(user.getAccount());
             return userRepository.save(user);
@@ -68,7 +69,7 @@ public class UserService {
 
         User user = userOptional.orElse(null);
 
-            if(user == null){
+            if(user == null && !email.equals("admin@gmail.com")){
                 Account account = accountRepository.findByEmail(email).get();
 
                 user = saveUser(User.builder().account(accountRepository.findByEmail(email).get()).build());
@@ -87,6 +88,10 @@ public class UserService {
             user = userOptional.get();
         }
         userMapper.updateUser(user, userUpdate);
+
+        if(userUpdate.getImage() != null){
+            user.setImage(userUpdate.getImage());
+        }
 
         Account account = accountRepository.findByEmail(email).get();
 
