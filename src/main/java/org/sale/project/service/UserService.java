@@ -1,5 +1,6 @@
 package org.sale.project.service;
 
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -87,7 +88,11 @@ public class UserService {
         if (userOptional.isPresent()) {
             user = userOptional.get();
         }
-        userMapper.updateUser(user, userUpdate);
+        user.setName(userUpdate.getName());
+        user.setPhoneNumber(userUpdate.getPhoneNumber());
+        user.setBirthDay(userUpdate.getBirthDay());
+        user.setSex(userUpdate.getSex());
+        System.out.println(user.getSex());
 
         if(userUpdate.getImage() != null){
             user.setImage(userUpdate.getImage());
@@ -109,4 +114,22 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void updateUserAddress(String email, String newAddress) {
+        // Tìm người dùng dựa trên email
+        Optional<User> userOptional = userRepository.findByAccount(accountRepository.findByEmail(email).get());
+
+        // Kiểm tra xem người dùng có tồn tại hay không
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // Cập nhật thuộc tính address
+            user.setAddress(newAddress);
+
+            // Lưu lại đối tượng user đã cập nhật
+            userRepository.save(user);
+        } else {
+            // Nếu người dùng không tồn tại, bạn có thể xử lý lỗi ở đây, ví dụ: ném một exception
+            throw new RuntimeException("User not found with email: " + email);
+        }
+    }
 }

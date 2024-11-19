@@ -39,6 +39,8 @@
       margin-right: 20px;
     }
   </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <jsp:include page="../layout/header.jsp" />
@@ -49,17 +51,17 @@
     <!-- Sidebar -->
     <div class="col-md-3">
       <ul class="list-group sidebar">
-        <li class="list-group-item active" onclick="showSection('account-info')">Thông tin tài khoản</li>
-        <li class="list-group-item" onclick="showSection('order-history')">Lịch sử đơn hàng</li>
-        <li class="list-group-item" onclick="showSection('account-address')">Số địa chỉ</li>
-<%--        <li class="list-group-item">Đánh giá và phản hồi</li>--%>
-<%--        <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>--%>
-<%--        <li class="list-group-item">Đăng xuất</li>--%>
+        <li class="list-group-item ${sessionScope.get("checkid") == '1' ? 'active' : ''}" onclick="showSection('account-info')">Thông tin tài khoản</li>
+        <li class="list-group-item " onclick="showSection('order-history')">Lịch sử đơn hàng</li>
+        <li class="list-group-item ${sessionScope.get("checkid")  == '3' ? 'active' : ''}"  onclick="showSection('account-address')">Địa chỉ giao hàng</li>
+        <%--        <li class="list-group-item">Đánh giá và phản hồi</li>--%>
+        <%--        <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>--%>
+        <%--        <li class="list-group-item">Đăng xuất</li>--%>
       </ul>
     </div>
 
     <!-- Form Thông tin tài khoản -->
-    <div class="col-md-9 form-container" id="account-info" style="display: block;">
+    <div class="col-md-9 form-container" id="account-info" style="display: ${sessionScope.get("checkid") == '3' ? 'none' : 'block' };">
       <div>
         <h2 class="mb-4">Thông tin tài khoản</h2>
         <form:form action="/account/update-information"  enctype="multipart/form-data" method="post" modelAttribute="user">
@@ -88,7 +90,7 @@
             <div class="col-md-6">
               <label for="fullName" class="form-label">Họ và tên</label>
 
-              <form:input path="name" type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="fullName" placeholder="Nguyễn Anh Dũng" />
+              <form:input path="name" type="text" class="form-control ${not empty errorName ? 'is-invalid' : ''}" id="fullName" placeholder="Tên khách hàng" />
                 ${errorName}
 
             </div>
@@ -98,7 +100,7 @@
             <div class="col-md-6">
               <label for="phone" class="form-label">Số điện thoại</label>
 
-              <form:input path="phoneNumber" type="text" class="form-control ${not empty erroPhone ? 'is-invalid' : ''}" id="phone" placeholder="0878888424" />
+              <form:input path="phoneNumber" type="text" class="form-control ${not empty erroPhone ? 'is-invalid' : ''}" id="phone"  />
                 ${erroPhone}
 
             </div>
@@ -108,17 +110,17 @@
 
                 <!-- Radio Nam -->
                 <form:radiobutton path="sex" id="male" value="1"
-                                  checked="${user.sex == 1}" />
+                                   />
                 <label for="male">Nam</label>
 
                 <!-- Radio Nữ -->
                 <form:radiobutton path="sex" id="female" value="0"
-                                  checked="${user.sex == 0}" />
+                                   />
                 <label for="female">Nữ</label>
 
                 <!-- Radio Khác giới -->
                 <form:radiobutton path="sex" id="other" value="-1"
-                                  checked="${user.sex == -1}" />
+                                  />
                 <label for="other">Khác giới</label>
               </div>
 
@@ -139,13 +141,15 @@
               <input path="email" disabled type="email" class="form-control" id="email"  value="${email}">
             </div>
           </div>
-          <button type="submit" class="btn btn-save">Lưu thông tin</button>
+          <input name="idform" style="display: none" value="1"> </input>
+
+          <button type="submit" class="btn btn-save btn-success">Lưu thông tin</button>
         </form:form>
       </div>
     </div>
 
     <!-- Form Lịch sử đơn hàng -->
-    <div class="col-md-9 form-container" id="order-history">
+    <div class="col-md-9 form-container " id="order-history" ${sessionScope.get("checkid") == '2' ? 'style="display: none"':''  }>
       <div>
         <h2 class="mb-4">Lịch sử đơn hàng</h2>
         <table class="table">
@@ -180,24 +184,43 @@
         </table>
       </div>
     </div>
-    <div class="col-md-9 form-container" id="account-address">
-      <div>
-        <h1>Chọn danh sách tỉnh</h1>
-        <form action="">
-          <select name="" id="province">
-          </select>
-          <select name="" id="district">
-            <option  value="">chọn quận</option>
-          </select>
-          <select name="" id="ward">
-            <option   value="">chọn phường</option>
-          </select>
-        </form>
+    <div class="col-md-9 form-container" id="account-address" ${sessionScope.get("checkid") == '3' ? 'style="display: block"':''  }>
+      <form:form action="/account/update-adress" method="post" modelAttribute="user">
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="province" class="form-label">Tỉnh/Thành phố</label>
+            <select id="province" class="form-control" >
+              <option value="">Chọn tỉnh</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="district" class="form-label">Quận/Huyện</label>
+            <select id="district" class="form-control">
+              <option value="">Chọn quận</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="ward" class="form-label">Phường/Xã</label>
+            <select id="ward" class="form-control">
+              <option value="">Chọn phường</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label for="detail" class="form-label">Địa chỉ cụ thể</label>
+            <input id="detail" class="form-control"  placeholder="Số nhà, đường..."/>
+            <form:input path="address" id="address-detail" class="form-control" placeholder="Số nhà, đường..." style="display: none"/>
+          </div>
+          <input name="idform" style="display: none" value="3"> </input>
+        </div>
+        <button type="submit" class="btn btn-success btn-save">Lưu địa chỉ</button>
+      </form:form>
 
 
-        <h2 id="result"></h2>
-      </div>
+      <h2 id="result"></h2>
     </div>
+  </div>
 
   </div>
 </div>
@@ -275,10 +298,63 @@
             $("#ward").val() != "") {
       let result = $("#province option:selected").text() +
               " | " + $("#district option:selected").text() + " | " +
-              $("#ward option:selected").text();
-      $("#result").text(result);
+              $("#ward option:selected").text()+ " | " + $("#detail").val();
+      $("#address-detail").val(result);
     }
   };
+  // Hàm load dữ liệu từ #address-detail
+  var loadAddressDetail = () => {
+    const addressParts = $("#address-detail").val().split(" | ");
+    if (addressParts.length === 4) {
+      const [provinceName, districtName, wardName, detail] = addressParts;
+
+      // Gọi API để lấy danh sách province
+      axios.get(host + "?depth=1")
+              .then((response) => {
+                const provinces = response.data;
+                const selectedProvince = provinces.find(p => p.name === provinceName);
+                if (selectedProvince) {
+                  $("#province").val(selectedProvince.code);
+
+                  // Gọi API để lấy danh sách district của tỉnh đã chọn
+                  return axios.get(host + "p/" + selectedProvince.code + "?depth=2");
+                }
+              })
+              .then((response) => {
+                const districts = response.data.districts;
+                renderData(districts, "district");
+                const selectedDistrict = districts.find(d => d.name === districtName);
+                if (selectedDistrict) {
+                  $("#district").val(selectedDistrict.code);
+
+                  // Gọi API để lấy danh sách ward của quận đã chọn
+                  return axios.get(host + "d/" + selectedDistrict.code + "?depth=2");
+                }
+              })
+              .then((response) => {
+                const wards = response.data.wards;
+                renderData(wards, "ward");
+                const selectedWard = wards.find(w => w.name === wardName);
+                if (selectedWard) {
+                  $("#ward").val(selectedWard.code);
+                }
+              })
+              .catch((error) => {
+                console.error("Error loading address detail:", error);
+              });
+      $("#detail").val(detail);
+    } else {
+      console.warn("Address detail format is incorrect.");
+    }
+  };
+
+  $(document).ready(() => {
+    // Kiểm tra nếu #address-detail có dữ liệu thì thực hiện load ngược
+    if ($("#address-detail").val().trim() !== "") {
+      loadAddressDetail();
+    }
+  });
+
 
   // Gọi API để lấy danh sách tỉnh/thành phố ban đầu
   callAPI(host + "?depth=1");
@@ -310,6 +386,11 @@
   $("#ward").change(function () {
     printResult();
   });
+  // Gọi hàm printResult khi nội dung của #detail thay đổi
+  $("#detail").change("input", () => {
+    printResult();
+  });
+
 </script>
 
 

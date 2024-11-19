@@ -53,7 +53,7 @@ public class AccountClientController {
     @PostMapping("/update-information")
     public String updateInformation(Model model, HttpServletRequest request,
                                     @ModelAttribute("user") @Valid User userUpdate, BindingResult bindingResult,
-                                    @RequestParam("imageAvatar") MultipartFile imageAvatar) {
+                                    @RequestParam("imageAvatar") MultipartFile imageAvatar,@RequestParam("idform") Optional<String> idform){
 
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
@@ -63,7 +63,6 @@ public class AccountClientController {
         if (bindingResult.hasErrors()) {
             return "/client/home/information";
         }
-
 
 
         if(!imageAvatar.isEmpty()){
@@ -76,7 +75,28 @@ public class AccountClientController {
         String email = (String) session.getAttribute("email");
 
         userService.updateUser(email, userUpdate);
+        session.setAttribute("checkid", idform.get());
+        return "redirect:/account";
+    }
+    @PostMapping("/update-adress")
+    public String updateAddress(Model model, HttpServletRequest request,
+                                @ModelAttribute("user") @Valid User userUpdate, BindingResult bindingResult,
+                                @RequestParam("idform") Optional<String> idform) {
 
+        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            System.out.println(">>> user: " + fieldError.getField() + fieldError.getDefaultMessage());
+
+        }
+        if (bindingResult.hasErrors()) {
+            return "/client/home/information";
+        }
+
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+
+        userService.updateUserAddress(email, userUpdate.getAddress());
+        session.setAttribute("checkid", idform.get());
         return "redirect:/account";
     }
 }
