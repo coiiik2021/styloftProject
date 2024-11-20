@@ -47,9 +47,14 @@ public class Voucher {
     @Column(nullable = false)
     private Boolean active = true; // Trạng thái hoạt động
 
-    @Column(nullable = false)
-    @NotNull(message = "Không được để trống")
-    private Integer quantity;
+    @PrePersist
+    @PreUpdate
+    @PostLoad
+    private void validateEndDate() {
+        if (endDate != null && endDate.isBefore(LocalDate.now())) {
+            this.active = false; // Nếu ngày kết thúc nhỏ hơn hôm nay, tự động tắt trạng thái
+        }
+    }
 
     @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Order> order;

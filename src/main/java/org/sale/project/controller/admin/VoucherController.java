@@ -106,13 +106,12 @@ public class VoucherController {
     public String updateVoucher(@ModelAttribute("voucher") @Valid Voucher voucherUpdate, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("voucher", voucherUpdate);
-
             return "/admin/voucher/update";
         }
 
         System.out.println( ">>>voucher id: " + voucherUpdate.getId());
+        voucherService.update(voucherUpdate);
 
-        voucherService.updateQuantity(voucherUpdate);
 
         return "redirect:/admin/voucher";
     }

@@ -154,15 +154,15 @@ public class OrderService {
 
         order.setDetails(detail);
         System.out.println(order.getDetails().size());
-        if(voucher != null){
-            order.setVoucher(voucher);
-            voucher.setQuantity(voucher.getQuantity() - 1);
-
-            if(voucher.getQuantity() <= 0){
-                voucher.setActive(false);
-            }
-            voucherRepository.save(voucher);
-        }
+//        if(voucher != null){
+//            order.setVoucher(voucher);
+//            voucher.setQuantity(voucher.getQuantity() - 1);
+//
+//            if(voucher.getQuantity() <= 0){
+//                voucher.setActive(false);
+//            }
+//            voucherRepository.save(voucher);
+//        }
 
         order = orderRepository.save(order);
 

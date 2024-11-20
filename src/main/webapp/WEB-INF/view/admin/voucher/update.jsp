@@ -45,9 +45,6 @@
                   <form:errors path="endDate" cssClass="invalid-feedback"/>
                 </c:set>
 
-                <c:set var="errorQuantity">
-                  <form:errors path="quantity" cssClass="invalid-feedback"/>
-                </c:set>
 
                 <div class="mb-3 col-12">
 
@@ -63,12 +60,6 @@
                   <form:input type="text" class="form-control ${not empty errorDiscountValue ? 'is-invalid' : ''}"  path="discountValue"/>
                   <!-- <%--                    ${errorFullName}--%> -->
                     ${errorDiscountValue}
-                </div>
-                <div class="mb-3 col-12">
-                  <label class="form-label">Quantity</label>
-                  <form:input type="text" class="form-control ${not empty errorQuantity ? 'is-invalid' : ''}"  path="quantity"/>
-                  <!-- <%--                    ${errorFullName}--%> -->
-                    ${errorQuantity}
                 </div>
 
                 <div class="mb-3 col-12">

@@ -26,7 +26,6 @@
                                     <th scope="col">Code</th>
                                     <th scope="col">Discount</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Quantity</th>
 
                                     <th scope="col">Action</th>
                                 </tr>
@@ -36,7 +35,6 @@
                                     <tr style="text-align: center; vertical-align: middle;">
                                         <th scope="row">${voucher.code}</th>
                                         <td><fmt:formatNumber value="${voucher.discountValue}" type="number"/>%</td>
-                                        <td><fmt:formatNumber value="${voucher.quantity}" type="number"/></td>
 
                                         <td style="color:${voucher.active ? 'green' : 'red'} ;">  ${voucher.active ? 'Còn' : 'Hết'}</td>
 
