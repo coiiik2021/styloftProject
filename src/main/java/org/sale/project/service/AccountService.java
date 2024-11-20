@@ -20,6 +20,7 @@ public class AccountService {
     AccountRepository accountRepository;
 
     public void saveAccount(Account account) {
+
         accountRepository.save(account);
     }
 
@@ -34,7 +35,7 @@ public class AccountService {
     public Account findByEmail(String email) {
         Optional<Account> accountOptional = accountRepository.findByEmail(email);
 
-        return accountOptional.isPresent() ? accountOptional.get() :  null;
+        return accountOptional.orElse(null);
 
     }
 
@@ -46,4 +47,6 @@ public class AccountService {
     public int countAccount(){
         return accountRepository.findAll().size();
     }
+
+
 }

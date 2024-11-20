@@ -72,7 +72,7 @@
                 <div class="card bg-glass">
                     <div class="card-body px-4 py-5 px-md-5">
 
-                        <form:form action="/register" method="POST" class="form-group" modelAttribute="newUser">
+                        <form:form action="/register" method="POST" class="form-group" modelAttribute="newAccount">
                             <c:set var="errorEmail">
                                 <form:errors path="email" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
                             </c:set>
@@ -80,6 +80,7 @@
                                 <form:errors path="password" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
                             </c:set>
                             <h2 class="display-7 fw-bold" style="color: #740c0c;">ĐĂNG KÝ</h2>
+                            <p style="color: red">${errorRegister}</p>
                             <div class="mb-3">
                                 <label class="form-label" for="email">Địa chỉ email</label>
                                 <form:input
@@ -102,7 +103,11 @@
                             <button type="submit" class="btn">Đăng ký</button>
                         </form:form>
                         <div class="description">
-                            Hoặc đăng nhập với tài khoản Google của bạn
+                            Hoặc đăng nhập với tài khoản Google của bạn hoặc
+                            <c:if test="${not empty errorRegister}">
+                            <a href="/forgetPassword">Quên mật khẩu</a>
+
+                            </c:if>
                         </div>
                         <button class="btn btn-google">
                             <i class="bi bi-google"></i>

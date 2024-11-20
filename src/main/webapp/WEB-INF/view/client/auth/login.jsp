@@ -154,7 +154,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
                   </button>
                 </form>
                 <div class="description">
-                  Hoặc đăng nhập với tài khoản Google/Facebook của bạn
+                  Hoặc đăng nhập với tài khoản Google/Facebook của bạn  <a href="/forgetPassword">Quên mật khẩu</a>
                 </div>
                 <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/google&response_type=code&client_id=264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com&approval_prompt=force" class="btn btn-google">
                   <i class="bi bi-google"></i>

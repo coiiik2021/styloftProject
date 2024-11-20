@@ -66,12 +66,12 @@ public class HomeController {
 
     @GetMapping("/register")
     public String getPageRegister(Model model) {
-        model.addAttribute("newUser", new Account());
+        model.addAttribute("newAccount", new Account());
         return "/client/auth/register";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult) {
+    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model) {
         // Kiểm tra lỗi
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
@@ -92,6 +92,14 @@ public class HomeController {
                         .to(Recipient.builder().email(account.getEmail()).build())
                         .build()
         );
+
+
+        if(accountService.findByEmail(account.getEmail()) != null) {
+            model.addAttribute("errorRegister", "Email đã tồn tại!!!!");
+            model.addAttribute("newAccount", account);
+            return "/client/auth/register";
+
+        }
 
         // Mã hóa mật khẩu và lưu người dùng
         account.setPassword(passwordEncoder.encode(account.getPassword()));
@@ -236,7 +244,7 @@ public class HomeController {
 //        Pageable pageable = PageRequest.of(page - 1, 8);
 //        Page<Product> productPage = productService.findAll(pageable, false);
 
-        List<Product> products = email != null ? productService.findAll(recommendationService.getTopNRecommendations(userService.findUserByEmail(email), 12))
+        List<Product> products = email != null && !email.equals("admin@gmail.com") ? productService.findAll(recommendationService.getTopNRecommendations(userService.findUserByEmail(email), 12))
                 : productService.findAll() ;
 
 
