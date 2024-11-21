@@ -12,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
 import org.sale.project.entity.*;
-import org.sale.project.enums.ActionType;
 import org.sale.project.enums.StatusOrder;
 import org.sale.project.service.*;
 import org.sale.project.service.email.EmailService;
@@ -23,11 +22,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/pay")
@@ -221,7 +217,7 @@ public class PayController {
 
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
-            order.setStatus(StatusOrder.SPACED);
+            order.setStatus(StatusOrder.PAYMENT_FAILED);
             url = "/client/thank/show";
         } else {
             order.setStatus(StatusOrder.PROCESSING);

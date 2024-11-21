@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +35,7 @@ import java.util.List;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration{
 
-    UserDetailsService userDetailsService;
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -95,7 +96,7 @@ public class SecurityConfiguration{
                         .permitAll()
 
                         .requestMatchers("/","/register", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/email", "/google", "/facebook", "/payment/**")
+                                "/images/**", "/email", "/google", "/facebook", "/payment/**", "/forgot")
 
                         .permitAll()
 
@@ -104,12 +105,7 @@ public class SecurityConfiguration{
                         .requestMatchers("/cart/**", "order/**", "/review/**", "/pay/**", "/account/**" , "/apply/**").hasRole("USER")
 
                         .anyRequest().authenticated())
-//                .oauth2Login(oauth2 -> oauth2
-//                        .loginPage("/login")
-//                        .defaultSuccessUrl("/", true)
-//                        .failureUrl("/login?error")
-//                        .successHandler(authenticationSuccessHandler()) // Thêm success handler
-//                )
+
                 .rememberMe((rememberMe) -> rememberMe
                         .rememberMeServices(rememberMeServices()))
                 .formLogin(formLogin -> formLogin
@@ -118,6 +114,8 @@ public class SecurityConfiguration{
                         .successHandler(authenticationSuccessHandler())
                         .permitAll())
                 .exceptionHandling(ex -> ex.accessDeniedPage("/404"));
+
+
         return http.build();
     }
 

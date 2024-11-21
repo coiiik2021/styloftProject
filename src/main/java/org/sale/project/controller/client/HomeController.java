@@ -71,6 +71,27 @@ public class HomeController {
         return "/client/auth/register";
     }
 
+    @GetMapping("/forgot")
+    public String getPageForgot(Model model) {
+        model.addAttribute("email", "");
+        return "/client/auth/forgot";
+    }
+
+    @PostMapping("/forgot")
+    public String forget(@RequestParam("email") String email, Model model) {
+
+        String password = accountService.forgotPassword(email);
+
+        if(password == null) {
+            model.addAttribute("errorForget", "Email không tồn tại trong hệ thống");
+            model.addAttribute("email", email);
+            return "/client/auth/forgot";
+        }
+
+        System.out.println(">>>password: " +password);
+        return "redirect:/login";
+    }
+
     @PostMapping("/register")
     public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model) throws MessagingException {
         // Kiểm tra lỗi
@@ -95,6 +116,7 @@ public class HomeController {
 //        );
 
 
+
         if(accountService.findByEmail(account.getEmail()) != null) {
             model.addAttribute("errorRegister", "Email đã tồn tại!!!!");
             model.addAttribute("newAccount", account);
@@ -114,17 +136,7 @@ public class HomeController {
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);
 
-        // Đăng nhập người dùng
-//        System.out.println(">>>user: " + user.getEmail() + ", name: " + user.getPassword());
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), user.getPassword(), userDetails.getAuthorities());
-//
-//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-//
-//        // Thiết lập SecurityContext để đăng nhập người dùng
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-
+        
         // Chuyển hướng đến trang chính
         String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                 "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +

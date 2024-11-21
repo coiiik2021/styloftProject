@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public enum StatusOrder {
     PROCESSING,
-    SPACED,
+    PAYMENT_FAILED,
     SHIPPING,
     COMPLETED,
     RETURNED,
