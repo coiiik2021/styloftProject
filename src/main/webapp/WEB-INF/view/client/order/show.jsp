@@ -118,7 +118,22 @@
             <a href="/order/cancel/${order.id}" class = "btn btn-danger">Huỷ Đơn hàng </a>
           </c:if>
 
+
         </div>
+        <c:if test="${order.status.toString() == 'PAYMENT_FAILED'}">
+          <form action="/order/returnPayment/${order.id}" method="post">
+            <button class="btn btn-danger" type="submit">Thanh Toán lại</button>
+            <div>
+              <input
+                      type="hidden"
+                      name="${_csrf.parameterName}"
+                      value="${_csrf.token}"
+              />
+            </div>
+          </form>
+        </c:if>
+
+
 
       </div>
     </div>

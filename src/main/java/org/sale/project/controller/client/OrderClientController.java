@@ -1,11 +1,14 @@
 package org.sale.project.controller.client;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.sale.project.entity.Order;
 import org.sale.project.entity.OrderDetail;
 import org.sale.project.entity.ProductVariant;
 import org.sale.project.entity.Review;
+import org.sale.project.enums.StatusOrder;
 import org.sale.project.service.OrderDetailService;
 import org.sale.project.service.OrderService;
 import org.sale.project.service.ProductVariantService;
@@ -13,8 +16,15 @@ import org.sale.project.service.ReviewService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import vn.payos.PayOS;
+import vn.payos.type.CheckoutResponseData;
+import vn.payos.type.ItemData;
+import vn.payos.type.PaymentData;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/order")
@@ -26,6 +36,8 @@ public class OrderClientController {
 
     ProductVariantService productVariantService;
     ReviewService reviewService;
+
+    PayOS payOS;
 
     @GetMapping("/{id}")
     public String getPageOrder(@PathVariable("id") String id, Model model) {
@@ -44,6 +56,62 @@ public class OrderClientController {
         model.addAttribute("newReview", new Review());
 
         return "/client/order/review";
+    }
+
+    @PostMapping("/returnPayment/{id}")
+    public void returnPayment(@PathVariable("id") String id,
+                              HttpServletResponse response,
+                              HttpServletRequest request) {
+        Order order = orderService.findById(id);
+        order.setStatus(StatusOrder.PROCESSING);
+        orderService.saveOrder(order);
+        try {
+            String baseUrl = getBaseUrl(request);
+            System.out.println(">>> base url: " + baseUrl);
+
+
+            List<ItemData> items = new ArrayList<>();
+            for (OrderDetail orderDetail : order.getDetails()) {
+                items.add(ItemData.builder().name(orderDetail.getProductVariant().getProduct().getName())
+                        .price((int) orderDetail.getPrice())
+                        .quantity(orderDetail.getQuantity())
+                        .build());
+            }
+
+
+            final String description = "Thanh toán đơn hàng: #" + order.getId().substring(0, 5);
+            final String returnUrl = baseUrl + "/pay/thank";
+            final String cancelUrl = baseUrl + "/pay/cancel?idOrder=" + order.getId();
+            // Gen order code
+            String currentTimeString = String.valueOf(new Date().getTime());
+            long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
+
+            PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(10000).description(description)
+                    .returnUrl(returnUrl).cancelUrl(cancelUrl).items(items).build();
+            CheckoutResponseData data = payOS.createPaymentLink(paymentData);
+
+            String checkoutUrl = data.getCheckoutUrl();
+
+            response.setHeader("Location", checkoutUrl);
+            response.setStatus(302);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getBaseUrl(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+
+        String url = scheme + "://" + serverName;
+        if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
+            url += ":" + serverPort;
+        }
+        url += contextPath;
+        return url;
     }
 
     @PostMapping("/detail/review")

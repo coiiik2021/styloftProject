@@ -3,8 +3,8 @@ package org.sale.project.service;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
-import org.sale.project.config.payment.VNPAYConfig;
-import org.sale.project.config.payment.VNPayUtil;
+import org.sale.project.payment.vnpay.VNPAYConfig;
+import org.sale.project.payment.vnpay.VNPayUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;

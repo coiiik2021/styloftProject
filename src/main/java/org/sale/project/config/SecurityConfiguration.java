@@ -102,7 +102,7 @@ public class SecurityConfiguration{
 
                         .requestMatchers("/admin/**", "/feedBack/**").hasRole("ADMIN")
 
-                        .requestMatchers("/cart/**", "order/**", "/review/**", "/pay/**", "/account/**" , "/apply/**").hasRole("USER")
+                        .requestMatchers("/cart/**", "/order/**", "/review/**", "/pay/**", "/account/**" , "/apply/**").hasRole("USER")
 
                         .anyRequest().authenticated())
 

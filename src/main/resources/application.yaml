@@ -85,8 +85,21 @@ payment:
     command: pay
     orderType: other
 
+  PAYOS:
+    CLIENT_ID: fc40b93e-8b2f-40f7-994d-be70925aad2a
+    API_KEY: ad2cd774-890a-43fb-bc2f-68d5a2cf90e5
+    CHECKSUM_KEY: a5945e07fdef5fc0539ce8b1e0b53b1ee36b1635eceefb3661a8bda85c0a957e
+
+
+sms:
+  key: OCBjp8eTJG1DwIq6EnU1BA7L
+  secret: Wed9gQccGa6&50q.kIpg631eoZHtHh32Sun9u#ro
+  token: Y6fHkyRtQ8CKuhJ1NQQOy8t2iuLFxB-GxHsD48jHSJ9RzX5ICJSP3sFf4U35wQwY
+
+
 logging:
   level:
     org:
       springframework:
         security: debug
+

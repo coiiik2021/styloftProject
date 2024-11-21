@@ -1,11 +1,14 @@
-package org.sale.project.config.payment;
+package org.sale.project.payment.vnpay;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 @Configuration
 public class VNPAYConfig {
     @Getter

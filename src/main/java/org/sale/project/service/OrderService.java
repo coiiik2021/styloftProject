@@ -33,6 +33,14 @@ public class OrderService {
 
     private final VoucherRepository voucherRepository;
 
+    public void updateCancelPayment(String id){
+        Order order = findById(id);
+        if(order != null){
+            order.setStatus(StatusOrder.PAYMENT_FAILED);
+            orderRepository.save(order);
+        }
+    }
+
 
     public List<Order> findAll() {
         return orderRepository.findAll();

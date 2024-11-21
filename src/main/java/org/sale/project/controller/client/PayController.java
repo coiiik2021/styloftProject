@@ -20,10 +20,17 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import vn.payos.PayOS;
+import vn.payos.type.CheckoutResponseData;
+import vn.payos.type.ItemData;
+import vn.payos.type.PaymentData;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/pay")
@@ -38,6 +45,8 @@ public class PayController {
 
     UserActionService userActionService;
     VoucherService voucherService;
+
+    PayOS payOS;
 
 
     @GetMapping
@@ -54,10 +63,17 @@ public class PayController {
         return "/client/pay/show";
     }
 
-    @PostMapping("/check-out")
-    public String checkOut(Model model, HttpServletRequest request) {
+    @GetMapping("/cancel")
+    public String checkOut(Model model, @RequestParam("idOrder") String id) {
+        System.out.println(">>>id: "+ id);
 
-        return "redirect:/";
+        orderService.updateCancelPayment(id);
+
+
+
+        model.addAttribute("contentError", "Đơn hàng bạn chưa được thanh toán!!!");
+
+        return "/client/thank/show";
     }
 
 
@@ -66,6 +82,8 @@ public class PayController {
 //
 //
 //    }
+
+
 
 
 
@@ -78,7 +96,8 @@ public class PayController {
                            @ModelAttribute("totalPriceFinal") String totalPriceFinal,
 
                            @RequestParam(value = "voucherCode", required = false) String voucherCode,
-                           HttpServletResponse response) throws MessagingException {
+                           HttpServletResponse response
+                           ) throws MessagingException {
 
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
@@ -118,18 +137,57 @@ public class PayController {
         if(paymentMethod.equals("online")){
 //            setUpOnline(totalPrice, response);
 
-            session.setAttribute("idOrder", order.getId());
-            int totalInt = ((Double)total).intValue();
+//            session.setAttribute("idOrder", order.getId());
+//            int totalInt = ((Double)total).intValue();
+//
+//            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
+//            try{
+//                response.sendRedirect(url);
+//            } catch (IOException e) {
+//
+//                System.out.println(e);
+//            }
 
-            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
-            try{
-                response.sendRedirect(url);
-            } catch (IOException e) {
 
-                System.out.println(e);
+            try {
+                String baseUrl = getBaseUrl(request);
+                System.out.println(">>> base url: " + baseUrl);
+
+
+                List<ItemData> items = new ArrayList<>();
+                for (OrderDetail orderDetail : order.getDetails()) {
+                    items.add(ItemData.builder().name(orderDetail.getProductVariant().getProduct().getName())
+                                    .price((int) orderDetail.getPrice())
+                                    .quantity(orderDetail.getQuantity())
+                            .build());
+                }
+
+
+                final String description = "Thanh toán đơn hàng: #" + order.getId().substring(0, 5);
+                final String returnUrl = baseUrl + "/pay/thank";
+                final String cancelUrl = baseUrl + "/pay/cancel?idOrder="+ order.getId();
+                // Gen order code
+                String currentTimeString = String.valueOf(new Date().getTime());
+                long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
+
+                PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(10000).description(description)
+                        .returnUrl(returnUrl).cancelUrl(cancelUrl).items(items).build();
+                CheckoutResponseData data = payOS.createPaymentLink(paymentData);
+
+                String checkoutUrl = data.getCheckoutUrl();
+
+                response.setHeader("Location", checkoutUrl);
+                response.setStatus(302);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
+
+
+
+
+
 
 
 
@@ -143,6 +201,28 @@ public class PayController {
         sendCompleteEmailOrder(order);
 
         return "/client/thank/show";
+    }
+
+    @GetMapping("/thank")
+    public String getPageThank(){
+        return "/client/thank/show";
+
+    }
+
+
+
+    private String getBaseUrl(HttpServletRequest request) {
+        String scheme = request.getScheme();
+        String serverName = request.getServerName();
+        int serverPort = request.getServerPort();
+        String contextPath = request.getContextPath();
+
+        String url = scheme + "://" + serverName;
+        if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
+            url += ":" + serverPort;
+        }
+        url += contextPath;
+        return url;
     }
 
 

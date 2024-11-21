@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -25,7 +26,10 @@
       </div>
       <div class="text-center">
         <h1>Thank You !</h1>
-        <p>Cảm ơn bạn đã mua hàng!!! Đơn hàng sẽ được giao tới tay bạn sớm nhất!!!</p>
+        <p>Cảm ơn bạn đã mua hàng!!!
+          <strong style="color: red">${contentError}</strong>
+
+        </p>
         <a href="/" class="btn btn-outline-success">Trang chủ</a>
       </div>
     </div>
