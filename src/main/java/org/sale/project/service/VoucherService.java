@@ -48,13 +48,14 @@ public class VoucherService {
 
     public Voucher findByCode(String  code) {
         Voucher voucher = voucherRepository.findByCode(code);
-        if(voucher.getActive()) {
-            if (voucher.getEndDate().isBefore(LocalDate.now())) {
-                voucher.setActive(false);
-                return null;// Đặt active = false nếu ngày hết hạn đã qua
-            }
-            else {
-                return voucher;
+        if(voucher != null) {
+            if (voucher.getActive()) {
+                if (voucher.getEndDate().isBefore(LocalDate.now())) {
+                    voucher.setActive(false);
+                    return null;// Đặt active = false nếu ngày hết hạn đã qua
+                } else {
+                    return voucher;
+                }
             }
         }
         return null;

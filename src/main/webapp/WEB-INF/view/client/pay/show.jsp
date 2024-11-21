@@ -64,6 +64,8 @@
     }
   </style>
   <title>Checkout Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container py-4">
@@ -99,7 +101,7 @@
 <%--            <input type="email" class="form-control py-3" id="email"  name="email" value="${email}" />--%>
 <%--          </div>--%>
 <%--        </div>--%>
-
+      <hr>
         <div class="mb-3">
           <label for="Username" class="form-label">Họ và tên</label>
           <div class="input-group">
@@ -108,7 +110,7 @@
             ${errorName}
           </div>
         </div>
-
+      <hr>
         <div class="mb-3">
           <label for="UserPhone" class="form-label">Số điện thoại</label>
           <div class="input-group">
@@ -117,16 +119,39 @@
             ${errorPhoneNumber}
           </div>
         </div>
-
+      <hr>
         <div class="mb-3">
-          <label for="billing-address" class="form-label">Địa chỉ giao hàng</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="ri-home-8-line"></i></span>
-            <form:input path="address" type="text" class="form-control py-3 ${not empty errorAddrress ? 'is-invalid' : ''}" id="billing-address" placeholder="Nhập địa chỉ"  name="address" />
-            ${errorAddrress}
+          <label for="address-detail" class="form-label mb-3">Địa chỉ giao hàng</label>
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="province" class="form-label ms-2">Tỉnh/Thành phố</label>
+              <select id="province" class="form-control ms-2" >
+                <option value="">Chọn tỉnh</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="district" class="form-label ms-2">Quận/Huyện</label>
+              <select id="district" class="form-control ms-2">
+                <option value="">Chọn quận</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="ward" class="form-label ms-2">Phường/Xã</label>
+              <select id="ward" class="form-control ms-2">
+                <option value="">Chọn phường</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <label for="detail" class="form-label ms-2">Địa chỉ cụ thể</label>
+              <input id="detail" class="form-control ms-2"  placeholder="Số nhà, đường..."/>
+              <form:input path="address" id="address-detail" class="form-control" placeholder="Số nhà, đường..." style="display: none"/>
+            </div>
+            <input name="idform" style="display: none" value="3"> </input>
           </div>
         </div>
-
+      <hr>
         <div class="mb-3">
           <label for="billing-note" class="form-label">Ghi chú</label>
           <div class="input-group">
@@ -307,6 +332,171 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.1/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+  const host = "https://provinces.open-api.vn/api/";
+
+  // Hàm gọi API lấy dữ liệu tỉnh/thành phố
+  var callAPI = (api) => {
+    return axios.get(api)
+            .then((response) => {
+              if (Array.isArray(response.data)) {
+                renderData(response.data, "province");
+              } else {
+                console.error("Province data is not an array:", response.data);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching provinces:", error);
+            });
+  };
+
+  // Hàm gọi API lấy dữ liệu quận/huyện
+  var callApiDistrict = (api) => {
+    return axios.get(api)
+            .then((response) => {
+              if (Array.isArray(response.data.districts)) {
+                renderData(response.data.districts, "district");
+              } else {
+                console.error("Districts data is not an array:", response.data);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching districts:", error);
+            });
+  };
+
+  // Hàm gọi API lấy dữ liệu phường/xã
+  var callApiWard = (api) => {
+    return axios.get(api)
+            .then((response) => {
+              if (Array.isArray(response.data.wards)) {
+                renderData(response.data.wards, "ward");
+              } else {
+                console.error("Wards data is not an array:", response.data);
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching wards:", error);
+            });
+  };
+
+  // Hàm hiển thị dữ liệu vào <select>
+  var renderData = (array, select) => {
+    if (!Array.isArray(array)) {
+      console.error("Expected an array, got:", array);
+      return;
+    }
+
+    let row = '<option disable value="">chọn</option>';
+    array.forEach(function (element) {
+      row += '<option value="' + element.code + '">' + element.name + '</option>';
+    });
+    document.querySelector("#" + select).innerHTML = row;
+  };
+
+  // Hàm in kết quả lựa chọn
+  var printResult = () => {
+    if ($("#district").val() != "" && $("#province").val() != "" &&
+            $("#ward").val() != "") {
+      let result = $("#province option:selected").text() +
+              " | " + $("#district option:selected").text() + " | " +
+              $("#ward option:selected").text()+ " | " + $("#detail").val();
+      $("#address-detail").val(result);
+    }
+  };
+  // Hàm load dữ liệu từ #address-detail
+  var loadAddressDetail = () => {
+    const addressParts = $("#address-detail").val().split(" | ");
+    if (addressParts.length === 4) {
+      const [provinceName, districtName, wardName, detail] = addressParts;
+
+      // Gọi API để lấy danh sách province
+      axios.get(host + "?depth=1")
+              .then((response) => {
+                const provinces = response.data;
+                const selectedProvince = provinces.find(p => p.name === provinceName);
+                if (selectedProvince) {
+                  $("#province").val(selectedProvince.code);
+
+                  // Gọi API để lấy danh sách district của tỉnh đã chọn
+                  return axios.get(host + "p/" + selectedProvince.code + "?depth=2");
+                }
+              })
+              .then((response) => {
+                const districts = response.data.districts;
+                renderData(districts, "district");
+                const selectedDistrict = districts.find(d => d.name === districtName);
+                if (selectedDistrict) {
+                  $("#district").val(selectedDistrict.code);
+
+                  // Gọi API để lấy danh sách ward của quận đã chọn
+                  return axios.get(host + "d/" + selectedDistrict.code + "?depth=2");
+                }
+              })
+              .then((response) => {
+                const wards = response.data.wards;
+                renderData(wards, "ward");
+                const selectedWard = wards.find(w => w.name === wardName);
+                if (selectedWard) {
+                  $("#ward").val(selectedWard.code);
+                }
+              })
+              .catch((error) => {
+                console.error("Error loading address detail:", error);
+              });
+      $("#detail").val(detail);
+    } else {
+      console.warn("Address detail format is incorrect.");
+    }
+  };
+
+  $(document).ready(() => {
+    // Kiểm tra nếu #address-detail có dữ liệu thì thực hiện load ngược
+    if ($("#address-detail").val().trim() !== "") {
+      loadAddressDetail();
+    }
+  });
+
+
+  // Gọi API để lấy danh sách tỉnh/thành phố ban đầu
+  callAPI(host + "?depth=1");
+
+  // Xử lý sự kiện khi thay đổi tỉnh/thành phố
+  $("#province").change(function () {
+    const provinceCode = $("#province").val();
+    if (provinceCode) {
+      callApiDistrict(host + "p/" + provinceCode + "?depth=2");
+    } else {
+      document.querySelector("#district").innerHTML = '<option disable value="">chọn</option>';
+      document.querySelector("#ward").innerHTML = '<option disable value="">chọn</option>';
+    }
+    printResult();
+  });
+
+  // Xử lý sự kiện khi thay đổi quận/huyện
+  $("#district").change(function () {
+    const districtCode = $("#district").val();
+    if (districtCode) {
+      callApiWard(host + "d/" + districtCode + "?depth=2");
+    } else {
+      document.querySelector("#ward").innerHTML = '<option disable value="">chọn</option>';
+    }
+    printResult();
+  });
+
+  // Xử lý sự kiện khi thay đổi phường/xã
+  $("#ward").change(function () {
+    printResult();
+  });
+  // Gọi hàm printResult khi nội dung của #detail thay đổi
+  $("#detail").change("input", () => {
+    printResult();
+  });
+
+</script>
 </body>
 </html>
 
