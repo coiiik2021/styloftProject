@@ -73,7 +73,7 @@ public class UserService {
             if(user == null && !email.equals("admin@gmail.com")){
                 Account account = accountRepository.findByEmail(email).get();
 
-                user = saveUser(User.builder().account(accountRepository.findByEmail(email).get()).build());
+                user = saveUser(User.builder().sex(-1).account(accountRepository.findByEmail(email).get()).build());
                 account.setUser(user);
             }
 

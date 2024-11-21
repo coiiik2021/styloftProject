@@ -88,12 +88,11 @@ public class HomeController {
             return "/client/auth/forgot";
         }
 
-        System.out.println(">>>password: " +password);
         return "redirect:/login";
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model) throws MessagingException {
+    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model, HttpServletRequest request) throws MessagingException {
         // Kiểm tra lỗi
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
@@ -122,10 +121,10 @@ public class HomeController {
             model.addAttribute("newAccount", account);
             return "/client/auth/register";
         }
+        String email = account.getEmail();
 
         // Mã hóa mật khẩu và lưu người dùng
         String temppass = account.getPassword();
-        System.out.println(temppass);
         if(temppass.length()<=5)
         {
             model.addAttribute("errorRegister", "Mật khẩu phải dài hơn 5 chữ số");
@@ -136,7 +135,7 @@ public class HomeController {
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);
 
-        
+
         // Chuyển hướng đến trang chính
         String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                 "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
@@ -147,7 +146,51 @@ public class HomeController {
                 "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
                 "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
         emailService.sendHtmlEmail(account.getEmail(),"REGISTER CORRECT",content);
-        return "redirect:/client/home/show";
+        if(accountService.findByEmail(email) == null) {
+
+            accountService.saveAccount(Account.builder().email(email).password(passwordEncoder.encode(temppass)).role(roleService.findByName("USER")).build());
+        }
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+
+        // Tạo token xác thực
+        UsernamePasswordAuthenticationToken authToken =
+                new UsernamePasswordAuthenticationToken(userDetails, temppass, userDetails.getAuthorities());
+
+        // Thực hiện xác thực tự động
+//        authenticationManager.authenticate(authToken);
+
+//        SecurityContextHolder.getContext().setAuthentication(authToken);
+
+//        securityContextHolderFilter.doFilter();
+
+        //Xác thực
+        SecurityContextHolder.getContext().setAuthentication(authToken);
+        User user = userService.findUserByEmail(email);
+
+        HttpSession session = request.getSession(true);
+
+
+        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
+                SecurityContextHolder.getContext());
+
+        session.setAttribute("email", email);
+        if(user != null) {
+            session.setAttribute("id", user.getId());
+            session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
+                    : user.getCart().getCartItems().size());
+
+        }
+
+
+        // Đặt Authentication vào SecurityContextHolder để đăng nhập
+//        if (authToken.isAuthenticated()) {
+//        }
+
+
+//        return googlePojo;
+
+        return "redirect:/";
+//        return "redirect:/client/home/show";
     }
 
 //    SecurityContextHolderFilter securityContextHolderFilter;
