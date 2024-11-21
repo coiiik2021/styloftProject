@@ -78,20 +78,20 @@ public class OrderController {
 
         }
 
-        emailService.sendEmail(
-                SendEmailRequest
-                        .builder()
-                        .subject("Status Order #" + order.getId().substring(0,5))
-                        .htmlContent(content)
-                        .to(
-                                Recipient
-                                        .builder()
-                                        .name(user.getName())
-                                        .email(user.getAccount().getEmail())
-                                        .build()
-                        )
-                        .build()
-        );
+//        emailService.sendEmail(
+//                SendEmailRequest
+//                        .builder()
+//                        .subject("Status Order #" + order.getId().substring(0,5))
+//                        .htmlContent(content)
+//                        .to(
+//                                Recipient
+//                                        .builder()
+//                                        .name(user.getName())
+//                                        .email(user.getAccount().getEmail())
+//                                        .build()
+//                        )
+//                        .build()
+//        );
 
         orderService.saveOrder(oldOrder);
         return "redirect:/admin/order";

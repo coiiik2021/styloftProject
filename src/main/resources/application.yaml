@@ -7,6 +7,9 @@ server:
   servlet:
     context-path: /
 
+image-port: "http://localhost:8080"
+
+
 spring:
   main:
     class: org.sale.project.ProjectApplication
@@ -54,9 +57,23 @@ spring:
     restart:
       enabled: false
 # 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
-email:
-  sendKey: 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
+#email:
+#  sendKey: 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
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: syloftcloth@gmail.com # Lấy giá trị từ biến môi trường
+    password: orszdsvtqxjgbfss # Lấy giá trị từ biến môi trường
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
 
 payment:
   vnPay:

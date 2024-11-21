@@ -1,6 +1,7 @@
 package org.sale.project.controller.client;
 
 import com.google.gson.Gson;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -71,37 +72,44 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model) {
+    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model) throws MessagingException {
         // Kiểm tra lỗi
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
         }
-
+    System.out.println("KKKK");
         // Gửi email chào mừng
-        emailService.sendEmail(
-                SendEmailRequest.builder()
-                        .subject("REGISTER CORRECT")
-                        .htmlContent("<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
-                                "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
-                                "<p>AnhDungShop</p>" +
-                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
-                                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
-                                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
-                                "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
-                                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>")
-                        .to(Recipient.builder().email(account.getEmail()).build())
-                        .build()
-        );
+//        emailService.sendEmail(
+//                SendEmailRequest.builder()
+//                        .subject("REGISTER CORRECT")
+//                        .htmlContent("<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+//                                "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
+//                                "<p>AnhDungShop</p>" +
+//                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+//                                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
+//                                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
+//                                "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
+//                                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>")
+//                        .to(Recipient.builder().email(account.getEmail()).build())
+//                        .build()
+//        );
 
 
         if(accountService.findByEmail(account.getEmail()) != null) {
             model.addAttribute("errorRegister", "Email đã tồn tại!!!!");
             model.addAttribute("newAccount", account);
             return "/client/auth/register";
-
         }
 
         // Mã hóa mật khẩu và lưu người dùng
+        String temppass = account.getPassword();
+        System.out.println(temppass);
+        if(temppass.length()<=5)
+        {
+            model.addAttribute("errorRegister", "Mật khẩu phải dài hơn 5 chữ số");
+            model.addAttribute("newAccount", account);
+            return "/client/auth/register";
+        }
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);
@@ -118,6 +126,15 @@ public class HomeController {
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Chuyển hướng đến trang chính
+        String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+                "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
+                "<p>AnhDungShop</p>" +
+                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
+                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
+                "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
+                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
+        emailService.sendHtmlEmail(account.getEmail(),"REGISTER CORRECT",content);
         return "redirect:/client/home/show";
     }
 

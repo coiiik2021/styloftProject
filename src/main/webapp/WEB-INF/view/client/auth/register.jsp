@@ -77,7 +77,7 @@
                                 <form:errors path="email" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
                             </c:set>
                             <c:set var="errorPassword">
-                                <form:errors path="password" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
+                                <form:errors path="password" cssClass="invalid-feedback"/>
                             </c:set>
                             <h2 class="display-7 fw-bold" style="color: #740c0c;">ĐĂNG KÝ</h2>
                             <p style="color: red">${errorRegister}</p>
@@ -98,7 +98,9 @@
                                             style="${not empty errorPassword ? 'border: red solid 1px ':'' } "
                                             type="password" id="password"
                                             placeholder="Nhập mật khẩu" aria-label="Password"/>
-                                    ${errorPassword}
+                                <c:if test="${not empty errorPassword}">
+                                    <p style="color: red">Mật khẩu phải tối đa 5 kí tự</p>
+                                </c:if>
                             </div>
                             <button type="submit" class="btn">Đăng ký</button>
                         </form:form>
@@ -109,9 +111,9 @@
 
                             </c:if>
                         </div>
-                        <button class="btn btn-google">
-                            <i class="bi bi-google"></i>
-                        </button>
+                            <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/google&response_type=code&client_id=264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com&approval_prompt=force" class="btn btn-google">
+                                <i class="bi bi-google"></i>
+                            </a>
                         <a href="https://www.facebook.com/v19.0/dialog/oauth?client_id=1059853482122901&redirect_uri=http://localhost:8080/facebook" class="btn btn-google">
                             <i class="bi bi-facebook"></i>
                         </a>
