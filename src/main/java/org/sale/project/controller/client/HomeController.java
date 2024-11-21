@@ -70,6 +70,27 @@ public class HomeController {
         return "/client/auth/register";
     }
 
+    @GetMapping("/forgot")
+    public String getPageForgot(Model model) {
+        model.addAttribute("email", "");
+        return "/client/auth/forgot";
+    }
+
+    @PostMapping("/forgot")
+    public String forget(@RequestParam("email") String email, Model model) {
+
+        String password = accountService.forgotPassword(email);
+
+        if(password == null) {
+            model.addAttribute("errorForget", "Email không tồn tại trong hệ thống");
+            model.addAttribute("email", email);
+            return "/client/auth/forgot";
+        }
+
+        System.out.println(">>>password: " +password);
+        return "redirect:/login";
+    }
+
     @PostMapping("/register")
     public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model) {
         // Kiểm tra lỗi
@@ -88,7 +109,7 @@ public class HomeController {
                                 "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
                                 "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
                                 "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
-                                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>")
+                                "<br><br><p>Best regards,<br>Shop</p></div></body></html>")
                         .to(Recipient.builder().email(account.getEmail()).build())
                         .build()
         );
@@ -106,18 +127,7 @@ public class HomeController {
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);
 
-        // Đăng nhập người dùng
-//        System.out.println(">>>user: " + user.getEmail() + ", name: " + user.getPassword());
-//        UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
-//        UsernamePasswordAuthenticationToken authenticationToken =
-//                new UsernamePasswordAuthenticationToken(userDetails.getUsername(), user.getPassword(), userDetails.getAuthorities());
-//
-//        Authentication authentication = authenticationManager.authenticate(authenticationToken);
-//
-//        // Thiết lập SecurityContext để đăng nhập người dùng
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Chuyển hướng đến trang chính
         return "redirect:/client/home/show";
     }
 

@@ -92,20 +92,25 @@
 
                             </div>
                             <div class="mb-3">
+
                                 <label class="form-label" for="password">Mật khẩu</label>
                                 <form:input path="password"
                                             class="form-control"
                                             style="${not empty errorPassword ? 'border: red solid 1px ':'' } "
                                             type="password" id="password"
                                             placeholder="Nhập mật khẩu" aria-label="Password"/>
-                                    ${errorPassword}
+
+                                    <c:if test="${not empty errorPassword}">
+                                        <p style="color: red">Mật khẩu của bạn phải dài hơn 5 kí tự</p>
+                                    </c:if>
+
                             </div>
                             <button type="submit" class="btn">Đăng ký</button>
                         </form:form>
                         <div class="description">
                             Hoặc đăng nhập với tài khoản Google của bạn hoặc
                             <c:if test="${not empty errorRegister}">
-                            <a href="/forgetPassword">Quên mật khẩu</a>
+                            <a href="/forgot">Quên mật khẩu</a>
 
                             </c:if>
                         </div>

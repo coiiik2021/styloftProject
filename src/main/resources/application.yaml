@@ -67,3 +67,9 @@ payment:
     version: 2.1.0
     command: pay
     orderType: other
+
+logging:
+  level:
+    org:
+      springframework:
+        security: debug

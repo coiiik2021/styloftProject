@@ -17,7 +17,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
     <link rel="stylesheet" href="/css/register.css" />
-    <title>Login</title>
+    <title>Forgot Password</title>
   </head>
   <body>
     <!-- Section: Design Block -->
@@ -94,21 +94,15 @@ contentType="text/html" pageEncoding="UTF-8" %>
 
             <div class="card bg-glass">
               <div class="card-body px-4 py-5 px-md-5">
-                <form action="/login" method="POST">
+                <form action="/forgot" method="POST">
                   <h2 class="display-7 fw-bold" style="color: #740c0c">
-                    ĐĂNG NHẬP
+                    Đặt lại mật khẩu
                   </h2>
-                  <p>
-                    <i
-                      >Đăng nhập để tích điểm và hưởng ưu đãi thành viên khi mua
-                      hàng</i
-                    >
-                  </p>
-                  <c:if test="${param.error != null}">
+
+
                     <div class="my-2" style="color: red">
-                      Invalid email or password.
+                      ${errorForget}
                     </div>
-                  </c:if>
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label"
                       >Địa chỉ email</label
@@ -119,26 +113,11 @@ contentType="text/html" pageEncoding="UTF-8" %>
                       class="form-control"
                       id="exampleInputEmail1"
                       aria-describedby="emailHelp"
-                      name="username"
+                      name="email"
+                      value="${email}"
                       required
                     />
-                    <div id="emailHelp" class="form-text">
-                      Chúng tôi sẽ không chia sẽ thông tin với bất kỳ bên
-                    </div>
-                  </div>
 
-                  <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label"
-                      >Mật khẩu</label
-                    >
-                    <input
-                      placeholder="Nhập mật khẩu"
-                      type="password"
-                      class="form-control"
-                      id="exampleInputPassword1"
-                      name="password"
-                      required
-                    />
                   </div>
 
                   <div>
@@ -150,11 +129,11 @@ contentType="text/html" pageEncoding="UTF-8" %>
                   </div>
 
                   <button type="submit" class="btn btn-primary">
-                    Đăng nhập
+                    Send password to email
                   </button>
                 </form>
                 <div class="description">
-                  Hoặc đăng nhập với tài khoản Google/Facebook của bạn  <a href="/forgetPassword">Quên mật khẩu</a>
+                  Hoặc đăng nhập với tài khoản Google/Facebook của bạn
                 </div>
                 <a href="https://accounts.google.com/o/oauth2/auth?scope=email profile openid&redirect_uri=http://localhost:8080/google&response_type=code&client_id=264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com&approval_prompt=force" class="btn btn-google">
                   <i class="bi bi-google"></i>

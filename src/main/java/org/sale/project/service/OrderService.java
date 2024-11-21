@@ -116,7 +116,7 @@ public class OrderService {
 
 
         Order order = new Order();
-        order.setStatus(StatusOrder.SPACED);
+        order.setStatus(StatusOrder.PROCESSING);
         order.setUser(user);
         order.setDate(LocalDate.now());
         order.setTotal(totalPrice);
