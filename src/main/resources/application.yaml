@@ -1,7 +1,4 @@
 # spring.application.name=project
-
-
-
 server:
   port: 8080
   servlet:
@@ -17,10 +14,14 @@ spring:
 
 
   datasource:
-    url: "jdbc:mysql://localhost:3306/quanao"
+#    url: "jdbc:mysql://localhost:3306/quanao"
+#    driverClassName: "com.mysql.cj.jdbc.Driver"
+#    password: root
+#    username: root
+    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:quanao}"
     driverClassName: "com.mysql.cj.jdbc.Driver"
-    password: root
-    username: root
+    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
+    username: ${DATABASE_USER:avnadmin}
   jpa:
     hibernate:
       ddl-auto: update
@@ -92,9 +93,9 @@ payment:
 
 
 sms:
-  key: OCBjp8eTJG1DwIq6EnU1BA7L
-  secret: Wed9gQccGa6&50q.kIpg631eoZHtHh32Sun9u#ro
-  token: Y6fHkyRtQ8CKuhJ1NQQOy8t2iuLFxB-GxHsD48jHSJ9RzX5ICJSP3sFf4U35wQwY
+  api_key: 7f203982dbf3835c072a181ced2245eb-ab65e630-360e-4e43-94ac-87cf624d8c0d
+  base_url: 9kv4mv.api.infobip.com
+
 
 
 logging:
