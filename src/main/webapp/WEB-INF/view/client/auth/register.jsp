@@ -73,12 +73,12 @@
                     <div class="card-body px-4 py-5 px-md-5">
 
                         <form:form action="/register" method="POST" class="form-group" modelAttribute="newAccount">
-                            <c:set var="errorEmail">
-                                <form:errors path="email" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>
-                            </c:set>
-                            <c:set var="errorPassword">
-                                <form:errors path="password" cssClass="invalid-feedback"/>
-                            </c:set>
+<%--                            <c:set var="errorEmail">--%>
+<%--                                <form:errors path="email" cssClass="invalid-feedback" cssStyle="color: red; font-size: 10px;"/>--%>
+<%--                            </c:set>--%>
+<%--                            <c:set var="errorPassword">--%>
+<%--                                <form:errors path="password" cssClass="invalid-feedback"/>--%>
+<%--                            </c:set>--%>
                             <h2 class="display-7 fw-bold" style="color: #740c0c;">ĐĂNG KÝ</h2>
                             <p style="color: red">${errorRegister}</p>
                             <div class="mb-3">
@@ -104,6 +104,16 @@
                                         <p style="color: red">Mật khẩu của bạn phải dài hơn 5 kí tự</p>
                                     </c:if>
 
+                            </div>
+                            <div class="mb-3">
+
+                                <label class="form-label" for="confirmpass">Xác nhận lại mật khẩu</label>
+                                <input id="confirmpass"
+                                       class="form-control"
+                                    <%--                                            style="${not empty errorPassword ? 'border: red solid 1px ':'' } "--%>
+                                       type="password"
+                                       name="confirmpass"
+                                       placeholder="Nhập mật khẩu" aria-label="Password"/>
                             </div>
                             <button type="submit" class="btn">Đăng ký</button>
                         </form:form>

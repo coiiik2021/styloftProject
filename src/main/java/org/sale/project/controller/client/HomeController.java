@@ -92,7 +92,7 @@ public class HomeController {
     }
 
     @PostMapping("/register")
-    public String register(@ModelAttribute("newAccount") @Valid Account account, BindingResult bindingResult, Model model, HttpServletRequest request) throws MessagingException {
+    public String register(@ModelAttribute("newAccount") @Valid Account account,@RequestParam("confirmpass") String confirmpass, BindingResult bindingResult, Model model, HttpServletRequest request) throws MessagingException {
         // Kiểm tra lỗi
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
@@ -122,15 +122,22 @@ public class HomeController {
             return "/client/auth/register";
         }
         String email = account.getEmail();
-
-        // Mã hóa mật khẩu và lưu người dùng
         String temppass = account.getPassword();
+        if(!temppass.equals(confirmpass))
+        {
+            model.addAttribute("errorRegister", "Mật khẩu xác thực không trùng khớp");
+            model.addAttribute("newAccount", account);
+            return "/client/auth/register";
+        }
+        // Mã hóa mật khẩu và lưu người dùng
+
         if(temppass.length()<=5)
         {
             model.addAttribute("errorRegister", "Mật khẩu phải dài hơn 5 chữ số");
             model.addAttribute("newAccount", account);
             return "/client/auth/register";
         }
+
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);

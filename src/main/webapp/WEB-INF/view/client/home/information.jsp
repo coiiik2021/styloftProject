@@ -54,6 +54,7 @@
         <li class="list-group-item ${sessionScope.get("checkid") == '1' ? 'active' : ''}" onclick="showSection('account-info')">Thông tin tài khoản</li>
         <li class="list-group-item " onclick="showSection('order-history')">Lịch sử đơn hàng</li>
         <li class="list-group-item ${sessionScope.get("checkid")  == '3' ? 'active' : ''}"  onclick="showSection('account-address')">Địa chỉ giao hàng</li>
+        <li class="list-group-item ${sessionScope.get("checkid")  == '4' ? 'active' : ''}"  onclick="showSection('pass-update')">Thay đổi mật khẩu</li>
         <%--        <li class="list-group-item">Đánh giá và phản hồi</li>--%>
         <%--        <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>--%>
         <%--        <li class="list-group-item">Đăng xuất</li>--%>
@@ -61,7 +62,7 @@
     </div>
 
     <!-- Form Thông tin tài khoản -->
-    <div class="col-md-9 form-container" id="account-info" style="display: ${sessionScope.get("checkid") == '3' ? 'none' : 'block' };">
+    <div class="col-md-9 form-container" id="account-info" style="display: ${sessionScope.get("checkid") == '1' ? 'block' : 'none' };">
       <div>
         <h2 class="mb-4">Thông tin tài khoản</h2>
         <form:form action="/account/update-information"  enctype="multipart/form-data" method="post" modelAttribute="user">
@@ -219,6 +220,50 @@
 
 
       <h2 id="result"></h2>
+    </div>
+    <div class="col-md-9 form-container" id="pass-update" style="display: ${sessionScope.get("checkid") == '4' ? 'block' : 'none' };">
+      <div>
+        <h2 class="mb-4">Thay đổi mật khẩu</h2>
+        <form action="/account/pass-update"  enctype="multipart/form-data" method="post">
+          <p style="color: red">${errorPassUpdate}</p>
+          <input
+                  type="hidden"
+                  name="${_csrf.parameterName}"
+                  value="${_csrf.token}"
+          />
+          <div class="row mb-3">
+
+            <div class="col-md-6">
+              <label for="pass" class="form-label">Mật khẩu hiện tại</label>
+
+              <input name="pass" type="password" class="form-control" id="pass" placeholder="Mật khẩu hiện tại" value="${pass}" />
+
+
+            </div>
+          </div>
+          <div class="row mb-3">
+
+            <div class="col-md-6">
+              <label for="newpass" class="form-label">Xác nhận mật khẩu mới</label>
+
+              <input name="newpass" type="password" class="form-control" id="newpass" placeholder="Mật khẩu mới" value="${newpass}"/>
+
+            </div>
+          </div>
+          <div class="row mb-3">
+
+            <div class="col-md-6">
+              <label for="confirmpass" class="form-label">Mật khẩu mới</label>
+
+              <input name="confirmpass" type="password" class="form-control" id="confirmpass" placeholder="Xác nhận lại mật khẩu" value="${confirmpass}"/>
+
+            </div>
+          </div>
+          <input name="idform" style="display: none" value="4"/>
+
+          <button type="submit" class="btn btn-save btn-success">Lưu thông tin</button>
+        </form>
+      </div>
     </div>
   </div>
 

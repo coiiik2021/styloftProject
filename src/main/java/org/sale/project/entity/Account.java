@@ -21,7 +21,7 @@ public class Account {
     @Email(message = "Email is in valid", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     String email;
 
-    @Size(min = 5, message = "password phải dài hơn 5 kí tự")
+//    @Size(min = 5, message = "password phải dài hơn 5 kí tự")
     String password;
 
     @OneToOne(cascade = CascadeType.ALL)

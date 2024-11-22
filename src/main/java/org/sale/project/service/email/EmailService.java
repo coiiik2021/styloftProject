@@ -41,7 +41,7 @@ public class EmailService {
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(htmlContent, true); // true để kích hoạt nội dung HTML
-        helper.setFrom("tancong22110306@gmail.com");
+        helper.setFrom("syloftcloth@gmail.com");
 
         // Gửi email
         mailSender.send(mimeMessage);

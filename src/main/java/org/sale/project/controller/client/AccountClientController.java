@@ -7,10 +7,13 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.sale.project.entity.Account;
 import org.sale.project.entity.Order;
 import org.sale.project.entity.User;
+import org.sale.project.service.AccountService;
 import org.sale.project.service.UploadService;
 import org.sale.project.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +32,8 @@ public class AccountClientController {
 
     UserService userService;
     UploadService uploadService;
+    private final AccountService accountService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping
     public String getPageInformation(Model model, HttpServletRequest request) {
@@ -97,6 +102,57 @@ public class AccountClientController {
 
         userService.updateUserAddress(email, userUpdate.getAddress());
         session.setAttribute("checkid", idform.get());
+        return "redirect:/account";
+    }
+    @PostMapping("/pass-update")
+    public String updatePass(HttpServletRequest request,
+                             @RequestParam("pass") String pass,
+                             @RequestParam("newpass") String newpass,
+                             @RequestParam ("confirmpass") String confirmpass,
+                             @RequestParam("idform") Optional<String> idform,
+                             Model model) {
+
+        HttpSession session = request.getSession();
+        String email = (String) session.getAttribute("email");
+
+        Optional<User> userOptional = userService.findByEmail(email);
+        model.addAttribute("email", email);
+//        User user = userOptional.get();
+
+        model.addAttribute("user", userOptional.orElseGet(User::new));
+        model.addAttribute("orders", userOptional.isEmpty()
+                ? new ArrayList<Order>()
+                : userOptional.get().getOrders().stream()
+                .sorted(Comparator.comparing(Order::getDate).reversed())
+                .collect(Collectors.toList()));
+
+        session.setAttribute("checkid", idform.get());
+        model.addAttribute("pass", pass);
+        model.addAttribute("newpass", newpass);
+        model.addAttribute("confirmpass", confirmpass);
+        Account account = accountService.findByEmail(email);
+        boolean check= passwordEncoder.matches(pass, account.getPassword());
+        if(check){
+            System.out.println("Dan Test"+pass);
+            if(!newpass.equals(confirmpass)){
+                model.addAttribute("errorPassUpdate", "Mật khẩu mới và mật khẩu xác nhận không trùng nhau");
+                return "/client/home/information";
+
+            }
+            else
+            {
+                account.setPassword(passwordEncoder.encode(newpass));
+                accountService.updateAccount(account);
+            }
+        }
+        else {
+            System.out.println("Danh Test"+pass);
+            System.out.println(account.getPassword());
+            System.out.println(passwordEncoder.encode(pass));
+            model.addAttribute("errorPassUpdate", "Mật khẩu tài khoản không đúng");
+            return "/client/home/information";
+        }
+
         return "redirect:/account";
     }
 }
