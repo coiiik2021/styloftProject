@@ -44,7 +44,7 @@
                             
                             
                             <div class="d-flex justify-content-end">
-                                <a href="/admin/user" class="btn btn-primary">Back to Users</a>
+                                <a href="/admin/account" class="btn btn-primary">Back to Users</a>
                             </div>
                         </div>
                     </div>

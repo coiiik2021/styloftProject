@@ -91,8 +91,8 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
         double total = 0;
         for (Order order : orders) {
-            if(order.getStatus().equals("COMPLITE")){
-                total += order.getTotal();
+            if(order.getStatus().equals(StatusOrder.COMPLETED)){
+                total += order.getTotal() - 30000;
             }
 
         }
@@ -106,10 +106,10 @@ public class OrderService {
         List<Order> orders = orderRepository.findAll();
 
         for (Order order : orders) {
-            if (order.getStatus().toString().equals("COMPLETED")) {
+            if (order.getStatus().equals(StatusOrder.COMPLETED)) {
                 // Sử dụng LocalDate để lấy tháng (tháng trong LocalDate bắt đầu từ 1 nên cần trừ đi 1)
                 int month = order.getDate().getMonthValue() - 1; // Lấy giá trị tháng từ LocalDate
-                double currentRevenue = revenues.get(month);
+                double currentRevenue = revenues.get(month) - 30000;
                 revenues.set(month, currentRevenue + order.getTotal());
             }
         }

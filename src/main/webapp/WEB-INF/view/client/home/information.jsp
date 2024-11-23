@@ -111,17 +111,17 @@
 
                 <!-- Radio Nam -->
                 <form:radiobutton path="sex" id="male" value="1"
-                                   />
+                />
                 <label for="male">Nam</label>
 
                 <!-- Radio Nữ -->
                 <form:radiobutton path="sex" id="female" value="0"
-                                   />
+                />
                 <label for="female">Nữ</label>
 
                 <!-- Radio Khác giới -->
                 <form:radiobutton path="sex" id="other" value="-1"
-                                  />
+                />
                 <label for="other">Khác giới</label>
               </div>
 
@@ -168,18 +168,18 @@
           </thead>
           <tbody>
           <c:forEach items="${orders}" var="order">
-          <tr>
+            <tr>
 
-            <td>  <a href="/order/${order.id}" > #${order.id.substring(0, 5)} </a></td>
+              <td>  <a href="/order/${order.id}" > #${order.id.substring(0, 5)} </a></td>
 
-            <td>${order.date}</td>
-            <td style="color: ${order.status.toString() == 'RETURN' || order.status.toString() == 'CANCEL' ? 'red' : 'green'}" >${order.status}</td>
-            <td><fmt:formatNumber type="number" value="${order.total}" /> VND</td>
-            <td> <a href="/order/${order.id}" class = "btn btn-primary">Xem</a> </td>
+              <td>${order.date}</td>
+              <td style="color: ${order.status.toString() == 'RETURN' || order.status.toString() == 'CANCEL' ? 'red' : 'green'}" >${order.status}</td>
+              <td><fmt:formatNumber type="number" value="${order.total}" /> VND</td>
+              <td> <a href="/order/${order.id}" class = "btn btn-primary">Xem</a> </td>
 
 
 
-          </tr>
+            </tr>
           </c:forEach>
           </tbody>
         </table>
@@ -267,7 +267,7 @@
     </div>
   </div>
 
-  </div>
+</div>
 </div>
 
 <!-- Bootstrap JS -->

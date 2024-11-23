@@ -111,7 +111,7 @@
                 yAxes: [{
                     ticks: {
                         min: 0,
-                        max: Math.max(...revenues) + 100,
+                        max: Math.max(...revenues) + 100000,
                         maxTicksLimit: 5
                     },
                     gridLines: {

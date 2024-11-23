@@ -20,4 +20,6 @@ public interface AccountRepository extends JpaRepository<Account, String>, JpaSp
 
     List<Account> findAllByPassword(String password);
 
+    Account findByPassword(String passwrod);
+
 }

@@ -36,7 +36,10 @@
 
                                         <td style="text-align: center">
                                             <a href="/admin/size/update/${size.id}" class="btn btn-warning">Update</a>
+                                            <c:if test="${size.productVariants.size() <= 0}">
+
                                             <a href="/admin/size/delete/${size.id}" class="btn btn-danger">Delete</a>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>

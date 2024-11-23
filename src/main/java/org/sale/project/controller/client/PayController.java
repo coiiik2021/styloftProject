@@ -134,21 +134,24 @@ public class PayController {
 
 
 
-        if(paymentMethod.equals("online")){
+        if(paymentMethod.equals("online_1")){
 //            setUpOnline(totalPrice, response);
 
-//            session.setAttribute("idOrder", order.getId());
-//            int totalInt = ((Double)total).intValue();
-//
-//            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
-//            try{
-//                response.sendRedirect(url);
-//            } catch (IOException e) {
-//
-//                System.out.println(e);
-//            }
+            session.setAttribute("idOrder", order.getId());
+            int totalInt = ((Double)total).intValue();
+
+            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
+            try{
+                response.sendRedirect(url);
+            } catch (IOException e) {
+
+                System.out.println(e);
+            }
 
 
+
+
+        } else if(paymentMethod.equals("online_2")){
             try {
                 String baseUrl = getBaseUrl(request);
                 System.out.println(">>> base url: " + baseUrl);
@@ -157,8 +160,8 @@ public class PayController {
                 List<ItemData> items = new ArrayList<>();
                 for (OrderDetail orderDetail : order.getDetails()) {
                     items.add(ItemData.builder().name(orderDetail.getProductVariant().getProduct().getName())
-                                    .price((int) orderDetail.getPrice())
-                                    .quantity(orderDetail.getQuantity())
+                            .price((int) orderDetail.getPrice())
+                            .quantity(orderDetail.getQuantity())
                             .build());
                 }
 
@@ -181,7 +184,6 @@ public class PayController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
 
 
@@ -230,6 +232,7 @@ public class PayController {
         List<OrderDetail> details = order.getDetails();
         System.out.println(">>>send email: size " +  details.size());
 
+
         String content=emailService.MailOrder(details,order);
         emailService.sendHtmlEmail(order.getUser().getAccount().getEmail(),"Đặt hàng #" + order.getId().substring(0, 5),content);
 
@@ -262,10 +265,12 @@ public class PayController {
 
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
-            order.setStatus(StatusOrder.PAYMENT_FAILED);
+            order.setStatus(StatusOrder.PROCESSING);
+
             url = "/client/thank/show";
         } else {
-            order.setStatus(StatusOrder.PROCESSING);
+            order.setStatus(StatusOrder.PAYMENT_FAILED);
+
             url = "/client/error/show";
 
 

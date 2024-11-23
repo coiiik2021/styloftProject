@@ -1,5 +1,4 @@
 package org.sale.project.service;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -37,7 +36,7 @@ public class AccountService {
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
-
+    
     public List<Account> findAllByPassword(String password) {
         password = passwordEncoder.encode(password);
         return accountRepository.findAllByPassword(password);

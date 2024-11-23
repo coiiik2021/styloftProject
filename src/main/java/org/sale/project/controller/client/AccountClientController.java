@@ -1,5 +1,4 @@
 package org.sale.project.controller.client;
-
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -156,3 +155,4 @@ public class AccountClientController {
         return "redirect:/account";
     }
 }
+
