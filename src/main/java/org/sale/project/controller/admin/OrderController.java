@@ -67,7 +67,7 @@ public class OrderController {
         Order order = orderService.findById(id);
         if(order != null){
             HttpSession session = request.getSession();
-            session.setAttribute("totalAnnounce", Math.min((int)session.getAttribute("totalAnnounce") - 1, 0));
+            session.setAttribute("totalAnnounce", Math.max((int)session.getAttribute("totalAnnounce") - 1, 0));
             order.setAnnounceOrder(false);
 
             orderService.saveOrder(order);
@@ -160,7 +160,7 @@ public class OrderController {
 
             if(order.isAnnounceOrder()){
                 HttpSession session = request.getSession();
-                session.setAttribute("totalAnnounce", Math.min((int)session.getAttribute("totalAnnounce") - 1, 0));
+                session.setAttribute("totalAnnounce", Math.max((int)session.getAttribute("totalAnnounce") - 1, 0));
 
                 order.setAnnounceOrder(false);
                 orderService.saveOrder(order);

@@ -39,8 +39,25 @@
                                 </thead>
                                 <tbody>
                                 <c:forEach var="order" items="${orders}">
+                                    <style>
+                                        .note-new {
+                                            position: absolute; /* Đặt note nằm phía trên */
+                                            top: -10px; /* Điều chỉnh vị trí trên dòng */
+                                            right: 0; /* Căn trái dòng */
+                                            background-color: red; /* Màu nền đỏ nổi bật */
+                                            color: white; /* Chữ trắng */
+                                            font-size: 10px; /* Chữ nhỏ gọn */
+                                            font-weight: bold; /* Chữ đậm */
+                                            padding: 2px 5px; /* Tạo khoảng cách cho note */
+                                            border-radius: 3px; /* Bo tròn góc của note */
+                                        }
+                                    </style>
+
                                     <tr>
-                                        <th scope="row" style=" color: ${order.announceOrder ? 'red' : 'black'}">#${order.id.substring(0,5)}</th>
+                                        <th scope="row" style="position: relative;">
+                                            #${order.id.substring(0,5)}
+                                                ${order.announceOrder ? '<span class="note-new">NEW</span>' : ''}
+                                        </th>
 
                                         <th scope="row">${order.user.name}</th>
                                         <td><fmt:formatNumber value="${order.total}" type="number"/> Đ</td>

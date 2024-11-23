@@ -44,6 +44,9 @@ public class Voucher {
     @Column(nullable = false)
     private Boolean active = true; // Trạng thái hoạt động
 
+
+
+
     @PrePersist
     @PreUpdate
     @PostLoad
