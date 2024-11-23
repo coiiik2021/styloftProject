@@ -10,11 +10,13 @@ import org.sale.project.dto.request.Recipient;
 import org.sale.project.dto.request.SendEmailRequest;
 import org.sale.project.entity.Order;
 import org.sale.project.entity.User;
+import org.sale.project.enums.StatusOrder;
 import org.sale.project.service.OrderDetailService;
 import org.sale.project.service.OrderService;
 import org.sale.project.service.SmsService;
 import org.sale.project.service.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,7 +35,10 @@ public class OrderController {
     OrderService orderService;
     OrderDetailService orderDetailService;
     EmailService emailService;
-    SmsService smsService;
+//    SmsService smsService;
+
+
+
 
 
     @GetMapping
@@ -58,21 +63,29 @@ public class OrderController {
     }
 
     @GetMapping("/update/{id}")
-    public String getPageUpdate(@PathVariable("id") String id, Model model) {
-        model.addAttribute("order", orderService.findById(id));
+    public String getPageUpdate(@PathVariable("id") String id, Model model, HttpServletRequest request) {
+        Order order = orderService.findById(id);
+        if(order != null){
+            HttpSession session = request.getSession();
+            session.setAttribute("totalAnnounce", Math.min((int)session.getAttribute("totalAnnounce") - 1, 0));
+            order.setAnnounceOrder(false);
+
+            orderService.saveOrder(order);
+        }
+        model.addAttribute("order", order != null ? order : new Order());
+
+
         return "/admin/order/update";
     }
 
     @PostMapping("/update")
     public String updateOrder(@ModelAttribute("order") Order order, HttpServletRequest request) throws MessagingException {
 
-
-
         Order oldOrder = orderService.findById(order.getId());
         User user = oldOrder.getUser();
 
 
-        oldOrder.setStatus(order.getStatus());
+        oldOrder.setStatus((StatusOrder) order.getStatus());
         String content = "<p> Status:  <strong>" + oldOrder.getStatus() + "</strong></p>" ;
         if(order.getStatus().name().equals("SHIPPING")){
             content += "</br>  <p> Đơn hàng của bạn đang trong quá trình vận chuyển </p>";
@@ -97,7 +110,7 @@ public class OrderController {
 //                        .build()
 //        );
         System.out.println(order.getStatus().name());
-        if(order.getStatus().name().equals("COMPLETED")) {
+        if(order.getStatus().equals(StatusOrder.COMPLETED)) {
             String emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                     "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã hoàn tất</h2>" +
                     "<p>StyloftCloth</p>" +
@@ -110,8 +123,7 @@ public class OrderController {
                     "<a href='http://localhost:8080/orders' style='color: #0066cc;'>Xem chi tiết đơn hàng</a>" +
                     "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
             emailService.sendHtmlEmail(user.getAccount().getEmail(),"Đơn hàng #" + oldOrder.getId().substring(0, 5)+" đã hoàn thành",emailContent);
-        } if (order.getStatus().name().equals("RETURNED")) {
-            System.out.println("AAAAAAAAAAA");
+        } if (order.getStatus().equals(StatusOrder.RETURNED)) {
             String emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                     "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã được xác nhận hoàn trả</h2>" +
                     "<p>StyloftCloth</p>" +
@@ -123,7 +135,7 @@ public class OrderController {
                     "<p style='color: #333;'>Lưu ý: Vui lòng ghi rõ mã đơn hàng trên gói hàng để chúng tôi xử lý nhanh chóng.</p>" +
                     "<h3 style='color: #28a745;'>Chúng tôi luôn sẵn sàng hỗ trợ bạn!</h3>" +
                     "<p style='color: #333;'>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với chúng tôi qua email hoặc hotline để được trợ giúp.</p>" +
-                    "<a href='http://localhost:8080/orders' style='color: #0066cc;'>Kiểm tra trạng thái hoàn trả</a>" +
+                    "<a href=/orders' style='color: #0066cc;'>Kiểm tra trạng thái hoàn trả</a>" +
                     "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
 
             emailService.sendHtmlEmail(
@@ -136,15 +148,30 @@ public class OrderController {
 
 
         orderService.saveOrder(oldOrder);
-        smsService.sendSms(user);
+//        smsService.sendSms(user);
 
         return "redirect:/admin/order";
     }
 
     @GetMapping("/detail/{id}")
-    public String getPageDetail(@PathVariable("id") String id, Model model) {
-        model.addAttribute("order", orderService.findById(id));
-        model.addAttribute("details", orderDetailService.findAllOrderDetailByOrderId(id));
+    public String getPageDetail(@PathVariable("id") String id, Model model, HttpServletRequest request) {
+        Order order = orderService.findById(id);
+        if(order != null) {
+
+            if(order.isAnnounceOrder()){
+                HttpSession session = request.getSession();
+                session.setAttribute("totalAnnounce", Math.min((int)session.getAttribute("totalAnnounce") - 1, 0));
+
+                order.setAnnounceOrder(false);
+                orderService.saveOrder(order);
+            }
+
+            model.addAttribute("details", orderDetailService.findAllOrderDetailByOrderId(id));
+
+
+        }
+        model.addAttribute("order", order != null ? order : new Order());
+
         return "/admin/order/detail";
     }
 

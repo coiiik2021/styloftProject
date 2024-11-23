@@ -200,7 +200,7 @@
                     <a href="/login" class="position-relative me-4 my-auto btn btn-custom btn-white fw-semibold">Đăng nhập</a>
                 </c:if>
                 <c:if test="${sessionScope.isAdmin}">
-                    <a href="/admin" class="position-relative me-4 my-auto btn btn-custom fw-semibold">Quản lý</a>
+                    <a href="/admin" class="position-relative me-4 my-auto btn btn-custom btn-white fw-semibold" >Quản lý</a>
                 </c:if>
             </div>
         </div>

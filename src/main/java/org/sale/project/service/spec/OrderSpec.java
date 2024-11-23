@@ -11,6 +11,7 @@ public class OrderSpec {
 //        return (root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("date"), dateBegin, dateFinish);
 //
 //    }
+
     public static Specification<Order> findOrderById(String startId){
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("id"), startId+"%");
     }

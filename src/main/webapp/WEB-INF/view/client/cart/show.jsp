@@ -48,8 +48,11 @@
           </tr>
           </thead>
           <tbody>
+          <c:set var="errorPay">
+            ${true}
+          </c:set>
           <c:forEach items="#{items}" var="item">
-          <tr>
+          <tr disabled >
             <td>
               <a href="/product/detail/${item.productVariant.product.id}">
               <div class="d-flex align-items-center">
@@ -62,18 +65,36 @@
               </a>
             </td>
             <td>
+              <c:set var="checkQuantity">
+                ${item.quantity > item.productVariant.quantity ? true : false}
+              </c:set>
               <div class="input-group mx-auto" style="width: 140px; align-content: center">
+                <c:if test="${item.productVariant.quantity > 0 }">
+
                 <a class="btn btn-outline-secondary" type="button" href="/cart/updateDown/${item.id}">-</a>
-                  <input type="number" class="form-control text-center" value="${item.quantity}" min="1" max="${item.productVariant.quantity}" readonly style="width: 40px;">
+
+                </c:if>
+                  <input type="number" class="form-control text-center" value="${checkQuantity ? item.productVariant.quantity : item.quantity}" min="0" max="${item.productVariant.quantity}" readonly style="width: 40px;">
                 <c:if test="${item.quantity < item.productVariant.quantity}">
+
                 <a class="btn btn-outline-secondary" type="button" href="/cart/updateUp/${item.id}">+</a>
                 </c:if>
               </div>
             </td>
 
-            <td style="color: #000;"><fmt:formatNumber type="number" value="${item.productVariant.price}"/> đ</td>
             <td style="color: #000;">
-              <fmt:formatNumber type="number" value="${item.productVariant.price * item.quantity}"/> đ
+              <c:if test="${item.productVariant.quantity != 0}">
+                <fmt:formatNumber type="number" value="${item.productVariant.price}"/> đ
+              </c:if>
+              <c:if test="${item.productVariant.quantity == 0}">
+                <c:set var="errorPay">
+                  ${false}
+                </c:set>
+                Liên hệ
+              </c:if>
+            </td>
+            <td style="color: #000;">
+              <fmt:formatNumber type="number" value="${item.productVariant.price * (checkQuantity ? item.productVariant.quantity : item.quantity)}"/> đ
             </td>
             <td style="display: flex; justify-content: center; align-items: center;">
               <form method="get" action="/cart/delete-item-in-cart/${item.id}">
@@ -95,12 +116,22 @@
           </tbody>
         </table>
 
-        <c:if test="${sessionScope.sum > 0}">
+
+
+
+
         <div class="d-flex justify-content-between align-items-center mt-3">
+          <c:if test="${ sessionScope.sum > 0 &&  errorPay}">
           <h4 class="mb-0" style="color: #000;">Tổng tiền: <span style="color: #F15F25;"> <fmt:formatNumber type="number" value="${totalPrice}"/>  VND</span></h4>
-          <a href="/pay" class="btn" style="background-color: #F15F25; color: white;">Thanh toán</a>
+          </c:if>
+          <c:if test="${sessionScope.sum > 0 &&  !errorPay}">
+            <h4 class="mb-0" style="color: #000;">Xoá sản phẩm không còn tồn tại</h4>
+          </c:if>
+          <a href="/pay" class="btn" style="background-color: #F15F25; color: white; ${sessionScope.sum > 0 && errorPay ? '' : 'pointer-events: none; opacity: 0.5; cursor: not-allowed;'}">Thanh toán</a>
+
+
+
         </div>
-        </c:if>
       </div>
     </div>
 

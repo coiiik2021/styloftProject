@@ -6,6 +6,8 @@ server:
 
 image-port: "http://localhost:8080"
 
+name:
+  host: "${NAME-HOST:http://localhost:8080}"
 
 spring:
   main:
@@ -14,14 +16,14 @@ spring:
 
 
   datasource:
-#    url: "jdbc:mysql://localhost:3306/quanao"
-#    driverClassName: "com.mysql.cj.jdbc.Driver"
-#    password: root
-#    username: root
-    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:quanao}"
+    url: "jdbc:mysql://localhost:3306/quanao"
     driverClassName: "com.mysql.cj.jdbc.Driver"
-    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
-    username: ${DATABASE_USER:avnadmin}
+    password: root
+    username: root
+#    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:quanao}"
+#    driverClassName: "com.mysql.cj.jdbc.Driver"
+#    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
+#    username: ${DATABASE_USER:avnadmin}
   jpa:
     hibernate:
       ddl-auto: update

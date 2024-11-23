@@ -7,6 +7,7 @@ import java.util.Map;
 import org.sale.project.entity.Account;
 import org.sale.project.entity.User;
 import org.sale.project.service.AccountService;
+import org.sale.project.service.OrderService;
 import org.sale.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,9 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     private UserService userService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private OrderService orderService;
+
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -55,6 +59,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         User user = userService.findUserByEmail(email);
 
         Account account = accountService.findByEmail(email);
+
+        session.setAttribute("totalAnnounce", orderService.totalAnnounce());
 
         if(account != null){
             session.setAttribute("email", email);

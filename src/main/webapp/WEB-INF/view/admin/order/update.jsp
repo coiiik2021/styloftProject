@@ -59,11 +59,13 @@
                   <!-- <%--                    ${errorFullName}--%> -->
                   <form:select path="status" class="form-select mt-2">
                     <option value="PROCESSING" ${order.status.toString() eq "PROCESSING" ? 'selected' : ''}>Xử lý</option>
-                    <option value="SPACED" ${order.status.toString() eq "PLACED" ? 'selected' : ''}>Chuẩn bị</option>
+                    <option value="PAYMENT_FAILED" ${order.status.toString() eq "PAYMENT_FAILED" ? 'selected' : ''}>Thanh toán thất bại</option>
 
                       <option value="SHIPPING" ${order.status.toString() eq "SHIPPING" ? 'selected' : ''}>Giao Hàng</option>
                       <option value="COMPLETED" ${order.status.toString() eq "COMPLETED" ? 'selected' : ''}>Hoàn Thành</option>
                       <option value="RETURNED" ${order.status.toString() eq "RETURNED" ? 'selected' : ''}>Hoàn Trả Hàng</option>
+                    <option value="CANCEL" ${order.status.toString() eq "CANCEL" ? 'selected' : ''}>Huỷ</option>
+
 
                   </form:select>
 

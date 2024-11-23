@@ -47,6 +47,7 @@ public class OrderService {
     }
 
     public Order findById(String id) {
+
         return orderRepository.findById(id).orElse(null);
     }
 
@@ -59,6 +60,7 @@ public class OrderService {
         Order order = findById(id);
         if(order != null){
             order.setStatus(StatusOrder.CANCEL);
+            order.setAnnounceOrder(true);
             orderRepository.save(order);
 
             for(OrderDetail detail : order.getDetails()){
@@ -170,7 +172,10 @@ public class OrderService {
 //            voucherRepository.save(voucher);
 //        }
 
+        order.setAnnounceOrder(true);
+
         order = orderRepository.save(order);
+
 
         return order;
 
@@ -184,6 +189,17 @@ public class OrderService {
 
     public Page<Order> findAllByStartId(String id, Pageable pageable) {
         return orderRepository.findAll(OrderSpec.findOrderById(id), pageable);
+    }
+
+
+    public int totalAnnounce(){
+        List<Order> orders = orderRepository.findAll();
+        int total = 0;
+        for (Order order : orders) {
+            if(order.isAnnounceOrder())
+                ++total;
+        }
+        return total;
     }
 
 }

@@ -43,4 +43,6 @@ public class Order {
     @JoinColumn(name = "voucher_id")
     Voucher voucher;
 
+    boolean announceOrder;
+
 }

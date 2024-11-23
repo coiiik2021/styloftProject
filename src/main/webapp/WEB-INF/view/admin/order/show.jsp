@@ -40,12 +40,16 @@
                                 <tbody>
                                 <c:forEach var="order" items="${orders}">
                                     <tr>
-                                        <th scope="row">#${order.id.substring(0,5)}</th>
+                                        <th scope="row" style=" color: ${order.announceOrder ? 'red' : 'black'}">#${order.id.substring(0,5)}</th>
 
                                         <th scope="row">${order.user.name}</th>
-                                        <td>${order.total}Đ</td>
+                                        <td><fmt:formatNumber value="${order.total}" type="number"/> Đ</td>
                                         <td>${order.date}</td>
-                                        <td>${order.status}</td>
+                                        <td style="color: ${order.status.toString() == 'RETURN' || order.status.toString() == 'CANCEL'
+                                                                || order.status.toString() == 'PAYMENT_FAILED'
+                                                            ? 'red' : 'green'
+                                                            }"
+                                        >${order.status}</td>
 
                                         <td style="text-align: center">
                                             <a href="/admin/order/detail/${order.id}" class="btn btn-danger">Detail</a>

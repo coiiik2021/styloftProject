@@ -80,7 +80,7 @@ public class CartService {
         }
         double total = 0;
         for(CartItem item : items){
-            total += item.getProductVariant().getPrice() * item.getQuantity();
+            total += item.getProductVariant().getPrice() * (Math.min(item.getQuantity(), item.getProductVariant().getQuantity()));
         }
         return total;
     }

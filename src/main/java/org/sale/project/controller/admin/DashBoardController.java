@@ -39,6 +39,8 @@ public class DashBoardController {
         model.addAttribute("totalProduct", productService.countProduct());
         model.addAttribute("totalOrder", orderService.countOrder());
 
+        model.addAttribute("totalAnnounceOrder", orderService.totalAnnounce());
+
 
         return "/admin/dashboard/show";
     }

@@ -48,7 +48,7 @@
                                         <td>${productVariant.size.name}</td>
                                         <td>${productVariant.quantity}</td>
 
-                                        <td>${productVariant.price}</td>
+                                        <td><fmt:formatNumber type="number" value="${productVariant.price}"/> đ</td>
                                         <td style="text-align: center">
                                             <img src="/images/product/${productVariant.product.name}/${productVariant.image}" alt="${productVariant.product.name}" style="width: 100px; height: auto;">
                                         </td>

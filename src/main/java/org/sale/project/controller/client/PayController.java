@@ -188,17 +188,7 @@ public class PayController {
 
 
 
-
-
-
-
-
-
         session.setAttribute("sum", 0);
-
-
-
-
 
         sendCompleteEmailOrder(order);
 
@@ -234,6 +224,8 @@ public class PayController {
         emailService.sendHtmlEmail(order.getUser().getAccount().getEmail(),"Đặt hàng #" + order.getId().substring(0, 5),content);
 
     }
+
+
 
 
     @GetMapping("/vn-pay")
