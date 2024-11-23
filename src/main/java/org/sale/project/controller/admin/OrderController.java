@@ -1,5 +1,6 @@
 package org.sale.project.controller.admin;
 
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
@@ -63,7 +64,7 @@ public class OrderController {
     }
 
     @PostMapping("/update")
-    public String updateOrder(@ModelAttribute("order") Order order, HttpServletRequest request) {
+    public String updateOrder(@ModelAttribute("order") Order order, HttpServletRequest request) throws MessagingException {
 
 
 
@@ -95,6 +96,44 @@ public class OrderController {
 //                        )
 //                        .build()
 //        );
+        System.out.println(order.getStatus().name());
+        if(order.getStatus().name().equals("COMPLETED")) {
+            String emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+                    "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã hoàn tất</h2>" +
+                    "<p>StyloftCloth</p>" +
+                    "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + user.getName() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+                    "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
+                    "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi.</p>" +
+                    "<h3 style='color: #28a745;'>Thông báo: Đơn hàng của bạn đã được hoàn thành!</h3>" +
+                    "<p style='color: #333;'>Cảm ơn bạn đã tin tưởng và mua sắm tại StyloftCloth. Đơn hàng của bạn với mã <strong>" + oldOrder.getId().substring(0, 5) + "</strong> đã được hoàn thành.</p>" +
+                    "<p style='color: #333;'>Chúng tôi hy vọng bạn hài lòng với sản phẩm của mình. Nếu có bất kỳ vấn đề gì, đừng ngần ngại liên hệ với chúng tôi qua email hoặc hotline để được hỗ trợ kịp thời.</p>" +
+                    "<a href='http://localhost:8080/orders' style='color: #0066cc;'>Xem chi tiết đơn hàng</a>" +
+                    "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
+            emailService.sendHtmlEmail(user.getAccount().getEmail(),"Đơn hàng #" + oldOrder.getId().substring(0, 5)+" đã hoàn thành",emailContent);
+        } if (order.getStatus().name().equals("RETURNED")) {
+            System.out.println("AAAAAAAAAAA");
+            String emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+                    "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã được xác nhận hoàn trả</h2>" +
+                    "<p>StyloftCloth</p>" +
+                    "<p style='color: #333;'>Xin chào <strong>" + user.getName() + "</strong>,</p>" +
+                    "<p style='color: #333;'>Đơn hàng của bạn với mã <strong>" + oldOrder.getId().substring(0, 5) + "</strong> đã được chúng tôi xác nhận hoàn trả.</p>" +
+                    "<p style='color: #333;'>Chúng tôi rất tiếc vì sản phẩm không đáp ứng được mong đợi của bạn. Bạn có thể gửi lại sản phẩm qua địa chỉ bên dưới:</p>" +
+                    "<p style='color: #333;'><strong>StyloftCloth Return Center</strong></p>" +
+                    "<p style='color: #333;'>123 Đường Hoàn Trả, Quận Hoàn Kiếm, Hà Nội, Việt Nam</p>" +
+                    "<p style='color: #333;'>Lưu ý: Vui lòng ghi rõ mã đơn hàng trên gói hàng để chúng tôi xử lý nhanh chóng.</p>" +
+                    "<h3 style='color: #28a745;'>Chúng tôi luôn sẵn sàng hỗ trợ bạn!</h3>" +
+                    "<p style='color: #333;'>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với chúng tôi qua email hoặc hotline để được trợ giúp.</p>" +
+                    "<a href='http://localhost:8080/orders' style='color: #0066cc;'>Kiểm tra trạng thái hoàn trả</a>" +
+                    "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
+
+            emailService.sendHtmlEmail(
+                    user.getAccount().getEmail(),
+                    "Xác nhận hoàn trả đơn hàng #" + oldOrder.getId().substring(0, 5),
+                    emailContent
+            );
+
+        }
+
 
         orderService.saveOrder(oldOrder);
         smsService.sendSms(user);

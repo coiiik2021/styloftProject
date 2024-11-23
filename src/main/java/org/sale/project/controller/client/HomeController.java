@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.fluent.Request;
 import org.sale.project.controller.auth.FacebookLogin;
@@ -43,6 +44,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 @Controller
@@ -64,6 +66,7 @@ public class HomeController {
 
     UserDetailsService userDetailsService;
     AuthenticationManager authenticationManager;
+    private final VoucherService voucherService;
 
     @GetMapping("/register")
     public String getPageRegister(Model model) {
@@ -140,16 +143,26 @@ public class HomeController {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);
-
-
+//        String randomString = generateRandomString(10);
+        String randomCode = RandomStringUtils.randomAlphanumeric(10);
+//        System.out.println("Random Alphabetic String: " + randomAlphabetic);
+        Voucher voucher = Voucher.builder()
+                .code(randomCode)
+                .discountValue(20.0)
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(5))
+                .active(true)
+                .build();
+        voucherService.saveVoucher(voucher);
         // Chuyển hướng đến trang chính
         String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                 "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
-                "<p>AnhDungShop</p>" +
+                "<p>StyloftCloth</p>" +
                 "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
                 "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
                 "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
                 "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
+                "<p style='color: #333;'>Mã voucher thành viên mới của bạn là: <strong>" + randomCode + "</strong></p>"+
                 "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
         emailService.sendHtmlEmail(account.getEmail(),"REGISTER CORRECT",content);
         if(accountService.findByEmail(email) == null) {

@@ -63,7 +63,7 @@
 
                       <option value="SHIPPING" ${order.status.toString() eq "SHIPPING" ? 'selected' : ''}>Giao Hàng</option>
                       <option value="COMPLETED" ${order.status.toString() eq "COMPLETED" ? 'selected' : ''}>Hoàn Thành</option>
-                    <option value="COMPLETED" ${order.status.toString() eq "RETURNED" ? 'selected' : ''}>Hoàn hàng</option>
+                      <option value="RETURNED" ${order.status.toString() eq "RETURNED" ? 'selected' : ''}>Hoàn Trả Hàng</option>
 
                   </form:select>
 

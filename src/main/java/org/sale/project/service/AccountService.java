@@ -36,7 +36,7 @@ public class AccountService {
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
-    
+
     public List<Account> findAllByPassword(String password) {
         password = passwordEncoder.encode(password);
         return accountRepository.findAllByPassword(password);

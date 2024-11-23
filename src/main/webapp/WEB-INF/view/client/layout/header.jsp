@@ -43,7 +43,7 @@
     <!-- Customized Bootstrap Stylesheet -->
 
     <!-- Template Stylesheet -->
-<%--    <link href="/client/css/style.css" rel="stylesheet">--%>
+    <%--    <link href="/client/css/style.css" rel="stylesheet">--%>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
@@ -76,7 +76,7 @@
                         <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">BLOG</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/about" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
+                        <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
                     </li>
                     <li>
                         <div class="container-fluid">
@@ -158,47 +158,47 @@
 
             <div class="d-flex m-3 me-0">
                 <c:if test="${not empty pageContext.request.userPrincipal && !sessionScope.isAdmin}">
-                <form action="/cart" method="get">
+                    <form action="/cart" method="get">
 
-                    <button class="position-relative me-4 my-auto btn-custom">
-                        <i class="fa fa-shopping-bag" style="font-size: 1.5em;"></i>
+                        <button class="position-relative me-4 my-auto btn-custom">
+                            <i class="fa fa-shopping-bag" style="font-size: 1.5em;"></i>
 
-                        <span class="position-absolute d-flex align-items-center justify-content-center"
-                              style="top: -5px; left: 30px; height: 20px; min-width: 20px;border: white solid 10px; border-radius: 10px;color: #ff6900; background-color:#e65a06 ">
-                                ${sessionScope.sum}
-                        </span>
+                            <span class="position-absolute d-flex align-items-center justify-content-center"
+                                  style="top: -5px; left: 30px; height: 20px; min-width: 20px;border: white solid 10px; border-radius: 10px;color: #ff6900; background-color:#e65a06 ">
+                                    ${sessionScope.sum}
+                            </span>
 
-                    </button>
-                </form>
+                        </button>
+                    </form>
 
 
-                <div class="dropdown my-auto">
-                    <a href="#" class="dropdown" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fas fa-user btn-custom" style="font-size: 1.5em!important;"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="dropdownMenuLink">
-                        <li class="d-flex align-items-center flex-column" style="min-width: 300px;">
-<!-- <%--                            <img style="width: 150px; height: 150px; border-radius: 50%;" src="/image/avatar/${sessionScope.avatar}" />--%> -->
-                            <div class="text-center my-3">
-                                <c:out value="${sessionScope.email}" />
-                            </div>
-                        </li>
-                        <li><a class="dropdown-item" href="/account">Quản lý tài khoản</a></li>
-<%--                        <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>--%>
-                        <li><hr class="dropdown-divider"></li>
-                        <li>
-                            <form action="/logout" method="post">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                <button class="dropdown-item">Đăng xuất</button>
-                            </form>
-                        </li>
-                    </ul>
-                </div>
+                    <div class="dropdown my-auto">
+                        <a href="#" class="dropdown" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user btn-custom" style="font-size: 1.5em!important;"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end p-4" aria-labelledby="dropdownMenuLink">
+                            <li class="d-flex align-items-center flex-column" style="min-width: 300px;">
+                                <!-- <%--                            <img style="width: 150px; height: 150px; border-radius: 50%;" src="/image/avatar/${sessionScope.avatar}" />--%> -->
+                                <div class="text-center my-3">
+                                    <c:out value="${sessionScope.email}" />
+                                </div>
+                            </li>
+                            <li><a class="dropdown-item" href="/account">Quản lý tài khoản</a></li>
+                                <%--                        <li><a class="dropdown-item" href="/order-history">Lịch sử mua hàng</a></li>--%>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="/logout" method="post">
+                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                                    <button class="dropdown-item">Đăng xuất</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
                 </c:if>
 
-<c:if test="${ empty pageContext.request.userPrincipal}">
-    <a href="/login" class="position-relative me-4 my-auto btn btn-custom fw-semibold">Đăng nhập</a>
-</c:if>
+                <c:if test="${ empty pageContext.request.userPrincipal}" >
+                    <a href="/login" class="position-relative me-4 my-auto btn btn-custom btn-white fw-semibold">Đăng nhập</a>
+                </c:if>
                 <c:if test="${sessionScope.isAdmin}">
                     <a href="/admin" class="position-relative me-4 my-auto btn btn-custom fw-semibold">Quản lý</a>
                 </c:if>
@@ -219,5 +219,5 @@
         }
     });
 
-    
+
 </script>

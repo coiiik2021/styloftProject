@@ -230,9 +230,6 @@ public class PayController {
 
     private void sendCompleteEmailOrder(Order order) throws MessagingException {
         List<OrderDetail> details = order.getDetails();
-        System.out.println(">>>send email: size " +  details.size());
-
-
         String content=emailService.MailOrder(details,order);
         emailService.sendHtmlEmail(order.getUser().getAccount().getEmail(),"Đặt hàng #" + order.getId().substring(0, 5),content);
 
