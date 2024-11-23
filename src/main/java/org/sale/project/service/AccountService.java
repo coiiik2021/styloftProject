@@ -1,5 +1,4 @@
 package org.sale.project.service;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -26,10 +25,18 @@ public class AccountService {
 
         accountRepository.save(account);
     }
+    public void updateAccount(Account account) {
+        Account oldAccount = accountRepository.findById(account.getId()).get();
+        if (oldAccount != null) {
+            oldAccount.setPassword(account.getPassword());
+            accountRepository.save(oldAccount);
+        }
+    }
 
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
+
 
     public Account findById(String id) {
         return accountRepository.findById(id).orElse(null);

@@ -35,7 +35,9 @@ pageEncoding="UTF-8" %>
 
                                         <td style="text-align: center">
                                             <a href="/admin/category/update/${category.id}" class="btn btn-warning">Update</a>
+                                            <c:if test="${category.products.size() <= 0}">
                                             <a href="/admin/category/delete/${category.id}" class="btn btn-danger">Delete</a>
+                                            </c:if>
                                         </td>
                                     </tr>
                                 </c:forEach>

@@ -17,5 +17,7 @@ public interface AccountRepository extends JpaRepository<Account, String>, JpaSp
 
     Page<Account> findAll( Pageable pageable);
 
+    Account findByPassword(String passwrod);
+
 
 }

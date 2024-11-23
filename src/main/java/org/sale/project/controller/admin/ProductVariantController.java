@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,7 +51,19 @@ public class ProductVariantController {
     }
 
     @GetMapping("/create")
-    public String getPageCreate(Model model) {
+    public String getPageCreate(Model model,
+                                @RequestParam("idProduct") Optional<String> idProduct
+                                ) {
+
+        if(idProduct.isPresent()){
+            Product product = productService.findById(idProduct.get());
+            if(product != null){
+                model.addAttribute("productSelected", product);
+            }
+        }
+
+
+
         model.addAttribute("newItem", new ProductVariant());
         model.addAttribute("colors", colorService.findAll());
         model.addAttribute("sizes", sizeService.findAll());
@@ -62,6 +75,8 @@ public class ProductVariantController {
     public String createProductItem(@ModelAttribute("newItem") ProductVariant productVariant,
                                     @RequestParam("imageItem") MultipartFile imageItem,
                                     Model model)  {
+
+
 
         if(productVariantService.checkExistsByColorAndProductAndSize(productVariant)){
             model.addAttribute("errorProductVariantExists", "Product variant đã tồn tại");
@@ -152,6 +167,8 @@ public class ProductVariantController {
         model.addAttribute("totalPages", itemPage.getTotalPages());
         return "/admin/item/show";
     }
+
+
 
 
 }

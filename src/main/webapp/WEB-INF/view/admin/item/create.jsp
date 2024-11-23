@@ -14,7 +14,7 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h1 class="mt-4">Create Item</h1>
+        <h1 class="mt-4">Create Variant</h1>
         <hr />
 
         <!-- Import header -->
@@ -33,7 +33,7 @@
                       <lable class ="form-label">Product </lable>
                       <form:select path="product.name" class="form-select mt-2" >
                           <c:forEach var="product" items="${products}">
-                              <option value="${product.name}" ${product.name == newItem.product.name ? 'selected' : ''}>${product.name}</option>
+                              <option value="${product.name}" ${product.name == newItem.product.name || product.name == productSelected.name ? 'selected' : ''}>${product.name}</option>
                           </c:forEach>
 
                       </form:select>
@@ -105,7 +105,7 @@
 
                 <div class = "mb-3 col-12 col-md-6">
                   <button type="submit" class="btn btn-primary">Submit</button>
-                  <a href="/admin/item" class ="btn btn-dark">Cancel</a>
+                  <a href="/admin/product/${productSelected.id}" class ="btn btn-dark">Cancel</a>
 
                 </div>
               </form:form>

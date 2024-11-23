@@ -19,12 +19,11 @@
                     <div class="row">
                         <div class="col-md-12 col-12 mx-auto">
                             <div class="d-flex justify-content-between" style="margin-bottom: 20px;">
-                                <h3>Table product variant</h3>
-                                <form action="/admin/item/search" method="get" class="d-flex">
-                                    <input class="form-control me-2 w-auto" type="search" name="query" placeholder="Search by name product" value="${nameSearch}" aria-label="Search">
-                                    <button class="btn btn-outline-success" type="submit">Search</button>
-                                </form>
-                                <a href="/admin/item/create" class="btn btn-primary">Create Product Variant</a>
+                                <a href="/admin/product" class="btn btn-primary">Back</a>
+
+                                <h3>Variant Of ${product.name}</h3>
+
+                                <a href="/admin/item/create?idProduct=${product.id}" class="btn btn-primary">Create Product Variant</a>
 
                             </div>
                             <table class="table table-bordered table-hover">
@@ -61,32 +60,7 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-<c:if test="${totalPages > 1}">
 
-
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="${1 eq currentPage ? 'disabled' : ''} page-link"
-                                           href="/admin/item?page=${currentPage - 1}" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <c:forEach begin="1" end="${totalPages}" varStatus="loop">
-                                        <li class="page-item">
-                                            <a class="${(loop.index) eq currentPage ? 'active' : ''} page-link"
-                                               href="/admin/item?page=${loop.index}">${loop.index}</a>
-                                        </li>
-                                    </c:forEach>
-                                    <li class="page-item">
-                                        <a class="${currentPage eq totalPages ? 'disabled' : ''} page-link"
-                                           href="/admin/item?page=${currentPage + 1}" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-</c:if>
                         </div>
                     </div>
                 </div>

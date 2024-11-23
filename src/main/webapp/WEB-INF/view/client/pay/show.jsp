@@ -309,12 +309,23 @@
 
           <div class="payment-method position-relative">
             <input class="form-check-input position-absolute top-50 end-0 translate-middle-y me-3"
-                   type="radio" name="paymentMethod" id="onlineRadio" value="online" />
+                   type="radio" name="paymentMethod" id="onlineRadio" value="online_1" />
             <label class="d-flex align-items-center" for="onlineRadio">
               <i class="ri-wallet-3-line fs-2"></i>
               <div class="ms-3">
                 <span class="d-block fw-bold">Online Payment</span>
-                <p class="text-muted small mb-0">Thanh toán Online</p>
+                <p class="text-muted small mb-0">Thanh toán VNPAY</p>
+              </div>
+            </label>
+          </div>
+          <div class="payment-method position-relative">
+            <input class="form-check-input position-absolute top-50 end-0 translate-middle-y me-3"
+                   type="radio" name="paymentMethod" id="onlineRadio2" value="online_2" />
+            <label class="d-flex align-items-center" for="onlineRadio2">
+              <i class="ri-wallet-3-line fs-2"></i>
+              <div class="ms-3">
+                <span class="d-block fw-bold">Online Payment</span>
+                <p class="text-muted small mb-0">Thanh toán Banking</p>
               </div>
             </label>
           </div>

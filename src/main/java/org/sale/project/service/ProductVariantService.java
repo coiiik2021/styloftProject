@@ -74,7 +74,17 @@ public class ProductVariantService {
     }
 
     public void deleteProductItem(String id){
-        productVariantRepository.deleteById(id);
+
+        ProductVariant productVariant = productVariantRepository.findById(id).orElse(null);
+        if(productVariant != null){
+            productVariant.setQuantity(0);
+            productVariantRepository.save(productVariant);
+            productVariant.getProduct().setStatus(false);
+            productRepository.save(productVariant.getProduct());
+        }
+
+
+//        productVariantRepository.deleteById(id);
     }
 
     public Page<ProductVariant> findAll(Pageable pageable){

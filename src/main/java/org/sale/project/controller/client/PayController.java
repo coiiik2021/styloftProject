@@ -134,21 +134,24 @@ public class PayController {
 
 
 
-        if(paymentMethod.equals("online")){
+        if(paymentMethod.equals("online_1")){
 //            setUpOnline(totalPrice, response);
 
-//            session.setAttribute("idOrder", order.getId());
-//            int totalInt = ((Double)total).intValue();
-//
-//            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
-//            try{
-//                response.sendRedirect(url);
-//            } catch (IOException e) {
-//
-//                System.out.println(e);
-//            }
+            session.setAttribute("idOrder", order.getId());
+            int totalInt = ((Double)total).intValue();
+
+            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
+            try{
+                response.sendRedirect(url);
+            } catch (IOException e) {
+
+                System.out.println(e);
+            }
 
 
+
+
+        } else if(paymentMethod.equals("online_2")){
             try {
                 String baseUrl = getBaseUrl(request);
                 System.out.println(">>> base url: " + baseUrl);
@@ -157,8 +160,8 @@ public class PayController {
                 List<ItemData> items = new ArrayList<>();
                 for (OrderDetail orderDetail : order.getDetails()) {
                     items.add(ItemData.builder().name(orderDetail.getProductVariant().getProduct().getName())
-                                    .price((int) orderDetail.getPrice())
-                                    .quantity(orderDetail.getQuantity())
+                            .price((int) orderDetail.getPrice())
+                            .quantity(orderDetail.getQuantity())
                             .build());
                 }
 
@@ -181,7 +184,6 @@ public class PayController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
 
 
@@ -238,13 +240,13 @@ public class PayController {
 
         for (OrderDetail detail : details) {
             itemOrders.add( "<p class=\"fs-1\"> "+
-                    "<img class=\"d-block\" src=\"http://product.hstatic.net/1000003969/product/kem_cg05143_1_20241118110403_4a865883c7ef4790bb9af57e5251563d_master.jpeg\" width=\"10%\" height=\"auto\" style=\"border-radius: 15px;\"> <br>"+
+//                    "<img class=\"d-block\" src=\"http://product.hstatic.net/1000003969/product/kem_cg05143_1_20241118110403_4a865883c7ef4790bb9af57e5251563d_master.jpeg\" width=\"10%\" height=\"auto\" style=\"border-radius: 15px;\"> <br>"+
                     + ++count +
                     ". Name: <strong>" +  detail.getProductVariant().getProduct().getName() + "</strong> || " +
                     " color: <strong>" + detail.getProductVariant().getColor().getName() + "</strong> || " +
                     " size: <strong>" + detail.getProductVariant().getSize().getName() + "</strong> || " +
                     "Số lượng: <strong>" + detail.getQuantity() + "</strong> " +
-//                   " <img class=\"d-block w-100\" src=\"http://localhost:8080/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"> "+
+                   " <img class=\"d-block w-100\" src=\"https://anhdung.onrender.com/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"> "+
                     "</p>");
         }
 
@@ -297,10 +299,12 @@ public class PayController {
 
         String status = request.getParameter("vnp_ResponseCode");
         if (status.equals("00")) {
-            order.setStatus(StatusOrder.PAYMENT_FAILED);
+            order.setStatus(StatusOrder.PROCESSING);
+
             url = "/client/thank/show";
         } else {
-            order.setStatus(StatusOrder.PROCESSING);
+            order.setStatus(StatusOrder.PAYMENT_FAILED);
+
             url = "/client/error/show";
 
 

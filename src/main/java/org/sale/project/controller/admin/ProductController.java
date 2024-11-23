@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.sale.project.entity.Product;
+import org.sale.project.entity.ProductVariant;
 import org.sale.project.service.CategoryService;
 import org.sale.project.service.ProductVariantService;
 import org.sale.project.service.ProductService;
@@ -18,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -126,4 +128,27 @@ public class ProductController {
         model.addAttribute("nameSearch", name);
         return "/admin/product/show";
     }
+
+    @GetMapping("/{id}")
+    public String getProductVariant(@PathVariable("id") String id, Model model) {
+
+        Product product = productService.findById(id);
+
+        if(product != null){
+            model.addAttribute("productVariants", product.getProductVariant().isEmpty() ?
+                    new ArrayList<ProductVariant>() : product.getProductVariant());
+
+            model.addAttribute("product", product);
+        } else{
+            return "redirect:/admin/product";
+        }
+
+
+        return "/admin/product/detail";
+
+
+
+
+    }
+
 }

@@ -11,7 +11,9 @@ import org.sale.project.entity.Order;
 import org.sale.project.entity.User;
 import org.sale.project.service.OrderDetailService;
 import org.sale.project.service.OrderService;
+import org.sale.project.service.SmsService;
 import org.sale.project.service.email.EmailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +32,7 @@ public class OrderController {
     OrderService orderService;
     OrderDetailService orderDetailService;
     EmailService emailService;
+    SmsService smsService;
 
 
     @GetMapping
@@ -94,6 +97,8 @@ public class OrderController {
 //        );
 
         orderService.saveOrder(oldOrder);
+        smsService.sendSms(user);
+
         return "redirect:/admin/order";
     }
 
