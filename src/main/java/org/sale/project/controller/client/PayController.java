@@ -227,46 +227,11 @@ public class PayController {
 
 
     private void sendCompleteEmailOrder(Order order) throws MessagingException {
-        String header = "Cảm ơn bạn đã đặt hàng bên cửa hàng vào ngày: " + order.getDate().toString();
-
-
-        List<String> itemOrders = new ArrayList<>();
-
         List<OrderDetail> details = order.getDetails();
         System.out.println(">>>send email: size " +  details.size());
-        int count = 0;
 
-        for (OrderDetail detail : details) {
-            itemOrders.add( "<p class=\"fs-1\"> "+
-                    "<img class=\"d-block\" src=\"http://product.hstatic.net/1000003969/product/kem_cg05143_1_20241118110403_4a865883c7ef4790bb9af57e5251563d_master.jpeg\" width=\"10%\" height=\"auto\" style=\"border-radius: 15px;\"> <br>"+
-                    + ++count +
-                    ". Name: <strong>" +  detail.getProductVariant().getProduct().getName() + "</strong> || " +
-                    " color: <strong>" + detail.getProductVariant().getColor().getName() + "</strong> || " +
-                    " size: <strong>" + detail.getProductVariant().getSize().getName() + "</strong> || " +
-                    "Số lượng: <strong>" + detail.getQuantity() + "</strong> " +
-//                   " <img class=\"d-block w-100\" src=\"http://localhost:8080/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"> "+
-                    "</p>");
-        }
-
-//        emailService.sendEmail(
-//                SendEmailRequest
-//                        .builder()
-//                        .subject("Đặt hàng #" + order.getId().substring(0, 5))
-//                        .to(Recipient.builder()
-//                                .name(order.getUser().getName())
-//                                .email(order.getUser().getAccount().getEmail())
-//                                .build())
-//                        .htmlContent("<p>" + header + "</p>" +
-//                                        String.join("\n", itemOrder)
-//                                        + "<p> Giá: " + order.getTotal() + " VND </p>"
-////                                + "<p>" + footer + "</p>"
-//                        )
-//                        .build()
-//        );
-        emailService.sendHtmlEmail(order.getUser().getAccount().getEmail(),"Đặt hàng #" + order.getId().substring(0, 5),"<p>" + header + "</p>" +
-                String.join("\n", itemOrders)
-                + "<p> Giá: " + order.getTotal() + " VND </p>");
-
+        String content=emailService.MailOrder(details,order);
+        emailService.sendHtmlEmail(order.getUser().getAccount().getEmail(),"Đặt hàng #" + order.getId().substring(0, 5),content);
 
     }
 

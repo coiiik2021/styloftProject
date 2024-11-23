@@ -97,7 +97,6 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
         }
-    System.out.println("KKKK");
         // Gửi email chào mừng
 //        emailService.sendEmail(
 //                SendEmailRequest.builder()
@@ -347,6 +346,57 @@ public class HomeController {
         // session.setAttribute("sum", user.getCart().getCartItems());
 
         return "/client/home/show";
+    }
+
+    @GetMapping("/about")
+    public String about(Model model, HttpServletRequest request
+    )
+    {
+        HttpSession session = request.getSession();
+
+//
+
+        String email = (String) session.getAttribute("email");
+//        System.out.println(email);
+
+
+        session.setAttribute("nameSearch" , "");
+//        User user = userService.findUserByEmail(email);
+
+
+
+
+
+
+
+
+//        Pageable pageable = PageRequest.of(page - 1, 8);
+//        Page<Product> productPage = productService.findAll(pageable, false);
+
+//        List<Product> products = email != null && !email.equals("admin@gmail.com") ? productService.findAll(recommendationService.getTopNRecommendations(userService.findUserByEmail(email), 12))
+//                : productService.findAll() ;
+//
+//
+//        if(email != null) {
+//            products = products.size() == 12 ? products : fullProduct(products);
+//        }
+//        Map<Product, StarReview> mapProductAndScore = new HashMap<>();
+//        for(Product p : products) {
+//            mapProductAndScore.put(p, scoreStarService.score(p));
+//        }
+
+
+
+
+
+//        model.addAttribute("products", mapProductAndScore);
+////        model.addAttribute("user", user);
+////        model.addAttribute("currentPage", page);
+////        model.addAttribute("totalPages", productPage.getTotalPages());
+//
+//        // session.setAttribute("sum", user.getCart().getCartItems());
+
+        return "/client/about/show";
     }
 
 

@@ -76,7 +76,7 @@
                         <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">BLOG</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
+                        <a href="/about" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
                     </li>
                     <li>
                         <div class="container-fluid">
