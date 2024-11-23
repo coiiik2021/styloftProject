@@ -126,7 +126,7 @@ public class EmailService {
                     "                                          \"\n" +
                     "                                        >\n" +
                     "                                          <img\n" +
-                    "                                            src=\"https://fljlqug.stripocdn.email/content/guids/CABINET_83c79fe6710c9b2a88d2db353ad3b6f6/images/79021618299486570.png\"\n" +
+                    "                                            src=\"https://nguyenanhdung-21110873.onrender.com/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
                     "                                            alt=\"\"\n" +
                     "                                            width=\"110\"\n" +
                     "                                            class=\"adapt-img\"\n" +
