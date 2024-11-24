@@ -15,13 +15,11 @@
     />
 
     <!-- Custom CSS -->
-<%--    <link rel="stylesheet" href="/css/product/products.css" />--%>
-<%--    <link href="/client/css/style.css" rel="stylesheet">--%>
+    <%--    <link rel="stylesheet" href="/css/product/products.css" />--%>
+    <%--    <link href="/client/css/style.css" rel="stylesheet">--%>
 
     <style>
-        body {
-            padding-top: 80px; /* Khoảng cách để tránh nội dung bị đè bởi header */
-        }
+
         .carousel-inner {
             margin-top: 100px;
         }
@@ -34,20 +32,16 @@
             transition: transform 0.5s;
         }
 
-        body, html {
-            background-color: #FDE9CE;
-        }
-
         .btn {
-            background-color: #ff6900;
-            color: #fff;
-            font-weight: bold;
-            border: navajowhite;
+            background-color: #ED4417!important;
+            color: #fff !important;
+            font-weight: bold !important;
+            border: navajowhite !important;
         }
 
         .btn:hover {
-            background-color: rgba(255, 105, 0, 0.6);
-            color: #fff;
+            background-color: rgba(255, 105, 0, 0.6) !important;
+            color: #fff !important;
         }
 
         .text-primary {
@@ -64,21 +58,6 @@
 
         .slide {
             margin-top: 100px;
-        }
-        .apply-btn
-        {
-            background-color: #e65a06;
-            border-radius: 10px;
-            color: white;
-        }
-        .ADD-btn
-        {
-            text-decoration: none;
-        }
-        .btn
-        {
-            background-color: #e65a06;
-            color: white;
         }
 
     </style>
@@ -205,23 +184,22 @@
                             <option value="100000" ${min == 100000 ? 'selected' : ''}>100.000đ</option>
                             <option value="200000" ${min == 200000 ? 'selected' : ''}>200.000đ</option>
                             <option value="500000" ${min == 500000 ? 'selected' : ''}>500.000đ</option>
-<%--                            <option value="1000001">Lớn hơn 1.000.000đ</option>--%>
+                            <%--                            <option value="1000001">Lớn hơn 1.000.000đ</option>--%>
                         </select>
-                        <span class="separator"></span>
-                        <select name="maxPrice">
+                        <%--                        <span class="separator" style="{margin-top: 4px}"></span>--%>
+                        <select name="maxPrice" style="margin-top: 3px">
                             <option value="100000" ${max == 100000 ? 'selected' : ''}>100.000đ</option>
                             <option value="200000" ${min == 200000 ? 'selected' : ''}>200.000đ</option>
                             <option value="500000" ${min == 500000 ? 'selected' : ''}>500.000đ</option>
                             <option value="1000000" ${min == 1000000 ? 'selected' : ''}>1.000.000đ</option>
-<%--                            <option value="1000001" >Lớn hơn 1.000.000đ</option>--%>
+                            <%--                            <option value="1000001" >Lớn hơn 1.000.000đ</option>--%>
                         </select>
                     </div>
                 </div>
 
-
                 <!-- Apply button -->
-                <div class="mb-3 ">
-                    <button type="button" class="apply-btn" onclick="applyFilters()">Tìm</button>
+                <div class="mb-3">
+                    <button type="button" class="btn btn-outline bg-orange" onclick="applyFilters()">Tìm</button>
                 </div>
             </form>
         </div>
@@ -289,8 +267,8 @@
                                      class="card-img-top rounded-0" alt="...">
                                 <div class="card-body mt-1 mb-1">
                                     <div class="row">
-                                        <div class="col-10 gap-0">
-                                            <h5 class="card-title text-black">${product.key.name}</h5>
+                                        <div class="col-12 gap-0">
+                                            <h5 class="card-title text-black text-center">${product.key.name}</h5>
                                             <c:if test="${product.key.name.length() < 22}">
                                                 <br/>
                                             </c:if>
@@ -324,9 +302,6 @@
                                             </p>
 
                                         </div>
-                                        <div class="col-2">
-                                            <i class="bi bi-bookmark-plus fs-3"></i>
-                                        </div>
                                     </div>
                                     <div class="row align-items-center text-center g-0">
                                         <div class="text-black mt-2 mb-2">
@@ -334,10 +309,10 @@
                                         </div>
                                         <div>
                                             <c:if test="${product.key.productVariant.get(0).quantity >= 1}">
-                                            <a href="/cart/add-product-item-in-cart/${product.key.productVariant.get(0).id}" class="ADD-btn p-3 rounded-0 " >Thêm vào giỏ hàng</a>
+                                                <a href="/cart/add-product-item-in-cart/${product.key.productVariant.get(0).id}" class="btn w-100 p-3 rounded-0" >Thêm vào giỏ hàng</a>
                                             </c:if>
                                             <c:if test="${product.key.productVariant.get(0).quantity < 1}">
-                                                <a href="#" class="ADD-btn p-3 rounded-0 " >Liên hệ</a>
+                                                <a href="#" class="btn w-100 p-3 rounded-0" >Liên hệ</a>
 
                                             </c:if>
 

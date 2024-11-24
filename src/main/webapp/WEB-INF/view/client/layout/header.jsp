@@ -56,7 +56,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-md bg-body-tertiary bg-primary py-1">
+    <nav class="navbar navbar-expand-md bg-body-tertiary bg-primary py-1 px-4">
 
         <a href="/" class="navbar-brand">
             <%--                <h1 class="text-primary display-6 fw-semibold">Anh Dũng Shop</h1>--%>
@@ -76,7 +76,7 @@
                         <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">BLOG</a>
                     </li>
                     <li class="nav-item">
-                        <a href="/" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
+                        <a href="/about" class="nav-link px-3 py-2" style="font-size: 14px">ABOUT</a>
                     </li>
                     <li>
                         <div class="container-fluid">
@@ -84,7 +84,7 @@
                                 <input class="form-control me-2" type="search" id="itemInput" placeholder="Search" aria-label="Search" name="name" autocomplete="off" value="${sessionScope.nameSearch}">
 
                                 <!-- Div để hiển thị danh sách kết quả tìm kiếm -->
-                                <div id="itemList" style="position: absolute; background: white; border: 1px solid #ddd; max-height: 200px; overflow-y: auto; width: calc(100% - 40px); z-index: 1000; top: 100%; left: 0;"></div>
+                                <div id="itemList" style="display: none; position: absolute; background: white; border: 1px solid #ddd; max-height: 200px; overflow-y: auto; width: calc(100% - 40px); z-index: 1000; top: 100%; left: 0;"></div>
 
                                 <button class="btn btn-outline bg-orange" type="submit"><i class="ri-search-line"></i></button>
                             </form>
@@ -93,8 +93,11 @@
                         <script>
                             let allItems = []; // Mảng chứa toàn bộ danh sách từ server
 
+                            const itemInput = document.getElementById('itemInput');
+                            const itemList = document.getElementById('itemList');
+
                             // Lấy danh sách từ server khi input được focus lần đầu tiên
-                            document.getElementById('itemInput').addEventListener('focus', function() {
+                            itemInput.addEventListener('focus', function () {
                                 if (allItems.length === 0) { // Chỉ tải một lần duy nhất
                                     fetch('/search')
                                         .then(response => response.json())
@@ -111,7 +114,7 @@
                             });
 
                             // Lọc và hiển thị danh sách khi người dùng nhập vào input
-                            document.getElementById('itemInput').addEventListener('input', function() {
+                            itemInput.addEventListener('input', function () {
                                 const query = this.value.toLowerCase(); // Lấy giá trị người dùng nhập vào và chuyển thành chữ thường
                                 showItemList(query); // Cập nhật danh sách dựa trên từ khóa
                             });
@@ -121,32 +124,35 @@
                                 const filteredItems = allItems.filter(item => item.toLowerCase().includes(query)); // Lọc danh sách dựa trên từ khóa
 
                                 // Hiển thị danh sách đã lọc
-                                const itemList = document.getElementById('itemList');
                                 itemList.innerHTML = ''; // Xóa nội dung cũ
 
-                                filteredItems.forEach(item => {
-                                    const itemElement = document.createElement('div');
-                                    itemElement.textContent = item;
-                                    itemElement.style.padding = '8px';
-                                    itemElement.style.cursor = 'pointer';
+                                if (filteredItems.length > 0) {
+                                    itemList.style.display = 'block'; // Hiển thị danh sách nếu có kết quả
+                                    filteredItems.forEach(item => {
+                                        const itemElement = document.createElement('div');
+                                        itemElement.textContent = item;
+                                        itemElement.style.padding = '8px';
+                                        itemElement.style.cursor = 'pointer';
 
-                                    // Thêm sự kiện click để chọn item
-                                    itemElement.addEventListener('click', function() {
-                                        document.getElementById('itemInput').value = item;
-                                        itemList.innerHTML = ''; // Ẩn danh sách sau khi chọn
+                                        // Thêm sự kiện click để chọn item
+                                        itemElement.addEventListener('click', function () {
+                                            itemInput.value = item;
+                                            itemList.innerHTML = ''; // Ẩn danh sách sau khi chọn
+                                            itemList.style.display = 'none'; // Ẩn hoàn toàn danh sách
+                                        });
+
+                                        itemList.appendChild(itemElement);
                                     });
-
-                                    itemList.appendChild(itemElement);
-                                });
+                                } else {
+                                    itemList.style.display = 'none'; // Ẩn danh sách nếu không có kết quả
+                                }
                             }
 
                             // Ẩn danh sách khi click ra ngoài
-                            document.addEventListener('click', function(event) {
-                                const itemList = document.getElementById('itemList');
-                                const itemInput = document.getElementById('itemInput');
-
+                            document.addEventListener('click', function (event) {
                                 if (!itemInput.contains(event.target) && !itemList.contains(event.target)) {
                                     itemList.innerHTML = ''; // Xóa danh sách khi click ra ngoài
+                                    itemList.style.display = 'none'; // Ẩn hoàn toàn danh sách
                                 }
                             });
                         </script>
