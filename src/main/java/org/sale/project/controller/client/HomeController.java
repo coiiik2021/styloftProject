@@ -81,7 +81,7 @@ public class HomeController {
     }
 
     @PostMapping("/forgot")
-    public String forget(@RequestParam("email") String email, Model model) {
+    public String forget(@RequestParam("email") String email, Model model) throws MessagingException {
 
         String password = accountService.forgotPassword(email);
 
@@ -100,24 +100,6 @@ public class HomeController {
         if (bindingResult.hasErrors()) {
             return "/client/auth/register";
         }
-        // Gửi email chào mừng
-//        emailService.sendEmail(
-//                SendEmailRequest.builder()
-//                        .subject("REGISTER CORRECT")
-//                        .htmlContent("<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
-//                                "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
-//                                "<p>AnhDungShop</p>" +
-//                                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
-//                                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
-//                                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
-//                                "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
-//                                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>")
-//                        .to(Recipient.builder().email(account.getEmail()).build())
-//                        .build()
-//        );
-
-
-
         if(accountService.findByEmail(account.getEmail()) != null) {
             model.addAttribute("errorRegister", "Email đã tồn tại!!!!");
             model.addAttribute("newAccount", account);
@@ -143,9 +125,7 @@ public class HomeController {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         account.setRole(roleService.findByName("USER"));
         accountService.saveAccount(account);
-//        String randomString = generateRandomString(10);
         String randomCode = RandomStringUtils.randomAlphanumeric(10);
-//        System.out.println("Random Alphabetic String: " + randomAlphabetic);
         Voucher voucher = Voucher.builder()
                 .code(randomCode)
                 .discountValue(20.0)
@@ -155,15 +135,7 @@ public class HomeController {
                 .build();
         voucherService.saveVoucher(voucher);
         // Chuyển hướng đến trang chính
-        String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
-                "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
-                "<p>StyloftCloth</p>" +
-                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
-                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
-                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
-                "<a href='http://localhost:8080' style='color: #0066cc;'>Visit our website</a>" +
-                "<p style='color: #333;'>Mã voucher thành viên mới của bạn là: <strong>" + randomCode + "</strong></p>"+
-                "<br><br><p>Best regards,<br>AnhDungShop</p></div></body></html>";
+        String content = emailService.MailLogin(account, randomCode);
         emailService.sendHtmlEmail(account.getEmail(),"REGISTER CORRECT",content);
         if(accountService.findByEmail(email) == null) {
 
@@ -175,12 +147,6 @@ public class HomeController {
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(userDetails, temppass, userDetails.getAuthorities());
 
-        // Thực hiện xác thực tự động
-//        authenticationManager.authenticate(authToken);
-
-//        SecurityContextHolder.getContext().setAuthentication(authToken);
-
-//        securityContextHolderFilter.doFilter();
 
         //Xác thực
         SecurityContextHolder.getContext().setAuthentication(authToken);
@@ -375,39 +341,6 @@ public class HomeController {
 
         session.setAttribute("nameSearch" , "");
 //        User user = userService.findUserByEmail(email);
-
-
-
-
-
-
-
-
-//        Pageable pageable = PageRequest.of(page - 1, 8);
-//        Page<Product> productPage = productService.findAll(pageable, false);
-
-//        List<Product> products = email != null && !email.equals("admin@gmail.com") ? productService.findAll(recommendationService.getTopNRecommendations(userService.findUserByEmail(email), 12))
-//                : productService.findAll() ;
-//
-//
-//        if(email != null) {
-//            products = products.size() == 12 ? products : fullProduct(products);
-//        }
-//        Map<Product, StarReview> mapProductAndScore = new HashMap<>();
-//        for(Product p : products) {
-//            mapProductAndScore.put(p, scoreStarService.score(p));
-//        }
-
-
-
-
-
-//        model.addAttribute("products", mapProductAndScore);
-////        model.addAttribute("user", user);
-////        model.addAttribute("currentPage", page);
-////        model.addAttribute("totalPages", productPage.getTotalPages());
-//
-//        // session.setAttribute("sum", user.getCart().getCartItems());
 
         return "/client/about/show";
     }

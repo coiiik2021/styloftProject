@@ -5,19 +5,17 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.NonFinal;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.sale.project.entity.Account;
 import org.sale.project.entity.Order;
 import org.sale.project.entity.OrderDetail;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.sale.project.entity.User;
+import org.sale.project.enums.StatusOrder;
 
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.NonFinal;
-import org.sale.project.dto.request.EmailRequest;
-import org.sale.project.dto.request.SendEmailRequest;
-import org.sale.project.dto.request.Sender;
-import org.sale.project.repository.httpClient.EmailClient;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -26,9 +24,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+
 public class EmailService {
+
+    @NonFinal
+    @Value("${name.host}")
+    String NAME_HOST;
 
 
 
@@ -38,7 +41,7 @@ public class EmailService {
     public void sendHtmlEmail(String to, String subject, String htmlContent) throws MessagingException {
         // Tạo một MimeMessage
         MimeMessage mimeMessage = mailSender.createMimeMessage();
-
+        System.out.println(NAME_HOST);
         // Sử dụng MimeMessageHelper để thêm nội dung HTML
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
         helper.setTo(to);
@@ -126,7 +129,7 @@ public class EmailService {
                     "                                          \"\n" +
                     "                                        >\n" +
                     "                                          <img\n" +
-                    "                                            src=\"https://nguyenanhdung-21110873.onrender.com/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
+                    "                                            src=\""+NAME_HOST+"/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
                     "                                            alt=\"\"\n" +
                     "                                            width=\"110\"\n" +
                     "                                            class=\"adapt-img\"\n" +
@@ -1016,7 +1019,7 @@ public class EmailService {
                 "                                    >\n" +
                 "                                      <a\n" +
                 "                                        target=\"_blank\"\n" +
-                "                                        href=\"http://localhost:8080/\"\n" +
+                "                                        href=\""+NAME_HOST+"/\"\n" +
                 "                                        style=\"\n" +
                 "                                          mso-line-height-rule: exactly;\n" +
                 "                                          text-decoration: underline;\n" +
@@ -1591,37 +1594,67 @@ public class EmailService {
                 "</html>\n";
         return content;
     }
-//    EmailClient emailClient;
+    public String MailOrderStatus(Order oldOrder, User user)
+    {
+        String emailContent="";
+        if(oldOrder.getStatus().equals(StatusOrder.COMPLETED)) {
+             emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+                    "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã hoàn tất</h2>" +
+                    "<p>StyloftCloth</p>" +
+                    "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + user.getName() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+                    "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
+                    "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi.</p>" +
+                    "<h3 style='color: #28a745;'>Thông báo: Đơn hàng của bạn đã được hoàn thành!</h3>" +
+                    "<p style='color: #333;'>Cảm ơn bạn đã tin tưởng và mua sắm tại StyloftCloth. Đơn hàng của bạn với mã <strong>" + oldOrder.getId().substring(0, 5) + "</strong> đã được hoàn thành.</p>" +
+                    "<p style='color: #333;'>Chúng tôi hy vọng bạn hài lòng với sản phẩm của mình. Nếu có bất kỳ vấn đề gì, đừng ngần ngại liên hệ với chúng tôi qua email hoặc hotline để được hỗ trợ kịp thời.</p>" +
+                    "<a href='"+NAME_HOST+"/order/"+oldOrder.getId()+"' style='color: #0066cc;'>Xem chi tiết đơn hàng</a>" +
+                    "<br><br><p>Best regards,<br>StyLoft</p></div></body></html>";
+        } if (oldOrder.getStatus().equals(StatusOrder.RETURNED)) {
+            emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+                "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã được xác nhận hoàn trả</h2>" +
+                "<p>StyloftCloth</p>" +
+                "<p style='color: #333;'>Xin chào <strong>" + user.getName() + "</strong>,</p>" +
+                "<p style='color: #333;'>Đơn hàng của bạn với mã <strong>" + oldOrder.getId().substring(0, 5) + "</strong> đã được chúng tôi xác nhận hoàn trả.</p>" +
+                "<p style='color: #333;'>Chúng tôi rất tiếc vì sản phẩm không đáp ứng được mong đợi của bạn. Bạn có thể gửi lại sản phẩm qua địa chỉ bên dưới:</p>" +
+                "<p style='color: #333;'><strong>StyloftCloth Return Center</strong></p>" +
+                "<p style='color: #333;'>123 Đường Hoàn Trả, Quận Hoàn Kiếm, Hà Nội, Việt Nam</p>" +
+                "<p style='color: #333;'>Lưu ý: Vui lòng ghi rõ mã đơn hàng trên gói hàng để chúng tôi xử lý nhanh chóng.</p>" +
+                "<h3 style='color: #28a745;'>Chúng tôi luôn sẵn sàng hỗ trợ bạn!</h3>" +
+                "<p style='color: #333;'>Nếu bạn có bất kỳ câu hỏi nào hoặc cần hỗ trợ thêm, vui lòng liên hệ với chúng tôi qua email hoặc hotline để được trợ giúp.</p>" +
+                "<a href=/orders' style='color: #0066cc;'>Kiểm tra trạng thái hoàn trả</a>" +
+                "<br><br><p>Best regards,<br>StyLoft</p></div></body></html>";
+        }
+        return emailContent;
+    }
+    public String MailLogin(Account account,String randomCode)
+    {
+        String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
+                "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
+                "<p>StyloftCloth</p>" +
+                "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + account.getEmail() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
+                "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
+                "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
+                "<a href='"+NAME_HOST+"' style='color: #0066cc;'>Visit our website</a>" +
+                "<p style='color: #333;'>Mã voucher thành viên mới của bạn là: <strong>" + randomCode + "</strong></p>"+
+                "<br><br><p>Best regards,<br>StyLoft</p></div></body></html>";
+        return content;
+    }
+    public String MailFoget(String email,String pass){
+        String content = "<html><body>" +
+                "<div style='background-color: #f9f9f9; padding: 20px; font-family: Arial, sans-serif;'>" +
+                "<h2 style='color: #4CAF50; text-align: center;'>Thay đổi mật khẩu thành công!</h2>" +
+                "<p style='color: #333;'>Xin chào <strong>" + email + "</strong>,</p>" +
+                "<p style='color: #333;'>Mật khẩu của bạn đã được thay đổi thành công. Nếu bạn không thực hiện yêu cầu này, vui lòng liên hệ ngay với chúng tôi để được hỗ trợ.</p>" +
+                "<p style='color: #333;'>Mật khẩu mới của bạn là: <strong>" + pass + "</strong></p>" +
+                "<p style='color: #333;'>Bạn có thể đăng nhập tài khoản của mình tại liên kết bên dưới:</p>" +
+                "<div style='text-align: center; margin: 20px 0;'>" +
+                "<a href="+NAME_HOST+"/login' style='background-color: #0066cc; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Đăng nhập ngay</a>" +
+                "</div>" +
+                "<p style='color: #333;'>Nếu có bất kỳ thắc mắc nào, hãy liên hệ với đội ngũ hỗ trợ của chúng tôi qua email hoặc hotline.</p>" +
+                "<br><p>Trân trọng,<br>Đội ngũ hỗ trợ AnhDungShop</p>" +
+                "</div>" +
+                "</body></html>";
+        return content;
 
-//    @NonFinal
-//    @Value("${email.sendKey}")
-//    protected String KEY_API;
-//
-//    public void sendEmail(SendEmailRequest sendEmailRequest) {
-//        EmailRequest emailRequest = EmailRequest.builder()
-//                .sender(
-//                        Sender.builder()
-//                                .name("anhdungShop")
-//                                .email("dungcoi2252003@gmail.com")
-//                                .build()
-//                )
-//                .to(
-//                        List.of(sendEmailRequest.getTo())
-//                )
-//                .subject(sendEmailRequest.getSubject())
-//                .htmlContent(sendEmailRequest.getHtmlContent())
-//                .build();
-//
-//
-//        try{
-//            emailClient.sendEmail(KEY_API, emailRequest);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-
-
+    }
 }

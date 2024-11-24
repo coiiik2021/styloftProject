@@ -1,9 +1,12 @@
 package org.sale.project.service;
+import jakarta.mail.MessagingException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.sale.project.entity.Account;
 import org.sale.project.repository.AccountRepository;
+import org.sale.project.service.email.EmailService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +23,7 @@ public class AccountService {
 
     AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     public void saveAccount(Account account) {
 
@@ -62,20 +66,14 @@ public class AccountService {
         return accountRepository.findAll().size();
     }
 
-    public String forgotPassword(String email){
+    public String forgotPassword(String email) throws MessagingException {
         Account account = findByEmail(email);
         if(account != null){
-            Random random = new Random();
-            int length = 6;
-            StringBuilder password = new StringBuilder();
-
-            for (int i = 0; i < length; i++) {
-                password.append(random.nextInt(10));
-            }
-            System.out.println("password : " + password);
-
+            String password = RandomStringUtils.randomAlphanumeric(12);
             account.setPassword(passwordEncoder.encode(password.toString()));
             accountRepository.save(account);
+            String content =emailService.MailFoget(email,password);
+            emailService.sendHtmlEmail(email,"THAY ĐỔI MẬT KHẨU",content);
             return password.toString();
 
         }
