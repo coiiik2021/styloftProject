@@ -345,6 +345,24 @@ public class HomeController {
         return "/client/about/show";
     }
 
+    @GetMapping("/blog")
+    public String blog(Model model, HttpServletRequest request
+    )
+    {
+        HttpSession session = request.getSession();
+
+//
+
+        String email = (String) session.getAttribute("email");
+//        System.out.println(email);
+
+
+        session.setAttribute("nameSearch" , "");
+//        User user = userService.findUserByEmail(email);
+
+        return "/client/blog/show";
+    }
+
 
 
     private List<Product> fullProduct(List<Product> products) {

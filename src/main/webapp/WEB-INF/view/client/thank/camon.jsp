@@ -136,6 +136,7 @@
             color: white
         }
     </style>
+    <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
 </head>
 <body>
 <div class="card mt-50 mb-50">

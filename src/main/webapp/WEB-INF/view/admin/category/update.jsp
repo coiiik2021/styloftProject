@@ -3,6 +3,7 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
 <jsp:include page="../layout/headerImport.jsp" />
+
 <body class="sb-nav-fixed">
 <jsp:include page="../layout/header.jsp" />
 <div id="layoutSidenav">

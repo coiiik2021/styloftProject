@@ -171,3 +171,7 @@ header {
 .inputGroup :is(input:focus, input:valid) {
   border-color: rgb(150, 150, 200);
 }
+.navbar .d-flex {
+  display: flex;
+  justify-content: flex-end!important;
+}

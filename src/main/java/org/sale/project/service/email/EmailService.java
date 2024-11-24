@@ -130,6 +130,7 @@ public class EmailService {
                     "                                        >\n" +
                     "                                          <img\n" +
                     "                                            src=\""+NAME_HOST+"/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
+
                     "                                            alt=\"\"\n" +
                     "                                            width=\"110\"\n" +
                     "                                            class=\"adapt-img\"\n" +
@@ -1648,7 +1649,7 @@ public class EmailService {
                 "<p style='color: #333;'>Mật khẩu mới của bạn là: <strong>" + pass + "</strong></p>" +
                 "<p style='color: #333;'>Bạn có thể đăng nhập tài khoản của mình tại liên kết bên dưới:</p>" +
                 "<div style='text-align: center; margin: 20px 0;'>" +
-                "<a href="+NAME_HOST+"/login' style='background-color: #0066cc; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Đăng nhập ngay</a>" +
+                "<a href="+NAME_HOST+"/login style='background-color: #0066cc; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Đăng nhập ngay</a>" +
                 "</div>" +
                 "<p style='color: #333;'>Nếu có bất kỳ thắc mắc nào, hãy liên hệ với đội ngũ hỗ trợ của chúng tôi qua email hoặc hotline.</p>" +
                 "<br><p>Trân trọng,<br>Đội ngũ hỗ trợ AnhDungShop</p>" +

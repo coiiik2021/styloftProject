@@ -33,6 +33,7 @@
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
 </head>
 <body>
 <jsp:include page="../layout/header.jsp" />
@@ -177,7 +178,7 @@
                 </div>
 
                 <div class=" mt-1">
-                    <button class="btn btn-danger btn-sm ${item.quantity eq 0 ? 'disabled' : ''}" id="addToCartBtn" style="background: rgb(247, 240, 229); color: dimgrey; border: 1px solid black;">
+                    <button class="btn btn-danger btn-sm w-100 ${item.quantity eq 0 ? 'disabled' : ''}" id="addToCartBtn" style=" background-color: #ED4417; height: 50px; border: 1px solid black; border-radius: 10px">
                         <strong>Thêm vào giỏ hàng</strong>
                     </button>
                 </div>

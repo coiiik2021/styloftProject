@@ -24,7 +24,7 @@
       background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
     }
   </style>
-
+  <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
 </head>
 <body>
 <section class="gradient-custom">

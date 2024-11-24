@@ -18,6 +18,7 @@ contentType="text/html" pageEncoding="UTF-8" %>
     />
     <link rel="stylesheet" href="/css/register.css" />
     <title>Login</title>
+    <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
   </head>
   <body>
     <!-- Section: Design Block -->

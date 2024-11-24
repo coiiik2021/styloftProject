@@ -43,9 +43,22 @@
                     <div class="sb-nav-link-icon"><i class="bi bi-ticket-detailed"></i></div>
                     Voucher
                 </a>
-                <a class="nav-link" href="/admin/order">
+                <a class="nav-link position-relative" href="/admin/order" style="position: relative;">
                     <div class="sb-nav-link-icon"><i class="bi bi-basket-fill"></i></div>
-                    Order <strong style="color: red">${sessionScope.totalAnnounce > 0 ? sessionScope.totalAnnounce : ''}</strong>
+                    Order
+                    <span style="
+                            position: absolute;
+                            top: -10px; /* Đặt phía trên chữ */
+                            left: 40%;  /* Căn giữa chữ  */
+                                        color: red; /* Màu đỏ cho số lượng */
+                                        font-size: 15px; /* Nhỏ hơn */
+                                        font-weight: bold;
+                                        display: inline-block;
+                                        line-height: 3;
+                                        transform: translateX(-80%);
+                                        ">
+                                        ${sessionScope.totalAnnounce > 0 ? sessionScope.totalAnnounce : ''}
+                                        </span>
                 </a>
 
                 <a class="nav-link" href="/">
