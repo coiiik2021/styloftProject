@@ -25,9 +25,9 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
 
-    public void saveAccount(Account account) {
+    public Account saveAccount(Account account) {
 
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
     public void updateAccount(Account account) {
         Account oldAccount = accountRepository.findById(account.getId()).get();

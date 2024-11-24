@@ -6,17 +6,13 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.sale.project.dto.request.Recipient;
-import org.sale.project.dto.request.SendEmailRequest;
+
 import org.sale.project.entity.Order;
 import org.sale.project.entity.User;
 import org.sale.project.enums.StatusOrder;
 import org.sale.project.service.OrderDetailService;
 import org.sale.project.service.OrderService;
-import org.sale.project.service.SmsService;
 import org.sale.project.service.email.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -87,15 +83,13 @@ public class OrderController {
             content += "</br>  <p> Đơn hàng của bạn đang trong quá trình vận chuyển </p>";
         } else{
             content += "</br>  <p> Đơn hàng của bạn đã thành công </p>";
-
-
         }
         orderService.saveOrder(oldOrder);
             String emailContent=emailService.MailOrderStatus(oldOrder, user);
             if(!emailContent.isEmpty()) {
                 emailService.sendHtmlEmail(
                         user.getAccount().getEmail(),
-                        "Xác nhận hoàn trả đơn hàng #" + oldOrder.getId().substring(0, 5),
+                         order.getStatus().toString().equals("RETURN") ? "Xác nhận hoàn trả đơn hàng #" : "Đơn hàng đã hoàn thành: #"+ oldOrder.getId().substring(0, 5),
                         emailContent
                 );
             }

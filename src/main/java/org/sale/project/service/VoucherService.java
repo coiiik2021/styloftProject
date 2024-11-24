@@ -23,6 +23,9 @@ public class VoucherService {
 
     public Voucher saveVoucher(Voucher voucher) {
         if(voucher.getId() == null || findByCode(voucher.getCode()) != null) {
+            if(voucher.getCode().charAt(0) != 'P'){
+                voucher.setCode('E' + voucher.getCode());
+            }
             return voucherRepository.save(voucher);
         }
         return null;

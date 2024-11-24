@@ -9,8 +9,6 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.sale.project.dto.request.Recipient;
-import org.sale.project.dto.request.SendEmailRequest;
 import org.sale.project.entity.*;
 import org.sale.project.enums.StatusOrder;
 import org.sale.project.service.*;
@@ -27,10 +25,8 @@ import vn.payos.type.PaymentData;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/pay")
@@ -77,11 +73,7 @@ public class PayController {
     }
 
 
-//    http://localhost:8080/payment/vn-pay?amount=237000&bankCode=NCB
-//    private void setUpOnline(String totalPrice, HttpServletResponse response) {
-//
-//
-//    }
+
 
 
 
@@ -171,7 +163,6 @@ public class PayController {
                 final String description = "Thanh toán đơn hàng: #" + order.getId().substring(0, 5);
                 final String returnUrl = baseUrl + "/pay/thank";
                 final String cancelUrl = baseUrl + "/pay/cancel?idOrder="+ order.getId();
-                // Gen order code
                 String currentTimeString = String.valueOf(new Date().getTime());
                 long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
 

@@ -8,18 +8,17 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.NonFinal;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.sale.project.entity.Account;
-import org.sale.project.entity.Order;
-import org.sale.project.entity.OrderDetail;
-import org.sale.project.entity.User;
+import org.sale.project.entity.*;
 import org.sale.project.enums.StatusOrder;
 
 import lombok.experimental.FieldDefaults;
+import org.sale.project.service.VoucherService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +28,7 @@ import java.util.List;
 
 public class EmailService {
 
+    private final VoucherService voucherService;
     @NonFinal
     @Value("${name.host}")
     String NAME_HOST;
@@ -1597,8 +1597,22 @@ public class EmailService {
     }
     public String MailOrderStatus(Order oldOrder, User user)
     {
+
+
         String emailContent="";
         if(oldOrder.getStatus().equals(StatusOrder.COMPLETED)) {
+
+            String randomCode ="P" +  user.getAccount().getId().substring(0, 4) +  RandomStringUtils.randomAlphanumeric(4);
+
+            Voucher voucher = Voucher
+                    .builder()
+                    .code(randomCode)
+                    .active(true)
+                    .discountValue(10.0)
+                    .startDate(LocalDate.now())
+                    .endDate(LocalDate.now().plusDays(30))
+                    .build();
+            voucherService.saveVoucher(voucher);
              emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                     "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã hoàn tất</h2>" +
                     "<p>StyloftCloth</p>" +
@@ -1608,7 +1622,8 @@ public class EmailService {
                     "<h3 style='color: #28a745;'>Thông báo: Đơn hàng của bạn đã được hoàn thành!</h3>" +
                     "<p style='color: #333;'>Cảm ơn bạn đã tin tưởng và mua sắm tại StyloftCloth. Đơn hàng của bạn với mã <strong>" + oldOrder.getId().substring(0, 5) + "</strong> đã được hoàn thành.</p>" +
                     "<p style='color: #333;'>Chúng tôi hy vọng bạn hài lòng với sản phẩm của mình. Nếu có bất kỳ vấn đề gì, đừng ngần ngại liên hệ với chúng tôi qua email hoặc hotline để được hỗ trợ kịp thời.</p>" +
-                    "<a href='"+NAME_HOST+"/order/"+oldOrder.getId()+"' style='color: #0066cc;'>Xem chi tiết đơn hàng</a>" +
+                    "<a href='"+NAME_HOST+"' style='color: #0066cc;'>Xem chi tiết đơn hàng</a>" +
+                     " <p style='color: #333;'> Tặng bạn voucher cho đơn hàng tiếp theo: <strong>" + randomCode + "</strong> hạn tới ngày: <strong> " + voucher.getEndDate().toString() + "</strong> là <strong> 10% giá trị đơn hàng </strong> </p>"+
                     "<br><br><p>Best regards,<br>StyLoft</p></div></body></html>";
         } if (oldOrder.getStatus().equals(StatusOrder.RETURNED)) {
             emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
@@ -1627,7 +1642,7 @@ public class EmailService {
         }
         return emailContent;
     }
-    public String MailLogin(Account account,String randomCode)
+    public String MailLogin(Account account,Voucher voucher)
     {
         String content="<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                 "<h2 style='color: #ff6600;'>Welcome to our service!</h2>" +
@@ -1636,7 +1651,7 @@ public class EmailService {
                 "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
                 "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi</p>" +
                 "<a href='"+NAME_HOST+"' style='color: #0066cc;'>Visit our website</a>" +
-                "<p style='color: #333;'>Mã voucher thành viên mới của bạn là: <strong>" + randomCode + "</strong></p>"+
+                "<p style='color: #333;'>Mã voucher thành viên mới của bạn là: <strong>" + voucher.getCode() + "</strong> 10% cho sản phẩm tới ngày: " + voucher.getEndDate() + " </p>"+
                 "<br><br><p>Best regards,<br>StyLoft</p></div></body></html>";
         return content;
     }

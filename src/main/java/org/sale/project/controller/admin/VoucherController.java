@@ -31,12 +31,12 @@ public class VoucherController {
 
     VoucherService voucherService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Double.class, new CustomDoubleEditor());
-        binder.registerCustomEditor(Double.class, new CustomNumberEditor(Double.class, true));
-        binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-    }
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(Double.class, new CustomDoubleEditor());
+//        binder.registerCustomEditor(Double.class, new CustomNumberEditor(Double.class, true));
+//        binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+//    }
 
     @GetMapping
     public String getPageVoucher(@RequestParam("page") Optional<Integer> pageOptional, Model model){
@@ -117,13 +117,13 @@ public class VoucherController {
     }
 
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public String handleConversionError(IllegalArgumentException ex, Model model) {
-        // Đảm bảo thông báo lỗi sẽ được đưa vào model
-        model.addAttribute("errorMessage", ex.getMessage());
-        model.addAttribute("newVoucher", new Voucher()); // Để lại đối tượng voucher mới
-        return "/admin/voucher/create"; // Quay lại trang tạo voucher
-    }
+//    @ExceptionHandler(IllegalArgumentException.class)
+//    public String handleConversionError(IllegalArgumentException ex, Model model) {
+//        // Đảm bảo thông báo lỗi sẽ được đưa vào model
+//        model.addAttribute("errorMessage", ex.getMessage());
+//        model.addAttribute("newVoucher", new Voucher()); // Để lại đối tượng voucher mới
+//        return "/admin/voucher/create"; // Quay lại trang tạo voucher
+//    }
 
 
 

@@ -162,20 +162,16 @@ public class OrderService {
 
         order.setDetails(detail);
         System.out.println(order.getDetails().size());
-//        if(voucher != null){
-//            order.setVoucher(voucher);
-//            voucher.setQuantity(voucher.getQuantity() - 1);
-//
-//            if(voucher.getQuantity() <= 0){
-//                voucher.setActive(false);
-//            }
-//            voucherRepository.save(voucher);
-//        }
+
 
         order.setAnnounceOrder(true);
 
         order = orderRepository.save(order);
 
+        if(voucher.getCode().charAt(0) == 'P'){
+            voucher.setActive(false);
+            voucherRepository.save(voucher);
+        }
 
         return order;
 
