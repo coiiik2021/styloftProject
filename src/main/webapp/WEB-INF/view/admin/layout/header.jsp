@@ -3,7 +3,7 @@ pageEncoding="UTF-8" %>
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
   <!-- Navbar Brand-->
-  <a class="navbar-brand ps-3" href="/admin">Quần áo</a>
+  <a class="navbar-brand ps-3" href="/admin">Styloft</a>
   <!-- Sidebar Toggle-->
   <button
     class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -43,7 +43,7 @@ pageEncoding="UTF-8" %>
         <li>
           <form action="/logout" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-            <button class="dropdown-item">Đăng xuất</button>
+            <button class="dropdown-item">Log out</button>
           </form>
         </li>
         </li>

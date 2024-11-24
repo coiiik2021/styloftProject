@@ -31,13 +31,12 @@ public class VoucherController {
 
     VoucherService voucherService;
 
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Double.class, new CustomDoubleEditor());
-        binder.registerCustomEditor(Double.class, new CustomNumberEditor(Double.class, true));
-        binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
-    }
-
+//    @InitBinder
+//    public void initBinder(WebDataBinder binder) {
+//        binder.registerCustomEditor(Double.class, new CustomDoubleEditor());
+//        binder.registerCustomEditor(Double.class, new CustomNumberEditor(Double.class, true));
+//        binder.registerCustomEditor(Integer.class, new CustomNumberEditor(Integer.class, true));
+//    }
     @GetMapping
     public String getPageVoucher(@RequestParam("page") Optional<Integer> pageOptional, Model model){
 
@@ -78,8 +77,6 @@ public class VoucherController {
             }
             return "/admin/voucher/create";
         }
-
-
 
         voucherService.saveVoucher(voucher);
 

@@ -6,8 +6,6 @@ server:
 
 image-port: "http://localhost:8080"
 
-name:
-  host: "${NAME-HOST:http://localhost:8080}"
 
 spring:
   main:

@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="col-md-12 col-12 mx-auto">
                             <div class="d-flex justify-content-between">
-                                <h3>Table color</h3>
+                                <h3>Table Voucher</h3>
                                 <a href="/admin/voucher/create" class="btn btn-primary">Create voucher</a>
                             </div>
                             <table class="table table-bordered table-hover mt-3">

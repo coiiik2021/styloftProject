@@ -56,6 +56,6 @@ public class Voucher {
         }
     }
 
-    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL)
     private List<Order> order;
 }
