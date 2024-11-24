@@ -52,7 +52,19 @@
           rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
           crossorigin="anonymous">
 
-
+    <style>
+        .btn {
+            background-color: #ED4417!important;
+            color: #fff !important;
+            font-weight: bold !important;
+            border: navajowhite !important;
+        }
+        .btn:hover {
+            background-color: rgba(255, 105, 0, 0.6) !important;
+            color: #fff !important;
+        }
+    </style>
+    <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
 </head>
 <body>
 <header>
@@ -87,7 +99,7 @@
             </ul>
 
             <!-- Search Form -->
-            <form class="d-flex position-relative me-3" role="search" action="/product" method="get">
+            <form class="d-flex position-relative mb-0 me-3" role="search" action="/product" method="get">
                 <input class="form-control me-2" type="search" id="itemInput" placeholder="Search" aria-label="Search" name="name" autocomplete="off" value="${sessionScope.nameSearch}">
                 <div id="itemList" class="dropdown-menu w-80" style="display: none; position: absolute; background: white; border: 1px solid #ddd; max-height: 200px; overflow-y: auto; width: calc(100% - 50px); z-index: 1000; top: 100%; left: 0;"></div>
                 <button class="btn btn-outline bg-orange" type="submit"><i class="ri-search-line"></i></button>
@@ -96,7 +108,7 @@
             <!-- User and Cart -->
             <div class="d-flex align-items-center ms-auto mt-2">
                 <c:if test="${not empty pageContext.request.userPrincipal && !sessionScope.isAdmin}">
-                    <form action="/cart" method="get" class="me-3">
+                    <form action="/cart" method="get" class="mb-0 me-3">
                         <button class="position-relative me-4 my-auto btn-custom">
                             <i class="fa fa-shopping-bag" style="font-size: 1.5em;"></i>
                             <span class="position-absolute d-flex align-items-center justify-content-center"

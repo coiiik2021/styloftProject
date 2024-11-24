@@ -11,22 +11,11 @@
 <head>
   <title>Order Detail</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <style>
-    .gradient-custom {
-      /* fallback for old browsers */
-      background: #cd9cf2;
-
-      /* Chrome 10-25, Safari 5.1-6 */
-      background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
-
-      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-      background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
-    }
-  </style>
+  
   <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
 </head>
 <body>
+<jsp:include page="../layout/header.jsp"/>
 <section class="gradient-custom">
   <div class="container py-5">
     <div class="row d-flex justify-content-center align-items-center">
@@ -139,6 +128,6 @@
     </div>
   </div>
 </section>
-
+<jsp:include page="../layout/footer.jsp"/>
 </body>
 </html>

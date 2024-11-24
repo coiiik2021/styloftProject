@@ -3,16 +3,11 @@ package org.sale.project.controller.client;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
-import org.sale.project.entity.Order;
-import org.sale.project.entity.OrderDetail;
-import org.sale.project.entity.ProductVariant;
-import org.sale.project.entity.Review;
+import org.sale.project.entity.*;
 import org.sale.project.enums.StatusOrder;
-import org.sale.project.service.OrderDetailService;
-import org.sale.project.service.OrderService;
-import org.sale.project.service.ProductVariantService;
-import org.sale.project.service.ReviewService;
+import org.sale.project.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +29,8 @@ public class OrderClientController {
     OrderService orderService;
     OrderDetailService orderDetailService;
 
+    UserService userService;
+
     ProductVariantService productVariantService;
     ReviewService reviewService;
 
@@ -48,9 +45,14 @@ public class OrderClientController {
     }
 
     @GetMapping("/detail/review/{id}")
-    public String getPageReview(@PathVariable("id") String idOrderDetail, Model model) {
+    public String getPageReview(@PathVariable("id") String idOrderDetail, Model model,HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String email = (String)session.getAttribute("email");
+        User user = userService.findUserByEmail(email);
 
         model.addAttribute("detail", orderDetailService.findById(idOrderDetail));
+        model.addAttribute("user", user);
 
 
         model.addAttribute("newReview", new Review());

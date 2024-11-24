@@ -7,13 +7,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        .gradient-custom {
-            background: #cd9cf2;
-
-            background: -webkit-linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1));
-
-            background: linear-gradient(to top left, rgba(205, 156, 242, 1), rgba(246, 243, 255, 1))
-        }
         body * {
             box-sizing: border-box;
         }
@@ -95,18 +88,24 @@
         h5 {
             text-align: center;
         }
+        .btn {
+            background-color: #ED4417!important;
+            color: #fff !important;
+            font-weight: bold !important;
+            border: navajowhite !important;
+        }
     </style>
-
+    <link rel="icon" type="image/x-icon" href="/images/assets/img/favicon.ico">
 </head>
 <body>
 <jsp:include page="../layout/header.jsp"/>
-<section class="h-100 gradient-custom">
+<section class="h-100" style="background-color: #fff;">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-lg-10 col-xl-8">
                 <div class="card" style="border-radius: 10px;">
-                    <div class="card-header px-4 py-5">
-                        <h5 class="text-muted mb-0">Review</h5>
+                    <div class="card-header px-4 py-5" style="background-color: #ef750b">
+                        <h5 class="text-muted mb-0" style="color: #ffffff">Đánh giá</h5>
                     </div>
                     <div class="card shadow-0 border">
                         <div class="card-body">
@@ -129,12 +128,12 @@
                                 </div>
 
                                 <div class="col-md-10" style="width: 100%; padding: 0;">
-                                    <div class="d-flex flex-row mb-2">
+                                    <div class="d-flex flex-row m-2">
                                         <div class="ps-2 pe-2 fs-5">
-                                            <img src="/images/avatar/${not empty user.image ?  user.image : 'default.png'}" alt="${user.image}" style="width: 50px; height: auto;">
+                                            <img class="rounded-circle" src="/images/avatar/${not empty user.image ?  user.image : 'default.png'}" alt="${user.image}" style="width: 60px; height: auto;">
                                         </div>
-                                        <div class="flex-column mb-2">
-                                            <h6 >Add a comment</h6>
+                                        <div class="flex-column mb-2 ">
+                                            <h6 class="fs-5">Bình luận</h6>
                                             <div class="rating" >
                                                 <input type="radio" name="rating" id="rs0" value="0" checked><label for="rs0"></label>
                                                 <input type="radio" name="rating" id="rs1" value="1" ${newReview.star == 1 ? 'checked' : ''} ><label for="rs1">☆</label>
@@ -149,7 +148,7 @@
                                         <form:input type="text" class="form-floating" path="description"/>
                                         <textarea
                                                 class="form-control w-100"
-                                                placeholder="Leave a comment here"
+                                                placeholder="Để lại đánh giá tại đây"
                                                 id="floatingTextarea2"
                                                 style="height: 100px;"></textarea>
                                         <div style="display: none">
@@ -158,7 +157,7 @@
                                             </label>
                                         </div>
                                         <hr style="background-color: #e0e0e0; opacity: 1;">
-                                        <button type="submit" class="btn btn-danger" style="float: right;">Send</button>
+                                        <button type="submit" class="btn btn-danger" style="float: right;">Gửi</button>
                                     </form:form>
                                 </div>
                             </div>
@@ -169,5 +168,8 @@
         </div>
     </div>
 </section>
+
+<jsp:include page="../layout/footer.jsp" />
+
 </body>
 </html>
