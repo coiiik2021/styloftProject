@@ -1616,9 +1616,6 @@ public class EmailService {
              emailContent = "<html><body><div style='background-color: #f0f0f0; padding: 20px;'>" +
                     "<h2 style='color: #ff6600;'>Đơn hàng của bạn đã hoàn tất</h2>" +
                     "<p>StyloftCloth</p>" +
-                    "<p style='color: #333;'>Bạn đã đăng kí thành công tài khoản <strong>" + user.getName() + "</strong> và giờ bạn có thể sử dụng dịch vụ bên chúng tôi.</p>" +
-                    "<p style='color: #333;'>Chúc <strong>bạn</strong> có thời gian mua sắm vui vẻ!!!</p>" +
-                    "<p style='color: #333;'>Nếu có thắc mắc gì mong <strong>bạn</strong> phản hồi lại sớm cho bên chúng tôi.</p>" +
                     "<h3 style='color: #28a745;'>Thông báo: Đơn hàng của bạn đã được hoàn thành!</h3>" +
                     "<p style='color: #333;'>Cảm ơn bạn đã tin tưởng và mua sắm tại StyloftCloth. Đơn hàng của bạn với mã <strong>" + oldOrder.getId().substring(0, 5) + "</strong> đã được hoàn thành.</p>" +
                     "<p style='color: #333;'>Chúng tôi hy vọng bạn hài lòng với sản phẩm của mình. Nếu có bất kỳ vấn đề gì, đừng ngần ngại liên hệ với chúng tôi qua email hoặc hotline để được hỗ trợ kịp thời.</p>" +
@@ -1667,7 +1664,7 @@ public class EmailService {
                 "<a href="+NAME_HOST+"/login style='background-color: #0066cc; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;'>Đăng nhập ngay</a>" +
                 "</div>" +
                 "<p style='color: #333;'>Nếu có bất kỳ thắc mắc nào, hãy liên hệ với đội ngũ hỗ trợ của chúng tôi qua email hoặc hotline.</p>" +
-                "<br><p>Trân trọng,<br>Đội ngũ hỗ trợ AnhDungShop</p>" +
+                "<br><p>Trân trọng,<br>Đội ngũ hỗ trợ StyLoft</p>" +
                 "</div>" +
                 "</body></html>";
         return content;
