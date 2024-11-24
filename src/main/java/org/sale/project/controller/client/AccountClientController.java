@@ -39,7 +39,6 @@ public class AccountClientController {
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
         model.addAttribute("email", email);
-
         Optional<User> userOptional = userService.findByEmail(email);
         model.addAttribute("email", email);
 //        User user = userOptional.get();

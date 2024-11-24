@@ -1,0 +1,83 @@
+/* Sidebar container styles */
+#layoutSidenav_nav {
+    background-color: #f8bbd0; /* Nhẹ nhàng với hồng pastel */
+    color: #ffffff;
+    transition: transform 0.3s ease, opacity 0.3s ease; /* Thêm hiệu ứng cho sidebar */
+}
+
+/* Sidebar menu header */
+.sb-sidenav-menu-heading {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #880e4f; /* Hồng đậm */
+    margin-bottom: 10px;
+}
+
+/* Sidebar links */
+.nav-link {
+    color: #ffffff;
+    background-color: transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease, transform 0.3s ease; /* Thêm hiệu ứng chuyển động */
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    font-size: 1rem;
+}
+
+.nav-link:hover {
+    background-color: #ec407a; /* Hồng nổi bật */
+    color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    transform: scale(1.05); /* Phóng to khi hover */
+}
+
+/* Icon styles */
+.sb-nav-link-icon {
+    margin-right: 10px;
+    color: #880e4f; /* Hồng đậm */
+}
+
+/* Active link */
+.nav-link.active {
+    background-color: #f06292; /* Hồng vừa */
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* Highlight total announcements */
+.nav-link strong {
+    color: #c2185b; /* Hồng nổi bật */
+    font-size: 1.2rem;
+}
+
+/* Home button */
+.nav-link[href="/"] {
+    border-top: 1px solid #880e4f;
+    margin-top: 10px;
+    padding-top: 15px;
+}
+
+/* Sidebar sliding effect */
+#layoutSidenav_nav.open {
+    transform: translateX(0); /* Khi mở ra, sidebar sẽ xuất hiện */
+    opacity: 1;
+}
+
+#layoutSidenav_nav.closed {
+    transform: translateX(-250px); /* Khi đóng, sidebar sẽ di chuyển sang trái */
+    opacity: 0; /* Giảm độ mờ */
+}
+
+/* Adjustments for small screen sizes */
+@media (max-width: 768px) {
+    #layoutSidenav_nav {
+        padding: 10px;
+    }
+
+    .nav-link {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+}

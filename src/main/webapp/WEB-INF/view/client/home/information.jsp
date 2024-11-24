@@ -51,7 +51,7 @@
     <!-- Sidebar -->
     <div class="col-md-3">
       <ul class="list-group sidebar">
-        <li class="list-group-item ${sessionScope.get("checkid") == '1' ? 'active' : ''}" onclick="showSection('account-info')">Thông tin tài khoản</li>
+        <li class="list-group-item ${sessionScope.get("checkid") != '3' and sessionScope.get("checkid") != '4' ? 'active' : ''}" onclick="showSection('account-info')">Thông tin tài khoản</li>
         <li class="list-group-item " onclick="showSection('order-history')">Lịch sử đơn hàng</li>
         <li class="list-group-item ${sessionScope.get("checkid")  == '3' ? 'active' : ''}"  onclick="showSection('account-address')">Địa chỉ giao hàng</li>
         <li class="list-group-item ${sessionScope.get("checkid")  == '4' ? 'active' : ''}"  onclick="showSection('pass-update')">Thay đổi mật khẩu</li>
@@ -62,7 +62,7 @@
     </div>
 
     <!-- Form Thông tin tài khoản -->
-    <div class="col-md-9 form-container" id="account-info" style="display: ${sessionScope.get("checkid") == '1' ? 'block' : 'none' };">
+    <div class="col-md-9 form-container" id="account-info" style="display: ${sessionScope.get("checkid") != '3' and sessionScope.get("checkid") != '4' ? 'block' : 'none' };">
       <div>
         <h2 class="mb-4">Thông tin tài khoản</h2>
         <form:form action="/account/update-information"  enctype="multipart/form-data" method="post" modelAttribute="user">
