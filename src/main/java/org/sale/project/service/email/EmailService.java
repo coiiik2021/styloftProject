@@ -26,14 +26,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class EmailService {
 
 
 
 
     JavaMailSender mailSender;
+
+    @NonFinal
+    @Value("${name.host}")
+    String NAME_HOST;
 
     public void sendHtmlEmail(String to, String subject, String htmlContent) throws MessagingException {
         // Tạo một MimeMessage
@@ -126,7 +130,7 @@ public class EmailService {
                     "                                          \"\n" +
                     "                                        >\n" +
                     "                                          <img\n" +
-                    "                                            src=\"https://nguyenanhdung-21110873.onrender.com/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
+                    "                                            src=\"" + NAME_HOST + " /images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
                     "                                            alt=\"\"\n" +
                     "                                            width=\"110\"\n" +
                     "                                            class=\"adapt-img\"\n" +

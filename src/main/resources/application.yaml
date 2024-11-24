@@ -4,10 +4,10 @@ server:
   servlet:
     context-path: /
 
-image-port: "http://localhost:8080"
+image-port: ${image-port:https://nguyenanhdung-21110873.onrender.com/}
 
 name:
-  host: "${NAME-HOST:http://localhost:8080}"
+  host: ${NAME-HOST:https://nguyenanhdung-21110873.onrender.com}
 
 spring:
   main:
@@ -20,10 +20,10 @@ spring:
     driverClassName: "com.mysql.cj.jdbc.Driver"
     password: root
     username: root
-#    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:quanao}"
+#    url: "jdbc:mysql://oke-dungcoi2252003-ea13.b.aivencloud.com:21149/quanao"
 #    driverClassName: "com.mysql.cj.jdbc.Driver"
-#    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
-#    username: ${DATABASE_USER:avnadmin}
+#    password: AVNS_iPLhsXXtP5auiW79ueN
+#    username: avnadmin
   jpa:
     hibernate:
       ddl-auto: update
@@ -43,7 +43,7 @@ spring:
           google:
             client-id: 264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: "{localhost:8080}/login/oauth2/code/google"
+            redirect-uri: "{nguyenanhdung-21110873.onrender.com}/login/oauth2/code/google"
             scope:
               - email
               - profile
