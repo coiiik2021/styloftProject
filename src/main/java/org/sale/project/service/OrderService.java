@@ -168,7 +168,7 @@ public class OrderService {
 
         order = orderRepository.save(order);
 
-        if(voucher.getCode().charAt(0) == 'P'){
+        if(voucher != null && voucher.getCode().charAt(0) == 'P'){
             voucher.setActive(false);
             voucherRepository.save(voucher);
         }

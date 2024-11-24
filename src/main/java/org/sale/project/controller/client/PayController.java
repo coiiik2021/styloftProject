@@ -8,11 +8,14 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.sale.project.entity.*;
 import org.sale.project.enums.StatusOrder;
 import org.sale.project.service.*;
 import org.sale.project.service.email.EmailService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,7 +34,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/pay")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class PayController {
     UserService userService;
     CartService cartService;
@@ -43,6 +46,10 @@ public class PayController {
     VoucherService voucherService;
 
     PayOS payOS;
+
+    @NonFinal
+    @Value("${name.host}")
+    String host;
 
 
     @GetMapping
@@ -120,7 +127,7 @@ public class PayController {
         double total = Double.parseDouble(totalPriceFinal);
 
         System.out.println( ">>>total: " + total);
-        Voucher voucher = voucherService.findByCode(voucherCode);
+        Voucher voucher = voucherCode.isEmpty() ? null : voucherService.findByCode(voucherCode );
 
 
 
@@ -134,7 +141,7 @@ public class PayController {
             session.setAttribute("idOrder", order.getId());
             int totalInt = ((Double)total).intValue();
 
-            String url = "http://localhost:8080/pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
+            String url = host+  "pay/vn-pay?amount=" + totalInt + "&bankCode=NCB";
             try{
                 response.sendRedirect(url);
             } catch (IOException e) {
@@ -166,7 +173,7 @@ public class PayController {
                 String currentTimeString = String.valueOf(new Date().getTime());
                 long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
 
-                PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(10000).description(description)
+                PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount((int)order.getTotal()).description(description)
                         .returnUrl(returnUrl).cancelUrl(cancelUrl).items(items).build();
                 CheckoutResponseData data = payOS.createPaymentLink(paymentData);
 

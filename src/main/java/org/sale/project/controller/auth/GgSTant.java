@@ -16,7 +16,7 @@ public class GgSTant {
 
     public static final String GOOGLE_CLIENT_SECRET = "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";
 
-    public static final String GOOGLE_REDIRECT_URI =  "https://nguyenanhdung-21110873.onrender.com/google";
+    public static final String GOOGLE_REDIRECT_URI =  "google";
 
     public static final String GOOGLE_GRANT_TYPE = "authorization_code";
 

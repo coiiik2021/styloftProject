@@ -10,6 +10,7 @@ import org.sale.project.service.AccountService;
 import org.sale.project.service.OrderService;
 import org.sale.project.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -29,6 +30,9 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
     private AccountService accountService;
     @Autowired
     private OrderService orderService;
+
+    @Value("${name.host}")
+    private String host;
 
 
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
@@ -61,6 +65,8 @@ public class CustomSuccessHandler implements AuthenticationSuccessHandler {
         Account account = accountService.findByEmail(email);
 
         session.setAttribute("totalAnnounce", orderService.totalAnnounce());
+        session.setAttribute("host", host);
+        System.out.println("ss host: " + host);
 
         if(account != null){
             session.setAttribute("email", email);

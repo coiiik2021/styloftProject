@@ -7,16 +7,29 @@ package org.sale.project.controller.auth;
 //import lombok.AllArgsConstructor;
 //import lombok.NoArgsConstructor;
 // import org.apache.http.client.ClientProtocolException;
+ import lombok.AccessLevel;
+ import lombok.RequiredArgsConstructor;
+ import lombok.experimental.FieldDefaults;
+ import lombok.experimental.NonFinal;
  import org.apache.http.client.fluent.Form;
  import org.apache.http.client.fluent.Request;
 import org.sale.project.entity.GoogleAccount;
+ import org.springframework.beans.factory.annotation.Value;
+ import org.springframework.stereotype.Service;
 
 //import org.apache.hc.core5.http.ClientProtocolException;
 
 import java.io.IOException;
 
+
+
 public class GoogleLogin {
-    public String getToken(String code) throws IOException {
+
+
+
+
+    public String getToken(String code, String host) throws IOException {
+        System.out.println("token: " + host);
 
         String response = Request.Post(GgSTant.GOOGLE_LINK_GET_TOKEN)
 
@@ -28,7 +41,7 @@ public class GoogleLogin {
 
                                 .add("client_secret", GgSTant.GOOGLE_CLIENT_SECRET)
 
-                                .add("redirect_uri", GgSTant.GOOGLE_REDIRECT_URI)
+                                .add("redirect_uri", host + GgSTant.GOOGLE_REDIRECT_URI)
 
                                 .add("code", code)
 

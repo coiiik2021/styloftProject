@@ -32,11 +32,6 @@ public class ApplyController {
 
     @GetMapping("/voucher")
     public Map<String, Object> validateVoucher(@RequestParam("voucher") Optional<String> codeOptional, @RequestParam("priceTotal") Optional<Double> totalOptional, HttpServletRequest request) {
-
-
-
-
-        System.out.println(">>>: function valid" );
         Map<String, Object> response = new HashMap<>();
 
         String code = codeOptional.orElse("");

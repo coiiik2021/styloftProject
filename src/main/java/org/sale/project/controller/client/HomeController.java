@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.NonFinal;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.sale.project.controller.auth.GoogleLogin;
 import org.sale.project.dto.request.StarReview;
@@ -14,6 +16,7 @@ import org.sale.project.entity.*;
 import org.sale.project.service.*;
 import org.sale.project.service.email.EmailService;
 import org.sale.project.service.review.ScoreStarService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,8 +35,9 @@ import java.time.LocalDate;
 import java.util.*;
 
 @Controller
-@AllArgsConstructor
+//@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class HomeController {
     UserService userService;
     PasswordEncoder passwordEncoder;
@@ -45,6 +49,10 @@ public class HomeController {
     ScoreStarService scoreStarService;
 
 
+    @NonFinal
+    @Value("${name.host}")
+    String host;
+
 
 
 
@@ -53,12 +61,14 @@ public class HomeController {
     @GetMapping("/register")
     public String getPageRegister(Model model) {
         model.addAttribute("newAccount", new Account());
+        model.addAttribute("host", host);
         return "/client/auth/register";
     }
 
     @GetMapping("/forgot")
     public String getPageForgot(Model model) {
         model.addAttribute("email", "");
+        model.addAttribute("host", host);
         return "/client/auth/forgot";
     }
 
@@ -68,6 +78,8 @@ public class HomeController {
         String password = accountService.forgotPassword(email);
 
         if(password == null) {
+            model.addAttribute("host", host);
+
             model.addAttribute("errorForget", "Email không tồn tại trong hệ thống");
             model.addAttribute("email", email);
             return "/client/auth/forgot";
@@ -79,9 +91,14 @@ public class HomeController {
     @PostMapping("/register")
     public String register(@ModelAttribute("newAccount") @Valid Account account,@RequestParam("confirmpass") String confirmpass, BindingResult bindingResult, Model model, HttpServletRequest request) throws MessagingException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("host", host);
+
+
             return "/client/auth/register";
         }
         if(accountService.findByEmail(account.getEmail()) != null) {
+            model.addAttribute("host", host);
+
             model.addAttribute("errorRegister", "Email đã tồn tại!!!!");
             model.addAttribute("newAccount", account);
             return "/client/auth/register";
@@ -90,6 +107,8 @@ public class HomeController {
         String temppass = account.getPassword();
         if(!temppass.equals(confirmpass))
         {
+            model.addAttribute("host", host);
+
             model.addAttribute("errorRegister", "Mật khẩu xác thực không trùng khớp");
             model.addAttribute("newAccount", account);
             return "/client/auth/register";
@@ -97,6 +116,8 @@ public class HomeController {
 
         if(temppass.length()<=5)
         {
+            model.addAttribute("host", host);
+
             model.addAttribute("errorRegister", "Mật khẩu phải dài hơn 5 chữ số");
             model.addAttribute("newAccount", account);
             return "/client/auth/register";
@@ -168,7 +189,7 @@ public class HomeController {
         String code = request.getParameter("code");
 
         GoogleLogin gg = new GoogleLogin();
-        String accessToken = gg.getToken(code);
+        String accessToken = gg.getToken(code, host);
 
         System.out.println(">>>>accessToken: " + accessToken);
 
@@ -194,12 +215,7 @@ public class HomeController {
         UsernamePasswordAuthenticationToken authToken =
                 new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
 
-        // Thực hiện xác thực tự động
-//        authenticationManager.authenticate(authToken);
 
-//        SecurityContextHolder.getContext().setAuthentication(authToken);
-
-//        securityContextHolderFilter.doFilter();
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
         User user = userService.findUserByEmail(email);
@@ -313,7 +329,9 @@ public class HomeController {
 
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        System.out.println(">>>host: " + host);
+        model.addAttribute("host", host);
         return "/client/auth/login";
     }
 
