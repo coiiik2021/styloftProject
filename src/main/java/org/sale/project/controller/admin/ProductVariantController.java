@@ -68,6 +68,7 @@ public class ProductVariantController {
         model.addAttribute("colors", colorService.findAll());
         model.addAttribute("sizes", sizeService.findAll());
         model.addAttribute("products", productService.findAll());
+
         return "/admin/item/create";
     }
 
@@ -103,7 +104,7 @@ public class ProductVariantController {
 
         productVariantService.saveProductItem(productVariant);
 
-        return "redirect:/admin/item";
+        return "redirect:/admin/product/" + productVariant.getProduct().getId();
 
     }
 

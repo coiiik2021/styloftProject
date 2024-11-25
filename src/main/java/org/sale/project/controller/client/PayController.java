@@ -72,16 +72,10 @@ public class PayController {
 
         orderService.updateCancelPayment(id);
 
-
-
         model.addAttribute("contentError", "Đơn hàng bạn chưa được thanh toán!!!");
 
         return "/client/thank/show";
     }
-
-
-
-
 
 
 
@@ -96,7 +90,7 @@ public class PayController {
 
                            @RequestParam(value = "voucherCode", required = false) String voucherCode,
                            HttpServletResponse response
-                           ) throws MessagingException {
+    ) throws MessagingException {
 
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
@@ -104,18 +98,23 @@ public class PayController {
 
 
 
+
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
         for (FieldError fieldError : fieldErrors) {
             System.out.println(">>>pay" +fieldError.getField() + ":" + fieldError.getDefaultMessage());
         }
-        if(bindingResult.hasErrors()) {
+        if(bindingResult.hasErrors() || userPay.getAddress()==null) {
             model.addAttribute("items", user.getCart().getCartItems());
             model.addAttribute("totalPrice", cartService.totalPriceInCart(user.getCart()));
             model.addAttribute("voucherCode", voucherCode);
+            if(userPay.getAddress() == null){
+                model.addAttribute("errorAddressUpdate", "Vui lòng nhập đầy đủ thông tin địa chỉ");
+
+            }
+
 
             return "/client/pay/show";
         }
-
 
         user.setName(userPay.getName());
         user.setPhoneNumber(userPay.getPhoneNumber());
@@ -132,8 +131,6 @@ public class PayController {
 
 
         Order order = orderService.complete(user, total, voucher);
-
-
 
         if(paymentMethod.equals("online_1")){
 //            setUpOnline(totalPrice, response);

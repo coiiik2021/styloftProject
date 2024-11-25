@@ -7,7 +7,7 @@ server:
 #image-port: ${image-port:http://localhost:8080/}
 
 name:
-  host: ${NAME_HOST:http://localhost:8080/}
+  host: ${NAME_HOST:https://styloft.onrender.com/}
 
 spring:
   main:
@@ -25,10 +25,10 @@ spring:
 #    driverClassName: "com.mysql.cj.jdbc.Driver"
 #    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
 #    username: ${DATABASE_USER:avnadmin}
-    url: "jdbc:mysql://${DATABASE_HOST:localhost}:${DATABASE_PORT:3306}/${DATABASE_NAME:quanao}"
+    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:styloft}"
     driverClassName: "com.mysql.cj.jdbc.Driver"
-    password: ${DATABASE_PASSWORD:root}
-    username: ${DATABASE_USER:root}
+    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
+    username: ${DATABASE_USER:avnadmin}
 
   jpa:
     hibernate:
@@ -49,7 +49,7 @@ spring:
           google:
             client-id: 264565889451-li40qm8elg7569blr27vkuvb23qbmqe1.apps.googleusercontent.com
             client-secret: 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
-            redirect-uri: "${NAME_HOST:http://localhost:8080/}login/oauth2/code/google"
+            redirect-uri: "${NAME_HOST:https://styloft.onrender.com/}login/oauth2/code/google"
             scope:
               - email
               - profile
@@ -89,7 +89,7 @@ payment:
     url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
     tmnCode: 5RIH2KL9
     secretKey: FPHVDV0OM6XV4K6A5646H7UX599AQV9F
-    returnUrl: ${NAME_HOST:http://localhost:8080/}pay/vn-pay-callback
+    returnUrl: https://styloft.onrender.com/pay/vn-pay-callback
     version: 2.1.0
     command: pay
     orderType: other
@@ -107,9 +107,9 @@ sms:
 
 
 
-logging:
-  level:
-    org:
-      springframework:
-        security: debug
+#logging:
+#  level:
+#    org:
+#      springframework:
+#        security: debug
 

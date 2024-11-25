@@ -269,7 +269,7 @@
                                     <div class="row">
                                         <div class="col-12 gap-0">
                                             <h5 class="card-title text-black text-center">${product.key.name}</h5>
-                                            <c:if test="${product.key.name.length() < 22}">
+                                            <c:if test="${product.key.name.length() < 25}">
                                                 <br/>
                                             </c:if>
                                             <p class="card-text">

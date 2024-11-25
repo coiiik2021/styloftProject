@@ -41,7 +41,6 @@ public class AccountClientController {
         model.addAttribute("email", email);
         Optional<User> userOptional = userService.findByEmail(email);
         model.addAttribute("email", email);
-//        User user = userOptional.get();
 
         model.addAttribute("user", userOptional.orElseGet(User::new));
         model.addAttribute("orders", userOptional.isEmpty()
@@ -85,21 +84,23 @@ public class AccountClientController {
     public String updateAddress(Model model, HttpServletRequest request,
                                 @ModelAttribute("user") @Valid User userUpdate, BindingResult bindingResult,
                                 @RequestParam("idform") Optional<String> idform) {
-
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            System.out.println(">>> user: " + fieldError.getField() + fieldError.getDefaultMessage());
-
-        }
-        if (bindingResult.hasErrors()) {
-            return "/client/home/information";
-        }
-
         HttpSession session = request.getSession();
         String email = (String) session.getAttribute("email");
-
-        userService.updateUserAddress(email, userUpdate.getAddress());
         session.setAttribute("checkid", idform.get());
+//        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+//        for (FieldError fieldError : fieldErrors) {
+//            System.out.println(">>> user: " + fieldError.getField() + fieldError.getDefaultMessage());
+//
+//        }
+//        if (bindingResult.hasErrors()) {
+//            return "/client/home/information";
+//        }
+        if(userUpdate.getAddress().chars().filter(ch -> ch == '|').count()!=3)
+        {
+            model.addAttribute("errorAddressUpdate", "Vui lòng nhập đầy đủ thông tin địa chỉ");
+            return "/client/home/information";
+        }
+        userService.updateUserAddress(email, userUpdate.getAddress());
         return "redirect:/account";
     }
     @PostMapping("/pass-update")
@@ -131,7 +132,6 @@ public class AccountClientController {
         Account account = accountService.findByEmail(email);
         boolean check= passwordEncoder.matches(pass, account.getPassword());
         if(check){
-            System.out.println("Dan Test"+pass);
             if(!newpass.equals(confirmpass)){
                 model.addAttribute("errorPassUpdate", "Mật khẩu mới và mật khẩu xác nhận không trùng nhau");
                 return "/client/home/information";

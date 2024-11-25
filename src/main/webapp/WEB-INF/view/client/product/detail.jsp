@@ -121,10 +121,10 @@
                     <div>
                         <c:forEach items="${colors}" var="color">
                             <a href="javascript:void(0);"
-                               class="btn  btn-sm me-1 }"
+                               class="  btn-sm me-1 }"
                                onclick="updateSelection('color',
                                        '${color.name}')" style=" display: inline-block; padding: 10px; width: 30px; height: 30px;
-                                    background-color: ${color.description}; ${item.color.name eq color.name ? 'border: black solid 1px; ' : ''}
+                                    background-color: ${color.description}; ${item.color.name eq color.name ? 'border: white solid 2px;box-shadow: 0 0 0 1px #000; ' : ''}
                                     border-radius: 50%">
                                     <%--                                ${color.name}--%>
                                 <div ></div>

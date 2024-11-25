@@ -69,8 +69,8 @@
     </div>
 
     <div class="d-flex justify-content-between">
-        <h4 class="text-primary">New Arrivals</h4>
-        <button class="btn btn-light">Show All</button>
+        <h4 class="text-primary"> Có thể bạn quan tâm </h4>
+        <a href="/product" class="btn btn-light">Show All</a>
     </div>
 
     <!-- Product -->
@@ -87,7 +87,7 @@
                                 <div class="row">
                                     <div class="col-10 gap-0">
                                         <h5 class="card-title text-primary text-primary">${product.key.name}</h5>
-                                        <c:if test="${product.key.name.length() < 24}">
+                                        <c:if test="${product.key.name.length() < 25}">
                                             <br/>
                                         </c:if>
                                         <p class="card-text">

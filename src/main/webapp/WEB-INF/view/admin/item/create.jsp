@@ -106,7 +106,7 @@
 
                 <div class = "mb-3 col-12 col-md-6">
                   <button type="submit" class="btn btn-primary">Submit</button>
-                  <a href="/admin/product/${productSelected.id}" class ="btn btn-dark">Cancel</a>
+                  <a href="/admin${productSelected == null ? '/item' : '/product/' }${productSelected.id}" class ="btn btn-dark">Cancel</a>
 
                 </div>
               </form:form>

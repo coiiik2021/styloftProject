@@ -20,8 +20,8 @@
 
 
 
-        <c:if test="${not empty errorMessage}">
-          <div style="color: red;">${errorMessage}</div>
+        <c:if test="${not empty voucherExists}">
+          <div style="color: red;">${voucherExists}</div>
         </c:if>
         <div class="container mt-5">
           <div class="row">
@@ -55,7 +55,7 @@
 
 
                 <div class="mb-3 col-12">
-                  <label class="form-label">Discount</label>
+                  <label class="form-label">Discount (%)</label>
                   <form:input type="text" class="form-control ${not empty errorDiscountValue ? 'is-invalid' : ''}"  path="discountValue"/>
                   <!-- <%--                    ${errorFullName}--%> -->
                   ${errorDiscountValue}

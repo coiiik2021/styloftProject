@@ -25,7 +25,6 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-
 public class EmailService {
 
     private final VoucherService voucherService;
@@ -129,7 +128,7 @@ public class EmailService {
                     "                                          \"\n" +
                     "                                        >\n" +
                     "                                          <img\n" +
-                    "                                            src=\""+NAME_HOST+"/images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
+                    "                                            src=\""+NAME_HOST+"images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
 
                     "                                            alt=\"\"\n" +
                     "                                            width=\"110\"\n" +
@@ -141,7 +140,7 @@ public class EmailService {
                     "                                              outline: none;\n" +
                     "                                              text-decoration: none;\n" +
                     "                                            \"\n" +
-                    "                                            height=\"110\"\n" +
+                    "                                            height=\"auto\"\n" +
                     "                                          />\n" +
                     "                                        </td>\n" +
                     "                                      </tr>\n" +
@@ -359,7 +358,7 @@ public class EmailService {
                     "                                              font-size: 14px;\n" +
                     "                                            \"\n" +
                     "                                          >\n" +
-                    "                                            <strong>"+detail.getPrice()+" VND</strong>\n" +
+                    "                                            <strong>"+ (long)detail.getPrice()+" VND</strong>\n" +
                     "                                          </p>\n" +
                     "                                        </td>\n" +
                     "                                      </tr>\n" +
@@ -1217,7 +1216,7 @@ public class EmailService {
                 "                                        color: #333333;\n" +
                 "                                      \"\n" +
                 "                                    >\n" +
-                "                                      Tổng tiền:&nbsp;<strong>"+ order.getTotal() +" VND </strong>\n" +
+                "                                      Tổng tiền:&nbsp;<strong>"+(long) order.getTotal() +" VND </strong>\n" +
                 "                                    </h3>\n" +
                 "                                  </td>\n" +
                 "                                </tr>\n" +

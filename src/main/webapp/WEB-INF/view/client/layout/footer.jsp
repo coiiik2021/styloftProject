@@ -28,7 +28,7 @@
             <img src="/images/client/footer/fanpage.jpg" alt="fanpage" style="max-width: 100%; margin-bottom: 10px;">
             <ul class="list-unstyled d-flex">
                 <li class="me-3">
-                    <a href="#"><i class="bi bi-facebook" style="font-size: 25px;"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61568153272131"><i class="bi bi-facebook" style="font-size: 25px;"></i></a>
                 </li>
                 <li class="me-3">
                     <a href="#"><i class="bi bi-instagram" style="font-size: 25px;"></i></a>

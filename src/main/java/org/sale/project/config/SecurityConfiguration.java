@@ -96,7 +96,7 @@ public class SecurityConfiguration{
                         .permitAll()
 
                         .requestMatchers("/","/register", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/email", "/google", "/facebook", "/payment/**", "/forgot")
+                                "/images/**", "/email", "/google", "/facebook", "/payment/**", "/forgot", "/blog", "/about")
 
                         .permitAll()
 

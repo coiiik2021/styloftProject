@@ -84,82 +84,76 @@
       <p class="text-muted">Hoàn thành thông tin liên hệ của bạn</p>
       <form:form action="/pay/complete" method="post" modelAttribute="user">
 
-        <c:set var="errorName">
-          <form:errors path="name" cssClass="invalid-feedback"/>
-        </c:set>
-        <c:set var="errorAddrress">
-          <form:errors path="address" cssClass="invalid-feedback"/>
-        </c:set>
-        <c:set var="errorPhoneNumber">
-          <form:errors path="phoneNumber" cssClass="invalid-feedback"/>
-        </c:set>
+      <c:set var="errorName">
+        <form:errors path="name" cssClass="invalid-feedback"/>
+      </c:set>
+      <c:set var="errorAddrress">
+        <form:errors path="address" cssClass="invalid-feedback"/>
+      </c:set>
+      <c:set var="errorPhoneNumber">
+        <form:errors path="phoneNumber" cssClass="invalid-feedback"/>
+      </c:set>
 
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-<%--        <div class="mb-3">--%>
-<%--          <label for="email" class="form-label">Email</label>--%>
-<%--          <div class="input-group" >--%>
-<%--            <span class="input-group-text"><i class="ri-mail-send-line"></i></span>--%>
-<%--            <input type="email" class="form-control py-3" id="email"  name="email" value="${email}" />--%>
-<%--          </div>--%>
-<%--        </div>--%>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       <hr>
-        <div class="mb-3">
-          <label for="Username" class="form-label">Họ và tên</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="ri-id-card-line"></i></span>
-            <form:input path="name" type="text" class="form-control py-3 ${not empty errorName ? 'is-invalid' : ''}" id="Username" placeholder="Nhập họ và tên"   name="name" />
+      <div class="mb-3">
+        <label for="Username" class="form-label">Họ và tên</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="ri-id-card-line"></i></span>
+          <form:input path="name" type="text" class="form-control py-3 ${not empty errorName ? 'is-invalid' : ''}" id="Username" placeholder="Nhập họ và tên"   name="name" />
             ${errorName}
-          </div>
         </div>
+      </div>
       <hr>
-        <div class="mb-3">
-          <label for="UserPhone" class="form-label">Số điện thoại</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="ri-phone-line"></i></span>
-            <form:input path="phoneNumber" type="text" class="form-control py-3 ${not empty errorPhoneNumber ? 'is-invalid' : ''}" id="UserPhone" placeholder="Nhập số điện thoại"   name="phoneNumber" />
+      <div class="mb-3">
+        <label for="UserPhone" class="form-label">Số điện thoại</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="ri-phone-line"></i></span>
+          <form:input path="phoneNumber" type="text" class="form-control py-3 ${not empty errorPhoneNumber ? 'is-invalid' : ''}" id="UserPhone" placeholder="Nhập số điện thoại"   name="phoneNumber" />
             ${errorPhoneNumber}
-          </div>
         </div>
+      </div>
       <hr>
-        <div class="mb-3">
-          <label for="address-detail" class="form-label mb-3">Địa chỉ giao hàng</label>
-          <div class="row mb-3">
-            <div class="col-md-4">
-              <label for="province" class="form-label ms-2">Tỉnh/Thành phố</label>
-              <select id="province" class="form-control ms-2" >
-                <option value="">Chọn tỉnh</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label for="district" class="form-label ms-2">Quận/Huyện</label>
-              <select id="district" class="form-control ms-2">
-                <option value="">Chọn quận</option>
-              </select>
-            </div>
-            <div class="col-md-4">
-              <label for="ward" class="form-label ms-2">Phường/Xã</label>
-              <select id="ward" class="form-control ms-2">
-                <option value="">Chọn phường</option>
-              </select>
-            </div>
+      <div class="mb-3">
+        <p style="color: red">${errorAddressUpdate}</p>
+        <label for="address-detail" class="form-label mb-3">Địa chỉ giao hàng</label>
+        <div class="row mb-3">
+          <div class="col-md-4">
+            <label for="province" class="form-label ms-2">Tỉnh/Thành phố</label>
+            <select id="province" class="form-control ms-2" >
+              <option value="">Chọn tỉnh</option>
+            </select>
           </div>
-          <div class="row mb-3">
-            <div class="col-md-12">
-              <label for="detail" class="form-label ms-2">Địa chỉ cụ thể</label>
-              <input id="detail" class="form-control ms-2"  placeholder="Số nhà, đường..."/>
-              <form:input path="address" id="address-detail" class="form-control" placeholder="Số nhà, đường..." style="display: none"/>
-            </div>
-            <input name="idform" style="display: none" value="3"> </input>
+          <div class="col-md-4">
+            <label for="district" class="form-label ms-2">Quận/Huyện</label>
+            <select id="district" class="form-control ms-2">
+              <option value="">Chọn quận</option>
+            </select>
+          </div>
+          <div class="col-md-4">
+            <label for="ward" class="form-label ms-2">Phường/Xã</label>
+            <select id="ward" class="form-control ms-2">
+              <option value="">Chọn phường</option>
+            </select>
           </div>
         </div>
+        <div class="row mb-3">
+          <div class="col-md-12">
+            <label for="detail" class="form-label ms-2">Địa chỉ cụ thể</label>
+            <input id="detail" class="form-control ms-2"  placeholder="Số nhà, đường..."/>
+            <form:input path="address" id="address-detail" class="form-control" placeholder="Số nhà, đường..." style="display: none"/>
+          </div>
+          <input name="idform" style="display: none" value="3"> </input>
+        </div>
+      </div>
       <hr>
-        <div class="mb-3">
-          <label for="billing-note" class="form-label">Ghi chú</label>
-          <div class="input-group">
-            <span class="input-group-text"><i class="ri-sticky-note-line"></i></span>
-            <input type="text" class="form-control py-3" id="billing-note" placeholder="Ví dụ: Giao hàng giờ hành chính" name="note" />
-          </div>
+      <div class="mb-3">
+        <label for="billing-note" class="form-label">Ghi chú</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="ri-sticky-note-line"></i></span>
+          <input type="text" class="form-control py-3" id="billing-note" placeholder="Ví dụ: Giao hàng giờ hành chính" name="note" />
         </div>
+      </div>
 
       <div class="py-2 border-top border-bottom">
         <div class="d-flex justify-content-between">
@@ -267,8 +261,8 @@
 
 
       <div class="d-grid mt-4">
-          <button class="btn btn-primary py-3">Đặt hàng</button>
-        </div>
+        <button class="btn btn-primary py-3">Đặt hàng</button>
+      </div>
     </div>
 
     <div class="col-lg-5 p-4">

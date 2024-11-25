@@ -44,7 +44,7 @@
   <td>
   <a href="/product/detail/${item.productVariant.product.id}">
   <div class="d-flex align-items-center">
-  <img src="/images/product/${item.productVariant.product.name}/${item.productVariant.image}" class="img-fluid" style="width: 80px; height: 80px;" alt="Hình ảnh sản phẩm">
+  <img src="/images/product/${item.productVariant.product.name}/${item.productVariant.image}" class="img-fluid" style="width: 80px; height: auto;" alt="Hình ảnh sản phẩm">
   <div class="ms-3 text-start" style="color: #000;">
   <p class="mb-1">${item.productVariant.product.name}</p>
   <small style="color: #000;">Màu: ${item.productVariant.color.name} / Kích cỡ: ${item.productVariant.size.name}</small>

@@ -71,15 +71,13 @@ public class VoucherController {
             System.out.println(fieldError.getDefaultMessage());
         }
 
-        if(bindingResult.hasErrors() || voucherService.findByCode(voucher.getCode()) != null){
+        if(bindingResult.hasErrors() || voucherService.findByCode("E" + voucher.getCode()) != null){
             model.addAttribute("newVoucher", voucher);
             if(!bindingResult.hasErrors()){
                 model.addAttribute("voucherExists", "Voucher đã tồn tại vui lòng bạn nhập lại");
             }
             return "/admin/voucher/create";
         }
-
-
 
         voucherService.saveVoucher(voucher);
 

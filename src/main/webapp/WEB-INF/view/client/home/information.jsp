@@ -56,9 +56,6 @@
         <li class="list-group-item " onclick="showSection('order-history')">Lịch sử đơn hàng</li>
         <li class="list-group-item ${sessionScope.get("checkid")  == '3' ? 'active' : ''}"  onclick="showSection('account-address')">Địa chỉ giao hàng</li>
         <li class="list-group-item ${sessionScope.get("checkid")  == '4' ? 'active' : ''}"  onclick="showSection('pass-update')">Thay đổi mật khẩu</li>
-        <%--        <li class="list-group-item">Đánh giá và phản hồi</li>--%>
-        <%--        <li class="list-group-item">Chính sách và câu hỏi thường gặp</li>--%>
-        <%--        <li class="list-group-item">Đăng xuất</li>--%>
       </ul>
     </div>
 
@@ -85,7 +82,7 @@
             </div>
 
             <div class="mb-3 col-12 col-md-6">
-              <label for="imageAvatar" class="form-label">Image</label>
+              <label for="imageAvatar" class="form-label">Ảnh đại điện</label>
               <input class="form-control" type="file" id="imageAvatar" name="imageAvatar" accept=".png, .jpg, . jpeg">
             </div>
 
@@ -187,6 +184,7 @@
       </div>
     </div>
     <div class="col-md-9 form-container" id="account-address" ${sessionScope.get("checkid") == '3' ? 'style="display: block"':''  }>
+      <p style="color: red">${errorAddressUpdate}</p>
       <form:form action="/account/update-adress" method="post" modelAttribute="user">
         <div class="row mb-3">
           <div class="col-md-4">
