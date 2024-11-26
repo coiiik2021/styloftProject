@@ -171,7 +171,15 @@
               <td>  <a href="/order/${order.id}" > #${order.id.substring(0, 5)} </a></td>
 
               <td>${order.date}</td>
-              <td style="color: ${order.status.toString() == 'RETURN' || order.status.toString() == 'CANCEL' ? 'red' : 'green'}" >${order.status}</td>
+              <td style="color: ${order.status.toString() == 'RETURN' || order.status.toString() == 'CANCEL' || order.status.toString() == 'PAYMENT_FAILED' ? 'red' : 'green'}" >
+                  ${order.status.toString() == 'PROCESSING' ? 'Xử lý' :
+                          order.status.toString() == 'PAYMENT_FAILED' ? 'Thanh toán thất bại' :
+                                  order.status.toString() == 'SHIPPING' ? 'Giao Hàng' :
+                                          order.status.toString() == 'COMPLETED' ? 'Hoàn Thành' :
+                                                  order.status.toString() == 'RETURNED' ? 'Hoàn Trả Hàng' :
+                                                          order.status.toString() == 'CANCEL' ? 'Hủy' : ""
+                          }
+              </td>
               <td><fmt:formatNumber type="number" value="${order.total}" /> VND</td>
               <td> <a href="/order/${order.id}" class = "btn btn-primary">Xem</a> </td>
 
@@ -243,7 +251,7 @@
           <div class="row mb-3">
 
             <div class="col-md-6">
-              <label for="newpass" class="form-label">Xác nhận mật khẩu mới</label>
+              <label for="newpass" class="form-label">Mật khẩu mới</label>
 
               <input name="newpass" type="password" class="form-control" id="newpass" placeholder="Mật khẩu mới" value="${newpass}"/>
 
@@ -252,7 +260,7 @@
           <div class="row mb-3">
 
             <div class="col-md-6">
-              <label for="confirmpass" class="form-label">Mật khẩu mới</label>
+              <label for="confirmpass" class="form-label">Xác nhận mật khẩu mới</label>
 
               <input name="confirmpass" type="password" class="form-control" id="confirmpass" placeholder="Xác nhận lại mật khẩu" value="${confirmpass}"/>
 

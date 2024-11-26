@@ -31,7 +31,6 @@ public class OrderClientController {
 
     UserService userService;
 
-    ProductVariantService productVariantService;
     ReviewService reviewService;
 
     PayOS payOS;

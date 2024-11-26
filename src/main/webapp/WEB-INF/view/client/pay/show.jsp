@@ -273,7 +273,7 @@
       <div class="border p-3 mb-4">
         <c:forEach items="${items}" var="item">
           <div class="d-flex mb-3">
-            <img src="/images/product/${item.productVariant.product.name}/${item.productVariant.image}" class="img-fluid rounded me-3" alt="Product" style="width: 100px; height: 100px" />
+            <img src="/images/product/${item.productVariant.product.name}/${item.productVariant.image}" class="img-fluid rounded me-3" alt="Product" style="width: 100px; height: auto" />
             <div>
               <h6 class="fw-bold mb-1" style="width: 80%">${item.productVariant.product.name}</h6>
               <div class="mt-2">

@@ -121,24 +121,24 @@ public class ProductVariantService {
         return productVariantRepository.findAllByProductIn(products, pageable);
     }
 
-    public List<ProductVariant> filterProductItems(List<String> categories, List<String> colors, List<String> sizes, Pageable pageable) {
-        Specification<ProductVariant> specification = Specification
-                .where(ProductVariantSpecification.hasCategory(categories))
-                .and(ProductVariantSpecification.hasColor(colors))
-                .and(ProductVariantSpecification.hasSize(sizes));
-
-        return productVariantRepository.findAll(specification);
-    }
-
-    public void updateProductVariant(ProductVariant productVariantUpdate){
-
-        ProductVariant productVariant = productVariantRepository.findById(productVariantUpdate.getId()).orElse(null);
-        if(productVariant != null){
-            productVariantMapper.updateProduct(productVariant, productVariantUpdate);
-            productVariantRepository.save(productVariant);
-        }
-
-    }
+//    public List<ProductVariant> filterProductItems(List<String> categories, List<String> colors, List<String> sizes, Pageable pageable) {
+//        Specification<ProductVariant> specification = Specification
+//                .where(ProductVariantSpecification.hasCategory(categories))
+//                .and(ProductVariantSpecification.hasColor(colors))
+//                .and(ProductVariantSpecification.hasSize(sizes));
+//
+//        return productVariantRepository.findAll(specification);
+//    }
+//
+//    public void updateProductVariant(ProductVariant productVariantUpdate){
+//
+//        ProductVariant productVariant = productVariantRepository.findById(productVariantUpdate.getId()).orElse(null);
+//        if(productVariant != null){
+//            productVariantMapper.updateProduct(productVariant, productVariantUpdate);
+//            productVariantRepository.save(productVariant);
+//        }
+//
+//    }
 
 
     public void updateProductItem(ProductVariant productVariant, int quantity){

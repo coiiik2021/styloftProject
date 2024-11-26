@@ -17,7 +17,7 @@ import java.util.Collections;
 public class CustomUserDetailsService implements UserDetailsService {
     private final AccountService accountService;
 
-    @Override
+    @Override // bình thường dữ liệu ngời dùng trong inmemory -> cấu hình
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountService.findByEmail(username);
 

@@ -32,7 +32,6 @@ import java.util.*;
 public class ItemController {
 
     ProductService productService;
-    ProductVariantService productVariantService;
     ColorService colorService;
     SizeService sizeService;
     CategoryService categoryService;
@@ -212,19 +211,7 @@ public class ItemController {
         return "/client/product/detail";
     }
 
-//    @GetMapping("/detail/{id}")
-//    public String getPageDetail(Model model, @PathVariable String id,
-//                                @RequestParam("color") Optional<String> colorOptional,
-//                                @RequestParam("size") Optional<String> sizeOptional){
-//        String size = sizeOptional.orElse("");
-//        String color = colorOptional.orElse("");
-//
-//        Product product = productService.findById(id);
-//
-//
-//
-//
-//    }
+
 
     @GetMapping("/filter")
     public String filterProducts(

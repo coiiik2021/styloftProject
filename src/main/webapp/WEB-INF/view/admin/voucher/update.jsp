@@ -49,7 +49,7 @@ z
 
                 <div class="mb-3 col-12">
 
-                  <label class="form-label">Name</label>
+                  <label class="form-label">Code</label>
                   <form:input type="text" class="form-control" disabled="true"  path="code"/>
                   <!-- <%--                    ${errorEmail}--%> -->
                 </div>

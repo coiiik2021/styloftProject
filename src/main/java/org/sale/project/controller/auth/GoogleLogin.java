@@ -24,10 +24,7 @@ import java.io.IOException;
 
 
 public class GoogleLogin {
-
-
-
-
+    
     public String getToken(String code, String host) throws IOException {
         System.out.println("token: " + host);
 
@@ -55,9 +52,7 @@ public class GoogleLogin {
 
         JsonObject jobj = new Gson().fromJson(response, JsonObject.class);
 
-        String accessToken = jobj.get("access_token").toString().replaceAll("\"", "");
-
-        return accessToken;
+        return jobj.get("access_token").toString().replaceAll("\"", "");
 
     }
 

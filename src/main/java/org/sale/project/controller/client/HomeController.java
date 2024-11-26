@@ -129,25 +129,12 @@ public class HomeController {
 
         account =  accountService.saveAccount(account);
 
-        String randomCode ="P" +  account.getId().substring(0, 4) +  RandomStringUtils.randomAlphanumeric(4);
-        Voucher voucher = Voucher.builder()
-                .code(randomCode)
-                .discountValue(10.0)
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now().plusDays(7))
-                .active(true)
-                .build();
-
-
-        voucherService.saveVoucher(voucher);
+        Voucher voucher = voucherService.regisCreate(account);
 
 
         String content = emailService.MailLogin(account, voucher);
         emailService.sendHtmlEmail(account.getEmail(),"REGISTER CORRECT",content);
-        if(accountService.findByEmail(email) == null) {
 
-            accountService.saveAccount(Account.builder().email(email).password(passwordEncoder.encode(temppass)).role(roleService.findByName("USER")).build());
-        }
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
 
@@ -157,7 +144,6 @@ public class HomeController {
 
         //Xác thực
         SecurityContextHolder.getContext().setAuthentication(authToken);
-        User user = userService.findUserByEmail(email);
 
         HttpSession session = request.getSession(true);
 
@@ -166,12 +152,6 @@ public class HomeController {
                 SecurityContextHolder.getContext());
 
         session.setAttribute("email", email);
-        if(user != null) {
-            session.setAttribute("id", user.getId());
-            session.setAttribute("sum", user.getCart() == null || user.getCart().getCartItems() == null ? 0
-                    : user.getCart().getCartItems().size());
-
-        }
 
 
 
@@ -180,7 +160,7 @@ public class HomeController {
 
     }
 
-//    SecurityContextHolderFilter securityContextHolderFilter;
+    //    SecurityContextHolderFilter securityContextHolderFilter;
     CustomUserDetailsService customUserDetailsService;
 
     @GetMapping("/google")
@@ -207,6 +187,10 @@ public class HomeController {
         if(accountService.findByEmail(email) == null) {
 
             accountService.saveAccount(Account.builder().email(email).password(passwordEncoder.encode(password)).role(roleService.findByName("USER")).build());
+            Account newAccount = accountService.findByEmail(email);
+            Voucher voucher = voucherService.regisCreate(newAccount);
+            String content = emailService.MailLogin(newAccount, voucher);
+            emailService.sendHtmlEmail(email,"REGISTER CORRECT",content);
 
         }
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
@@ -235,21 +219,12 @@ public class HomeController {
         }
 
 
-        // Đặt Authentication vào SecurityContextHolder để đăng nhập
-//        if (authToken.isAuthenticated()) {
-//        }
-
-
-//        return googlePojo;
-
         return "redirect:/";
     }
 
 
     @GetMapping
-    public String getPageHome(Model model, HttpServletRequest request
-
-                              ) throws IOException {
+    public String getPageHome(Model model, HttpServletRequest request) throws IOException {
 
 
         HttpSession session = request.getSession();
@@ -285,19 +260,13 @@ public class HomeController {
     {
         HttpSession session = request.getSession();
 
-
-
-        String email = (String) session.getAttribute("email");
-
-
         session.setAttribute("nameSearch" , "");
 
         return "/client/about/show";
     }
 
     @GetMapping("/blog")
-    public String blog(Model model, HttpServletRequest request
-    )
+    public String blog(Model model, HttpServletRequest request)
     {
         HttpSession session = request.getSession();
 
@@ -341,12 +310,6 @@ public class HomeController {
     }
 
 
-     private <T> Page<T> convertListToPage(List<T> list, Pageable pageable) {
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), list.size());
 
-        List<T> sublist = list.subList(start, end);
-        return new PageImpl<>(sublist, pageable, list.size());
-    }
 
 }

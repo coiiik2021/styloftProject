@@ -31,9 +31,6 @@ public class ProductController {
 
     CategoryService categoryService;
     ProductService productService;
-    // UploadService uploadService;
-    ProductVariantService productVariantService;
-
     @GetMapping
     public String getPageProduct(Model model, @RequestParam("page") Optional<String> pageOptional) {
         int page = 1;
@@ -69,9 +66,6 @@ public class ProductController {
     public String createProduct(@ModelAttribute("newProduct") @Valid Product product,
             BindingResult bindingResult, Model model) {
 
-        // String img = uploadService.uploadImage(imageProduct, "/product");
-        //
-        // product.setImage(img);
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         for (FieldError fieldError : fieldErrors) {

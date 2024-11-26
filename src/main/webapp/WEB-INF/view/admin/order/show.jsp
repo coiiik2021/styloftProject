@@ -67,7 +67,13 @@
                                                                 || order.status.toString() == 'PAYMENT_FAILED'
                                                             ? 'red' : 'green'
                                                             }"
-                                        >${order.status}</td>
+                                        >${order.status.toString() == 'PROCESSING' ? 'Xử lý' :
+                                                order.status.toString() == 'PAYMENT_FAILED' ? 'Thanh toán thất bại' :
+                                                        order.status.toString() == 'SHIPPING' ? 'Giao Hàng' :
+                                                                order.status.toString() == 'COMPLETED' ? 'Hoàn Thành' :
+                                                                        order.status.toString() == 'RETURNED' ? 'Hoàn Trả Hàng' :
+                                                                                order.status.toString() == 'CANCEL' ? 'Hủy' : ""
+                                                }</td>
 
                                         <td style="text-align: center">
                                             <a href="/admin/order/detail/${order.id}" class="btn btn-danger">Detail</a>
@@ -78,32 +84,32 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-<c:if test="${totalPages > 1}">
+                            <c:if test="${totalPages > 1}">
 
 
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item">
-                                        <a class="${1 eq currentPage ? 'disabled' : ''} page-link"
-                                           href="/admin/order?page=${currentPage - 1}" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                <nav aria-label="Page navigation example">
+                                    <ul class="pagination justify-content-center">
                                         <li class="page-item">
-                                            <a class="${(loop.index) eq currentPage ? 'active' : ''} page-link"
-                                               href="/admin/order?page=${loop.index}">${loop.index}</a>
+                                            <a class="${1 eq currentPage ? 'disabled' : ''} page-link"
+                                               href="/admin/order?page=${currentPage - 1}" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
                                         </li>
-                                    </c:forEach>
-                                    <li class="page-item">
-                                        <a class="${currentPage eq totalPages ? 'disabled' : ''} page-link"
-                                           href="/admin/order?page=${currentPage + 1}" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-</c:if>
+                                        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                            <li class="page-item">
+                                                <a class="${(loop.index) eq currentPage ? 'active' : ''} page-link"
+                                                   href="/admin/order?page=${loop.index}">${loop.index}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <li class="page-item">
+                                            <a class="${currentPage eq totalPages ? 'disabled' : ''} page-link"
+                                               href="/admin/order?page=${currentPage + 1}" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </c:if>
                         </div>
                     </div>
                 </div>

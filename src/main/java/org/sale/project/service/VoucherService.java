@@ -4,6 +4,8 @@ package org.sale.project.service;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.sale.project.entity.Account;
 import org.sale.project.entity.Voucher;
 import org.sale.project.mapper.VoucherMapper;
 import org.sale.project.repository.VoucherRepository;
@@ -38,7 +40,18 @@ public class VoucherService {
 
     }
 
-
+    public Voucher regisCreate(Account account){
+        String randomCode ="P" +  account.getId().substring(0, 4) +  RandomStringUtils.randomAlphanumeric(4);
+        Voucher voucher = Voucher.builder()
+                .code(randomCode)
+                .discountValue(10.0)
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(7))
+                .active(true)
+                .build();
+        saveVoucher(voucher);
+        return voucher;
+    }
 
     public void update(Voucher voucherUpdate){
         Voucher voucher = findById(voucherUpdate.getId());

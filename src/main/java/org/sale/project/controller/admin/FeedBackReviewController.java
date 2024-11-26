@@ -23,21 +23,8 @@ public class FeedBackReviewController {
 
     FeedBackReviewService feedBackReviewService;
 
-    OrderService orderService;
     ReviewService reviewService;
 
-//    @GetMapping("/create")
-//    public String createFeedBackReview(@RequestParam("feedBackReview") String description,
-//            @RequestParam("idReview") String idReview,
-//            @RequestParam("idProductVariant") String idProductVariant) {
-//
-//
-//        System.out.println(description);
-//        System.out.println(idReview);
-//
-//        return "redirect:/product/detail/" + idProductVariant;
-//
-//    }
 
 
     @PostMapping("/create")

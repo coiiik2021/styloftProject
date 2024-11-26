@@ -17,18 +17,18 @@ spring:
 
   datasource:
 
-#    url: "jdbc:mysql://localhost:3306/quanao"
-#    driverClassName: "com.mysql.cj.jdbc.Driver"
-#    password: root
-#    username: root
+    url: "jdbc:mysql://localhost:3306/quanao"
+    driverClassName: "com.mysql.cj.jdbc.Driver"
+    password: root
+    username: root
 #    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:quanao}"
 #    driverClassName: "com.mysql.cj.jdbc.Driver"
 #    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
 #    username: ${DATABASE_USER:avnadmin}
-    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:styloft}"
-    driverClassName: "com.mysql.cj.jdbc.Driver"
-    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
-    username: ${DATABASE_USER:avnadmin}
+#    url: "jdbc:mysql://${DATABASE_HOST:styloft-dungcnttk2021-b473.b.aivencloud.com}:${DATABASE_PORT:21820}/${DATABASE_NAME:styloft}"
+#    driverClassName: "com.mysql.cj.jdbc.Driver"
+#    password: ${DATABASE_PASSWORD:AVNS_f88wXBbHtkNj5T49Km8}
+#    username: ${DATABASE_USER:avnadmin}
 
   jpa:
     hibernate:
@@ -98,6 +98,8 @@ payment:
     CLIENT_ID: fc40b93e-8b2f-40f7-994d-be70925aad2a
     API_KEY: ad2cd774-890a-43fb-bc2f-68d5a2cf90e5
     CHECKSUM_KEY: a5945e07fdef5fc0539ce8b1e0b53b1ee36b1635eceefb3661a8bda85c0a957e
+
+
 
 
 sms:

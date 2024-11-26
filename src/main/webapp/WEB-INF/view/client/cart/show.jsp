@@ -113,13 +113,7 @@
           <img src="/images/product/${product.name}/${product.productVariant.get(0).image}" class="card-img-top rounded-0" alt="...">
           <div class="card-body">
             <h5 class="card-title text-primary">${product.name}</h5>
-            <p class="card-text">
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-              <i class="bi bi-star-fill text-warning"></i>
-              (123)
-            </p>
+
             <div class="text-primary">
               <h5><fmt:formatNumber value="${product.productVariant.get(0).price}" type="number"/> VNĐ</h5>
             </div>
