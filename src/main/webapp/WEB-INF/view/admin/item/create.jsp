@@ -59,30 +59,6 @@
 
                       </form:select>
                   </div>
-<%--                <div class="mb-3 col-12 col-md-6">--%>
-<%--                  <lable class ="form-label">Products </lable>--%>
-<%--                  <form:select path="product.name" class="form-select mt-2" >--%>
-<%--                    <option value="ADMIN">ADMIN</option>--%>
-<%--                    <option value="USER">USER</option>--%>
-<%--                  </form:select>--%>
-<%--                </div>--%>
-
-<%--                <div class="mb-3 col-12 col-md-6">--%>
-<%--                  <lable class ="form-label">Colors </lable>--%>
-<%--                  <form:select path="color.name" class="form-select mt-2" >--%>
-<%--                    <option value="ADMIN">ADMIN</option>--%>
-<%--                    <option value="USER">USER</option>--%>
-<%--                  </form:select>--%>
-<%--                </div>--%>
-
-<%--                <div class="mb-3 col-12 col-md-6">--%>
-<%--                  <lable class ="form-label">Size </lable>--%>
-<%--                  <form:select path="size.name" class="form-select mt-2" >--%>
-<%--                    <option value="ADMIN">ADMIN</option>--%>
-<%--                    <option value="USER">USER</option>--%>
-<%--                  </form:select>--%>
-<%--                </div>--%>
-
 
                 <div class="mb-3 col-12 col-mb-6">
 

@@ -129,17 +129,7 @@ public class HomeController {
 
         account =  accountService.saveAccount(account);
 
-        String randomCode ="P" +  account.getId().substring(0, 4) +  RandomStringUtils.randomAlphanumeric(4);
-        Voucher voucher = Voucher.builder()
-                .code(randomCode)
-                .discountValue(10.0)
-                .startDate(LocalDate.now())
-                .endDate(LocalDate.now().plusDays(7))
-                .active(true)
-                .build();
-
-
-        voucherService.saveVoucher(voucher);
+        Voucher voucher = voucherService.regisCreate(account);
 
 
         String content = emailService.MailLogin(account, voucher);
@@ -207,6 +197,10 @@ public class HomeController {
         if(accountService.findByEmail(email) == null) {
 
             accountService.saveAccount(Account.builder().email(email).password(passwordEncoder.encode(password)).role(roleService.findByName("USER")).build());
+            Account newAccount = accountService.findByEmail(email);
+            Voucher voucher = voucherService.regisCreate(newAccount);
+            String content = emailService.MailLogin(newAccount, voucher);
+            emailService.sendHtmlEmail(email,"REGISTER CORRECT",content);
 
         }
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);

@@ -62,8 +62,6 @@ public class ProductVariantController {
             }
         }
 
-
-
         model.addAttribute("newItem", new ProductVariant());
         model.addAttribute("colors", colorService.findAll());
         model.addAttribute("sizes", sizeService.findAll());

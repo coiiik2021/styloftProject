@@ -18,6 +18,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +53,10 @@ public class EmailService {
         // Gửi email
         mailSender.send(mimeMessage);
     }
-    public String MailOrder(List<OrderDetail> details, Order order){
+    public String MailOrder(List<OrderDetail> details, Order order) throws UnsupportedEncodingException {
         List<String> itemOrders = new ArrayList<>();
         for (OrderDetail detail : details) {
+            String nameProductSendEmail = URLEncoder.encode( detail.getProductVariant().getProduct().getName(),  "UTF-8").replace("+", "%20");
             itemOrders.add( "<tr>\n" +
                     "                      <td\n" +
                     "                        align=\"left\"\n" +
@@ -128,7 +131,7 @@ public class EmailService {
                     "                                          \"\n" +
                     "                                        >\n" +
                     "                                          <img\n" +
-                    "                                            src=\""+NAME_HOST+"images/product/"+detail.getProductVariant().getProduct().getName()+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
+                    "                                            src=\""+NAME_HOST+"images/product/"+nameProductSendEmail+ "/"+ detail.getProductVariant().getImage()+"\"\n" +
 
                     "                                            alt=\"\"\n" +
                     "                                            width=\"110\"\n" +
@@ -1019,7 +1022,7 @@ public class EmailService {
                 "                                    >\n" +
                 "                                      <a\n" +
                 "                                        target=\"_blank\"\n" +
-                "                                        href=\""+NAME_HOST+"/\"\n" +
+                "                                        href=\""+NAME_HOST+"\"\n" +
                 "                                        style=\"\n" +
                 "                                          mso-line-height-rule: exactly;\n" +
                 "                                          text-decoration: underline;\n" +

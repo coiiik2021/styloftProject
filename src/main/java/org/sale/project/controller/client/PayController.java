@@ -27,6 +27,7 @@ import vn.payos.type.ItemData;
 import vn.payos.type.PaymentData;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,7 +91,7 @@ public class PayController {
 
                            @RequestParam(value = "voucherCode", required = false) String voucherCode,
                            HttpServletResponse response
-    ) throws MessagingException {
+    ) throws MessagingException, UnsupportedEncodingException {
 
         HttpSession session = request.getSession();
         String email = (String)session.getAttribute("email");
@@ -215,7 +216,7 @@ public class PayController {
     }
 
 
-    private void sendCompleteEmailOrder(Order order) throws MessagingException {
+    private void sendCompleteEmailOrder(Order order) throws MessagingException, UnsupportedEncodingException {
         List<OrderDetail> details = order.getDetails();
         String content=emailService.MailOrder(details,order);
         emailService.sendHtmlEmail(order.getUser().getAccount().getEmail(),"Đặt hàng #" + order.getId().substring(0, 5),content);
@@ -241,7 +242,7 @@ public class PayController {
 
 
     @GetMapping("/vn-pay-callback")
-    public String payCallbackHandler(HttpServletRequest request, HttpServletResponse response) throws MessagingException {
+    public String payCallbackHandler(HttpServletRequest request, HttpServletResponse response) throws MessagingException, UnsupportedEncodingException {
 
         HttpSession session = request.getSession();
         String idOrder = (String) session.getAttribute("idOrder");
