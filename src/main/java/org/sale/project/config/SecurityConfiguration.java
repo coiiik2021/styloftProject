@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,18 +41,29 @@ public class SecurityConfiguration{
                         .permitAll()
 
                         .requestMatchers("/","/register", "/login", "/product/**", "/client/**", "/css/**", "/js/**",
-                                "/images/**", "/email", "/google", "/facebook", "/payment/**", "/forgot", "/blog", "/about")
+                                "/images/**", "/email", "/google", "/facebook", "/forgot", "/blog", "/about")
 
                         .permitAll()
 
                         .requestMatchers("/admin/**", "/feedBack/**").hasRole("ADMIN")
 
-                        .requestMatchers("/cart/**", "/order/**", "/review/**", "/pay/**", "/account/**" , "/apply/**").hasRole("USER")
+                        .requestMatchers("/cart/**", "/order/**", "/review/**", "/pay/**", "/account/**" , "/payment/**", "/apply/**").hasRole("USER")
 
                         .anyRequest().authenticated())
 
+                //session
+                .sessionManagement((sessionManagement) -> sessionManagement
+                        .sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                        .invalidSessionUrl("/logout?expired")
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false))
+//                .logout(logout->logout.deleteCookies("JSESSIONID").invalidateHttpSession(true))
+
+
                 .rememberMe((rememberMe) -> rememberMe
                         .rememberMeServices(rememberMeServices()))
+
+
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .failureUrl("/login?error")
@@ -70,9 +82,7 @@ public class SecurityConfiguration{
 
     //cấu hình Bước 2
     @Bean
-    public DaoAuthenticationProvider authProvider(
-            PasswordEncoder passwordEncoder,
-            UserDetailsService userDetailsService) {
+    public DaoAuthenticationProvider authProvider(PasswordEncoder passwordEncoder, UserDetailsService userDetailsService) {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder);
@@ -121,8 +131,9 @@ public class SecurityConfiguration{
     @Bean
     public SpringSessionRememberMeServices rememberMeServices() {
         SpringSessionRememberMeServices rememberMeServices = new SpringSessionRememberMeServices();
-        // optionally customize
+
         rememberMeServices.setAlwaysRemember(true);
+
         return rememberMeServices;
     }
 

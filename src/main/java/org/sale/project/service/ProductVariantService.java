@@ -113,47 +113,15 @@ public class ProductVariantService {
         }
     }
 
-//    public Page<ProductItem> findByProductId(String productId, Pageable pageable){
-//        return productItemRepository.findAll(ProductItemSpec.findAllByProductId(productId), pageable);
-//    }
+
 
     public Page<ProductVariant> findByProduct(List<Product> products, Pageable pageable){
         return productVariantRepository.findAllByProductIn(products, pageable);
     }
 
-//    public List<ProductVariant> filterProductItems(List<String> categories, List<String> colors, List<String> sizes, Pageable pageable) {
-//        Specification<ProductVariant> specification = Specification
-//                .where(ProductVariantSpecification.hasCategory(categories))
-//                .and(ProductVariantSpecification.hasColor(colors))
-//                .and(ProductVariantSpecification.hasSize(sizes));
-//
-//        return productVariantRepository.findAll(specification);
-//    }
-//
-//    public void updateProductVariant(ProductVariant productVariantUpdate){
-//
-//        ProductVariant productVariant = productVariantRepository.findById(productVariantUpdate.getId()).orElse(null);
-//        if(productVariant != null){
-//            productVariantMapper.updateProduct(productVariant, productVariantUpdate);
-//            productVariantRepository.save(productVariant);
-//        }
-//
-//    }
 
 
-    public void updateProductItem(ProductVariant productVariant, int quantity){
-        Optional<ProductVariant> itemOptional = productVariantRepository.findById(productVariant.getId());
-        ProductVariant item = new ProductVariant();
-        if(itemOptional.isPresent()){
-            item = itemOptional.get();
-        } else{
-            return;
-        }
-        item.setQuantity(Math.max(item.getQuantity() - productVariant.getQuantity(), 0));
 
-        productVariantRepository.save(item);
-
-    }
 
 
 }

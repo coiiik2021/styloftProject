@@ -17,12 +17,12 @@ import java.util.Collections;
 public class CustomUserDetailsService implements UserDetailsService {
     private final AccountService accountService;
 
-    @Override // bình thường dữ liệu ngời dùng trong inmemory -> cấu hình
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Account account = accountService.findByEmail(username);
 
         if(account == null){
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException("Thông tin tài khoản không đúng");
         }
 
         return new User(account.getEmail(),

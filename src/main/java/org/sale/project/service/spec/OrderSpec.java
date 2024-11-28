@@ -7,10 +7,6 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.Date;
 
 public class OrderSpec {
-//    public static Specification<Order> findAllBeginToFinish(Date dateBegin, Date dateFinish) {
-//        return (root, query, criteriaBuilder) -> criteriaBuilder.between(root.get("date"), dateBegin, dateFinish);
-//
-//    }
 
     public static Specification<Order> findOrderById(String startId){
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get("id"), startId+"%");

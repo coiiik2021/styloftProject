@@ -202,10 +202,10 @@ public class HomeController {
 
 
         SecurityContextHolder.getContext().setAuthentication(authToken);
+
         User user = userService.findUserByEmail(email);
 
         HttpSession session = request.getSession(true);
-
 
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY,
                 SecurityContextHolder.getContext());
@@ -225,7 +225,6 @@ public class HomeController {
 
     @GetMapping
     public String getPageHome(Model model, HttpServletRequest request) throws IOException {
-
 
         HttpSession session = request.getSession();
 

@@ -87,7 +87,7 @@ public class OrderClientController {
             String currentTimeString = String.valueOf(new Date().getTime());
             long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
 
-            PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(10000).description(description)
+            PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount((int)order.getTotal()).description(description)
                     .returnUrl(returnUrl).cancelUrl(cancelUrl).items(items).build();
             CheckoutResponseData data = payOS.createPaymentLink(paymentData);
 
